@@ -1,0 +1,12 @@
+<ion-view align-title="center" animation="slide-right-left">
+    <ion-content class="has-footer contactcontainer" autofocus>
+	    <div class="list">
+		 	<img class="margin0auto w-90 imgQrCode" src="img/Buzcard_scan_QR_1.png" />
+		 	<p class="txt-qrcode" ng-bind-html="txtqrcodez">
+		 	</p>
+			<button class="button  button-full button-light btn-qrcode-scann" ng-click="scanBarcode()">{{ 'QRCode.Scanner' | translate }}</button>
+
+		</div>
+		 <br><br>
+    </ion-content>
+</ion-view>

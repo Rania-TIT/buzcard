@@ -1,0 +1,52 @@
+<ion-view align-title="center" animation="slide-right-left" class="business-attachement">
+  <ion-content class="business-global" autofocus>
+    <div class="business">
+      <div class="business-container">
+        <div class="business-row no-margin">
+          <div class="business-col">
+          <div class="buttoninfoBulle" >
+         <button class="button button-full button-light btn-qrcode-scann"  ui-sref="app.buzcardSend" >
+              {{ 'busines.Send' | translate }}
+            </button>
+     	<i class="ion-ios-information-outline iconinfobulle" ng-click="ShowinfoSend()"></i> 
+            <div class="info-text my-show-hide-animation" style="width:98%;margin-top: 0px;" ng-if="infoSend"  ng-click="ShowinfoSend()" translate="{{ 'busines.SendInfo'  }}"></div>
+            
+          </div>
+          </div>
+        </div>
+           <div class="business-row ">
+          <div class="business-col">
+           <div class="buttoninfoBulle" >
+            <button class="button button-full button-light btn-qrcode-scann" ng-click="createContact()">
+              {{ 'busines.photografier' | translate }}
+            </button>
+            <i class="ion-ios-information-outline iconinfobulle" ng-click="ShowinfoPhoto()"></i> 
+              <div class="info-text my-show-hide-animation" style="width:98%;margin-top: 0px;" ng-if="infoPhoto" ng-click="ShowinfoPhoto()"  translate="{{ 'busines.SendPhoto' }}"></div>
+          
+          </div>
+          </div>
+        </div>
+        <div class="business-row double-space">
+          <div class="business-col">
+             <div class="buttoninfoBulle" >
+            <button class="button button-full button-light btn-qrcode-scann" ng-click="scanBarcode()">
+             {{ 'busines.flash' | translate }}
+            </button>
+            <i class="ion-ios-information-outline iconinfobulle" ng-click="ShowinfoFlash()" ></i> 
+             <div class="info-text my-show-hide-animation" style="width:98%;margin-top: 0px;" ng-if="infoFlash" ng-click="ShowinfoFlash()" translate="{{ 'busines.SendFlash'}}"></div>
+           
+          </div>
+          </div>
+        </div>
+     
+        <div class="business-footer">
+          <p class="need-help"  ui-sref="app.commandes"> <i class="icon ion-help-circled"></i> {{ 'busines.needhelp' | translate }} </p>
+        </div>
+          <div class="business-footer">
+          <p class="need-help"  ng-click="tutorials()"> <i class="icon ion-help-circled"></i> {{ 'busines.tuto' | translate }} </p>
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

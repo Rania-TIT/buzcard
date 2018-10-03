@@ -1,0 +1,45 @@
+<ion-view   align-title="center" class="login-attachement" animation="slide-right-left">
+  <ion-content class="login">
+    <div class="login-page-header" style="overflow:visible">
+      <img class="img-header-login" src="img/logo-flasher.png" />
+      <div class="sep-header"></div>
+    </div>
+    <div class="logon">
+      <div class="login-page-content">
+        <div class="login-page">
+          <h4 class="center meconecter">{{ 'Titre1Login' | translate }}</h4>
+          <div class='formLogin'>
+            <form name="loginForm" novalidate ng-submit="signIn(email,password)">
+              <span class="input-label"></span>
+              <input type="email" class="input-login" ng-model="email" name="email" placeholder="{{ 'EmailLogin' | translate }}"> <span class="input-label"></span>
+              <input type="password" class="input-login" ng-model="password" name="password" placeholder="{{ 'PasswordLogin' | translate }}"><span class="input-label"></span>
+              <div class="recreePassword">
+                <div class="c80">
+                  <a class='link' style="text-decoration:none" href="#" ng-click="recreemonmotdepasse(email,password)">{{ 'ResetPassWord' | translate }}</a>
+                </div>
+                <div class="c20">
+                  <input value="OK" type="submit" class="button button-light button-login">
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="overflow">
+            <h4 class="activer-ma-buzcard"><a  ui-sref="app.createAccount">{{ 'Titre2Login' | translate }}</a></h4>
+            <!-- <br> (ou l’essayer gratuitement 30 jours) -->
+          </div>
+<!--           <div class="formActivate"> -->
+<!--             <form name="activateForm" novalidate ng-submit="activate(avtiveEmail)"> -->
+<!--               <input type="email" ng-model="avtiveEmail" class="input-login" placeholder="E-mail" required="true" /><span class="input-label"></span> -->
+<!--               <div> -->
+<!--                 <input type="submit" class="button button-light button-login" menu-close value="OK"> -->
+<!--               </div> -->
+<!--             </form> -->
+<!--           </div> -->
+          
+          <div style="color:#FFF;font-size: 12px;position: relative;margin: 0 auto;margin-top: 74px;text-align: center;">{{'login.confidentiel' | translate }}</div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

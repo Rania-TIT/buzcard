@@ -1,0 +1,25 @@
+<ion-view align-title="center" animation="slide-right-left">
+    <ion-content class="has-footer contactcontainer" autofocus>
+	    <div class="list">
+	    <div class="qrprofile" >
+	    <h3 class="mesqr-title">{{ 'MesQR.Buzcard' | translate }}</h3>
+	    <div class="" style="width: 187px;position: relative;display:block;margin:0 auto;">
+	    <img class="margin0auto  imgQrCode" height="150" src="img/photo_top_title.jpg" ng-click="openModall()" style="background: #FFF;" ng-src="{{qrProfil}}" />
+		 <i class="ion-search loopQR" ng-click="openModall()"></i>	
+		 </div>
+	    </div>
+	    <br><br>
+		 <div class="qrvital" >
+		 <h3 class="mesqr-title" style="width:150px;">{{ 'MesQR.Vital' | translate }}</h3>
+		 
+		  <div class="" style="width: 187px;position: relative;display:block;margin:0 auto;">
+		 <img class="margin0auto imgQrCode" height="150" ng-click="openModalV()" style="background: #FFF;" ng-src="{{qrVital}}" />
+		 	 <i class="ion-search loopQR" ng-click="openModalV()"></i>	
+		 </div>
+		 </div>	
+			
+			
+		</div>
+		 <br><br>
+    </ion-content>
+</ion-view>

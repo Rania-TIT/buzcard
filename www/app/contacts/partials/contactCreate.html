@@ -1,0 +1,131 @@
+<div class="naviguation" >
+   <a class="left"   href="#" nav-direction="back"   menu-close>{{ 'ContactEdit.Retour' | translate }}</a>
+   <a class="right" href="javascript:void(0)"    menu-close>{{ 'ContactEdit.Enregistrer' | translate }}</a>
+ </div>
+<ion-view align-title="center" animation="slide-right-left">
+   <ion-content scroll="true" class="has-footer contact-has-header buzcardcontainer" >
+       <div class="list">
+           <div class="edit-vcard">
+               <div class="header-vcardedit">
+                   <img id="profil" ng-src="{{photoProfil}}" src="img/photo_top_title.jpg">
+               </div>
+               <div class="capture-camera">
+                   <div class="row">
+                       <div class="col-80">
+                           <form name="formUpload" enctype="multipart/form-data">
+                               <div id="uploadImage">
+                                         <input ng-blur="blur()" ng-focus="focus()" type="button" class="chooseFile" value="{{ 'choseFile' | translate }}" ng-click="choseFile()"/> <span class="ouCamera">{{ 'CameraOR' | translate }}</span>
+                                   <input ng-blur="blur()" ng-focus="focus()"  type="file" onclick="return false;" name="photo">
+                               </div>
+                           </form>
+                       </div>
+
+                       <div class="col-20">
+                           <a class="button camera-buz" ng-click="getPhoto()"></a>
+                       </div>
+                   </div>
+               </div>
+               <br>
+
+              <ion-item class="item-accordion edit-ctc" >
+         <div class="row" ng-if="tmp">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.FirstBuz' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                           <span class="firstLastBuz" ng-if="tmp">{{contact.firstsendemail | toFrFormat}}</span>
+                       </div>
+                   </div>
+                   <div class="row" ng-if="showLast">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.LastBuz' | translate }} </span></div>
+                       <div class="col col-75 contact-value">
+                         <span class="firstLastBuz" >{{contact.lastsendemail | toFrFormat }}</span>
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.LangueEmail' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                         <span class="ValueLine"> {{contact.LanguageText}} </span>
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.Email' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                         <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.email"   type="text" >
+<!--                            <span><a  style=" white-space: pre-line;overflow: auto;color:#777;">{{contact.email | toFormatEmail }}</a></span> -->
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.Meeting_point' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                         <span class="meeting-contact">{{contact.meeting_point}}</span>
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col label labelcontact"><span >{{ 'ContactEdit.Recontact' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                           <input  id="dateX" type="text"   ng-model="contact.rendez_vous" class="RendezVEdit datepickerDirective"  />
+                       </div>
+                   </div>
+                      <div class="row">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.LastName' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                          <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.last_name" style="text-transform: capitalize;"  type="text" >
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.FirstName' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                          <input ng-blur="blur()" ng-focus="focus()"  ng-model="contact.first_name"  style="text-transform: capitalize;"  type="text">
+                       </div>
+                   </div>
+
+                   <div class="row">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.Tel' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                        <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.phone_1"  type="text" >
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.Tel2' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                         <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.phone_2"  type="text" >
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.Company' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                       <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.company" style="text-transform: capitalize;"  type="text" />
+                       </div>
+                   </div>
+                   <div class="row" id="groupe-combo-editcontact">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.Groupe' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                         <input id="nogroupeid" ng-show="noGroup" type="text" style="position: absolute;width: 54.29%;z-index:2;" ng-model="noG" ng-click="test()">
+                   <select id="groupeId"  ng-model="contact.list" class="item-select"
+                     ng-options="group for group in groups" ng-change="changeHandler()">
+                     <option value="" selected hidden />
+                   </select>
+                   <input ng-show="contact.list != language && contact.list != null && contact.list != '' " ng-blur="blur()" disabled="true" type="text" ng-focus="focus()" ng-focus="isFocusable"  id="newGroupeName" />
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col label labelcontact"><span>{{ 'ContactEdit.Comments' | translate }}</span></div>
+                       <div class="col col-75 contact-value">
+                        <textarea class="adressEdit" ng-blur="blur()" ng-focus="focus()" ng-model="contact.comment" rows="3" cols="80"></textarea>
+                       </div>
+                   </div>
+
+         </ion-item>
+
+
+           </div>
+            <div class="naviguationButtom" ng-if="!showSend" class="ng-hide" >
+    <a class="leftButtom button button-full button-light btn-buzcard"  href="javascript:void(0)" ng-click="sendBuz(contact)"    menu-close>Valider</a>
+
+ </div>
+
+
+       </div>
+        <br><br>
+        <br><br>
+   </ion-content>
+</ion-view>

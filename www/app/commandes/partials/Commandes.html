@@ -1,0 +1,50 @@
+<ion-view align-title="center" animation="slide-right-left">
+	<ion-content scroll="true" class="has-footer qrcodecontainer">
+		<div class="buzcard-content">
+			  <h2 class="center commande-header lesoffrebuzcard">Les offres Buzcard</h2>
+			  <ion-slide-box class="carrouselCommandes" on-slide-changed="slideChanged(index)" does-continue="true">
+		        <ion-slide>
+			       	<div class="col-1">
+						<h3  class="commandeLabel" >Abonnement<br> sans impression</h3>
+						<img class="shoot_product" src="img/online_small_phone.jpg">
+						<p>Abonnement annuel<br><br></p>
+						<div class="price regular_price_text">
+							De <span>24&euro;</span> à <span>6&euro;</span> HT <br>
+							par an / collaborateur<span> </span> 
+						</div>
+						<button class="button button-light btn-commande" ng-click="store1()">CONTACTEZ-NOUS</button>
+					</div>
+		        </ion-slide>
+		        <ion-slide>
+					<div class="col-1">
+						<h3 class="commandeLabel " >Abonnement<br> avec cartes papier</h3>
+						<img class="shoot_product" src="img/regular_phone_and_card.jpg">
+						<p>Des cartes en 350g (livraison 3-5 jrs)<br>
+						Abonnement de 1 ou 2 ans</p>
+						<div class="price regular_price_text">
+							250ex / 1 an d'abo <span>50&euro;</span> HT<br>
+							500ex / 2 ans d'abo <span>75&euro;</span> HT    
+						</div>
+						<button class="button button-light btn-commande" ng-click="store2()">COMMANDEZ-LES</button>
+					</div>
+				</ion-slide>
+		        <ion-slide>
+					<div class="col-1">
+						<h3 class="commandeLabel">Abonnement<br> avec carte ultime</h3>
+						<img class="shoot_product" src="img/ultimate_phone_and_card.jpg">
+						<p>Une carte en PVC (livraison 9-15 jrs)<br>
+						Abonnement à vie</p>
+						<div class="price regular_price_text">
+							<span>100&euro;</span> HT<br>
+							(+ 25&euro; HT pour 250 buzcards)<span> </span>
+						</div>
+						<button class="button button-light btn-commande" ng-click="store3()">COMMANDEZ-LA</button>
+					</div>
+				</ion-slide>		
+		      </ion-slide-box>
+			  <a class="btn-prev button button-icon icon ion-chevron-left" ng-click="prev()"></a>
+			  <a class="btn-next button button-icon icon ion-chevron-right" ng-click="next()"></a>
+		</div>
+		 <br><br>
+    </ion-content>
+</ion-view>

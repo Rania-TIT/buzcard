@@ -1,0 +1,187 @@
+<div class="naviguation"  >
+ 	<a class="left" ui-sref="app.contactList"  nav-direction="back" menu-close>{{ 'ContactShow.List' | translate }}</a>
+ 	<a class="right"   ng-click="updateAndShowContact(contact.id,contact.email)" menu-close>{{ 'ContactShow.Modifier' | translate }}</a>
+ 	</div>
+<ion-view align-title="center" animation="slide-right-left">
+
+   <ion-content scroll="true" class="has-footer buzcardcontainer contactContent" >
+
+        <div class="list">
+          <div ng-if="imageExist" class="block-text-contact">
+            <p class="contact-show-photographier" style="background:none;color:#999;">
+               {{ "ContactShow.photoSacarte"| translate}}<br>
+                 {{ "ContactShow.photographier2"| translate}}
+
+            </p>
+<!--             <p class="contact-show-nous-saisirons"> -->
+<!--                {{ "ContactShow.nousSaisirons"| translate}} -->
+<!--             </p> -->
+          </div>
+            <div class="edit-vcard" style="background-color: #000;">
+
+                <div class="header-vcardedit header-contactInfo">
+
+                 <div class="center-slider">
+
+<!--                     <img id="profil" ng-click="openModal()" ng-src="{{photoProfil}}" src="img/photo_top_title.jpg"> -->
+<!-- 					<ion-slide-box on-slide-changed="slideHasChanged($index)" active-slide="1" pager-click="showSlide(index)"> -->
+<!-- 					  <ion-slide> -->
+<!-- 					    <img id="photoRecto" class="photo-slider" ng-src="{{photoCardRecto}}" src="img/photo_top_title.jpg"> -->
+<!-- 					  </ion-slide> -->
+<!-- 					  <ion-slide> -->
+					 <img class="photo-slider" ng-click="openModal()"  ng-src="{{photoProfil}}" >
+<!-- 					  </ion-slide> -->
+<!-- 					  <ion-slide> -->
+<!-- 					 <img id="photoVerso" class="photo-slider"  ng-src="{{photoCardVerso}}" src="img/photo_top_title.jpg"> -->
+<!-- 					  </ion-slide> -->
+<!-- 					</ion-slide-box> -->
+					</div>
+<!-- 					 <div class="left-slide"> -->
+<!--                  <a class="button button-icon icon ion-chevron-left" ng-click="nextSlide()"></a> -->
+<!--                  </div> -->
+<!--                  <div class="right-slider"><a  class="button button-icon icon ion-chevron-right" ng-click="previewSlide()"></a> -->
+<!--                  </div> -->
+                </div>
+
+
+
+               <ion-item class="item-accordion edit-ctc" >
+                <div class="row" ng-if="contact.email !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Email' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                           <span><a href="mailto:{{contact.email}}" style=" white-space: pre-line;overflow: auto;color:#79A436;">{{contact.email | toFormatEmail }}</a></span>
+                        </div>
+                    </div>
+                      <div class="row" ng-if="contact.LanguageText !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.LanguageEmail' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                          <span class="ValueLine">{{contact.LanguageText}}</span>
+                        </div>
+                    </div>
+
+					<div class="row" ng-if="tmp && contact.firstsendemail !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.FirstBuz' | translate }}</span></div>
+                        <div class="col col-75 contact-value" >
+                            <span class="firstLastBuz">{{contact.firstsendemail | toFrFormat}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="contact.meeting_point !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Meeting_point' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                          <span class="meeting-contact"><a  ng-click="showAdress(contact.meeting_point)">{{contact.meeting_point}}</a></span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="showLast && tmp && contact.lastsendemail !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.LastBuz' | translate }} </span></div>
+                        <div class="col col-75 contact-value">
+                          <span class="firstLastBuz" style="margin-top:2px;">{{contact.lastsendemail | toFrFormat}}</span>
+                        </div>
+                    </div>
+
+
+                    <div class="row" ng-if="contact.rendez_vous !=''">
+                        <div class="col label labelcontact"><span >{{ 'ContactShow.Recontact' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                           <span style="margin-left:5px;">{{contact.rendez_vous |date:'dd/MM/yyyy' }}</span>
+                        </div>
+                    </div>
+                     <div class="row" id="groupe-combo-editcontact" ng-if="contact.list !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Groupe' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                        <span >{{contact.list |escape}}</span>
+                         </div>
+                    </div>
+                     <div class="row" ng-if="contact.first_name !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.FirstName' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                           <span  style="text-transform: capitalize;">{{contact.first_name |escape}}</span>
+                        </div>
+                    </div>
+                     <div class="row" ng-if="contact.last_name !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.LastName' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                           <span style="">{{contact.last_name |escape}}</span>
+                        </div>
+                    </div>
+                     <div class="row" ng-if="contact.company !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Company' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                        <span style="text-transform: capitalize;">{{contact.company |escape}}</span>
+                        </div>
+                    </div>
+                     <div class="row" ng-if="contact.fonction !='' && contact.fonction !='null'">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Function' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                        <span >{{contact.fonction |escape}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="contact.phone_1 !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Tel1' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                         <span ><a ng-click="clickTel(contact.phone_1)">{{contact.phone_1}}</a></span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="contact.phone_2 !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Tel2' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                          <span ><a ng-click="clickTel(contact.phone_2)">{{contact.phone_2}}</a></span>
+                        </div>
+                    </div>
+
+                   <div class="row" ng-if="contact.address.trim() !='' && contact.addressline1.trim() !='null'">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Address' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                        <span ><a  ng-click="showAdress(contact.address)">{{contact.address |escape}}</a></span>
+                        </div>
+                    </div>
+                     <div class="row" ng-if="contact.actu !='' && contact.actu !='null'">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Actus' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                        <span >{{contact.actu |escape}}</span>
+                        </div>
+                    </div>
+                     <div class="row" ng-if="contact.Link_CardOnline !='' && contact.Link_CardOnline !='null'">
+                        <div class="col label labelcontact" ><span translate="{{ 'ContactShow.linkBuzcard'}}"></span></div>
+                        <div class="col col-75 contact-value">
+                        <span ><a  ng-click="getLink(contact.Link_CardOnline)">{{contact.Link_CardOnline}}</a></span>
+                        </div>
+                    </div>
+                      <div class="row" ng-if="contact.comment !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactShow.Comment' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                         <span class="meeting-contact" >{{contact.comment |escape}}</span>
+                        </div>
+                    </div>
+
+
+
+
+          </ion-item>
+
+
+            </div>
+
+		 <a class="leftButtombuzward button button-full button-light btn-buzcard btn-bottom" href="javascript:void(0)" ng-click="buzwardContact(contact)"    menu-close>{{ 'ContactShow.buzward' | translate }}</a>
+
+
+
+		 <a class="leftButtom button button-full button-light btn-buzcard" href="javascript:void(0)" ng-click="sendBuz(contact)"    menu-close>{{ 'ContactShow.Send' | translate }}</a>
+
+
+     <div class="deleteDiv" ng-if="showCutLink">
+       <a class="deleteLink" href="javascript:void(0)" menu-close ng-click="cutLink(contact)" style="color:#999 !important;">
+         {{ 'ContactEdit.cutLink' | translate }}
+       </a>
+     </div>
+		<div class="deleteDiv">
+				<a class="deleteLink" href="javascript:void(0)" menu-close ng-click="deleteContact(contact)">
+					{{ 'ContactEdit.delete' | translate }}
+				</a>
+			</div>
+
+        </div>
+         <br><br>
+    </ion-content>
+</ion-view>

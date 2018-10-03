@@ -1,0 +1,142 @@
+<ion-view align-title="center" animation="slide-right-left" class="business-attachement">
+    <ion-content class="has-footer buzcardcontainer" ng-class="(isCusto)?'containerIsCusto':'t'" scroll="true" autofocus>
+        <div class="list buzcard-page" >
+            <div class="header-vcard" ng-class="(isCusto) ? &apos;custoheader&apos; : &apos;&apos;" id="header-vcard">
+
+           <div class="container_img">
+
+                 <img id="profil" ng-click="openModal()"   ng-src="{{photoProfil}}" src="img/photo_top_title.jpg">
+                 <div class="profilQR">
+                 <img class="imgQR" height="40"  ng-click="openModall()" style="background: #FFF;" ng-src="{{qrProfil}}" /></div>
+                </div>
+                 <div class="headerBuzcardLeft">
+	                <h5 >{{infos.first_name | escape}} </h5>
+	                <h5 >{{infos.last_name | escape}}</h5>
+	                <div class="clear-bar" ng-style="{borderBottom : secondColor}"></div>
+	                <div class="accounts">
+	                    <img src="img/facebook.png" ng-click="clickReseauxSociaux(infos.facebook)" ng-if="!infos.facebook ==''">
+	                    <img src="img/twitter.png" ng-click="clickReseauxSociaux(infos.twitter)" ng-if="!infos.twitter ==''">
+	                    <img src="img/viadeo.png" ng-click="clickReseauxSociaux(infos.viadeo)" ng-if="!infos.viadeo ==''">
+	                    <img src="img/delicious.png" ng-click="clickReseauxSociaux(infos.delicious)" ng-if="!infos.delicious ==''">
+	                    <img src="img/foursquare.png" ng-click="clickReseauxSociaux(infos.foursquare)" ng-if="!infos.foursquare ==''">
+	                    <img src="img/google-plus.png" ng-click="clickReseauxSociaux(infos.googleplus)" ng-if="!infos.googleplus ==''">
+	                    <img src="img/linkedin.png" ng-click="clickReseauxSociaux(infos.linkedin)" ng-if="!infos.linkedin ==''">
+	                    <img src="img/myspace.png" ng-click="clickReseauxSociaux(infos.myspace)" ng-if="!infos.myspace ==''">
+	                    <img src="img/pinterest.png" ng-click="clickReseauxSociaux(infos.pinterest)" ng-if="!infos.pinterest ==''">
+	                    <img src="img/rss.png" ng-click="clickReseauxSociaux(infos.rss)" ng-if="!infos.rss ==''">
+	                    <img src="img/instagram.png" ng-click="clickReseauxSociaux(infos.instagram)" ng-if="!infos.instagram ==''">
+	                     <img src="img/youtube.png" ng-click="clickReseauxSociaux(infos.youtube)" ng-if="!infos.youtube ==''">
+	                      <img src="img/snapchat.png" ng-click="clickReseauxSociaux(infos.snapchat)" ng-if="!infos.snapchat ==''">
+	                </div>
+	               </div>
+            </div>
+<!--             <div class="btn-buzcard-send-margin"></div> -->
+
+            <div class="vcard-infos">
+                <div class="row" ng-show="!infos.company ==''">
+                    <div class="col"> {{ 'Buzcard.Company' | translate }}</div>
+                    <div class="col col-67 px17" id="company">{{infos.company | escape}}</div>
+                </div>
+                <div class="row" ng-show="!infos.position ==''">
+                    <div class="col">{{ 'Buzcard.Position' | translate }}</div>
+                    <div class="col col-67 px17" id="position">{{infos.position | escape}}</div>
+                </div>
+                <div class="row" ng-show="!infos.network ==''">
+                    <div class="col">{{ 'Buzcard.Network' | translate }}</div>
+                    <div class="col col-67 px17" id="network">{{infos.network | escape}}</div>
+                </div>
+
+                <div class="row" ng-show="!infos.mobile_1 ==''">
+                    <div class="col">{{ 'Buzcard.Mobile_1' | translate }} </div>
+                    <div class="col col-67 px17" id="mobile_1"><a href="tel:{{infos.mobile_1}}">{{infos.mobile_1}}</a></div>
+                </div>
+                <div class="row" ng-show="!infos.mobile_2 ==''">
+                    <div class="col">{{ 'Buzcard.Mobile_2' | translate }} </div>
+                    <div class="col col-67 px17" id="mobile_2"><a href="tel:{{infos.mobile_2}}">{{infos.mobile_2}}</a></div>
+                </div>
+                <div class="row" ng-show="!infos.landline_1 ==''">
+                    <div class="col">{{ 'Buzcard.LandLine1' | translate }}</div>
+                    <div class="col col-67 px17" id="landline_1"><a href="tel:{{infos.landline_1}}">{{infos.landline_1}}</a></div>
+                </div>
+                <div class="row" ng-show="!infos.landline_2 ==''">
+                    <div class="col">{{ 'Buzcard.LandLine2' | translate }}</div>
+                    <div class="col col-67 px17" id="landline_2"><a href="tel:{{infos.landline_2}}">{{infos.landline_2}}</a></div>
+                </div>
+                <div class="row" ng-show="!infos.fax ==''">
+                    <div class="col">{{ 'Buzcard.Fax' | translate }}</div>
+                    <div class="col col-67 px17" id="fax">{{infos.fax }}</div>
+                </div>
+                <div class="row" ng-show="!infos.skype ==''">
+                    <div class="col">{{ 'Buzcard.Skype' | translate }}</div>
+                    <div class="col col-67 px17" id="skype">{{infos.skype  | escape}}</div>
+                </div>
+                <div class="row" ng-show="!infos.email ==''">
+                    <div class="col">{{ 'Buzcard.Email' | translate }}</div>
+                    <div class="col col-67 buz px15" id="email">{{ infos.email | limitTo: 21 }}{{infos.email.length > 21 ? '...' : ''}}</div>
+                </div>
+                  <div class="row" ng-show="!infos.email_2 ==''">
+                    <div class="col">{{ 'Buzcard.Email2' | translate }}</div>
+                    <div class="col col-67 buz px15" id="email">{{ infos.email_2 | limitTo: 21 }}{{infos.email_2.length > 21 ? '...' : ''}}</div>
+                </div>
+<!--                 ng-show="!infos.address_line_1 =='' && !infos.address_line_2 =='' && !infos.address_line_3 =='' && !infos.postal_code =='' && !infos.city =='' && !infos.country =='' "  -->
+                <div class="row" ng-show="!infos.address.trim() ==''">
+                    <div class="col">{{ 'Buzcard.Address' | translate }}</div>
+                    <div class="col col-67 buz px15" id="address">{{infos.address | escape}}</div>
+                </div>
+
+                 <div class="row" ng-show="!infos.address_p.trim() ==''">
+                    <div class="col">{{ 'Buzcard.Address_p' | translate }}</div>
+                    <div class="col col-67 buz px15" id="address_p">{{infos.address_p | escape}}</div>
+                </div>
+
+                <div class="row" ng-show="!infos.link_1 ==''">
+                    <div class="col">{{ 'Buzcard.Link1' | translate }}</div>
+                    <div class="col col-67 buz px15" id="link_1" ng-click="getlink_1()">
+                    	<h6 ng-if="infos.link_title_1 != ''" style="  color: blue;font-weight: normal;text-decoration: underline;  font-size: 15px;margin:0!important;margin-top: 2px!important;">{{infos.link_title_1 | escape}}</h6>
+                    	<h6 ng-if="infos.link_title_1 == ''" style="  color: blue;font-weight: normal;text-decoration: underline;  font-size: 15px;margin:0!important;margin-top: 2px!important;">{{infos.link_1}}</h6>
+                    </div>
+                </div>
+                <div class="row" ng-show="!infos.link_2 ==''">
+                    <div class="col">{{ 'Buzcard.Link2' | translate }}</div>
+                    <div class="col col-67 buz px15" id="link_2" ng-click="getlink_2()">
+                    	<h6 ng-if="infos.link_title_2 != ''" class="px15" style="  color: blue;font-weight: normal;text-decoration: underline;  font-size: 15px;margin:0!important;margin-top: 2px!important;">{{infos.link_title_2 | escape}}</h6>
+                    	<h6 ng-if="infos.link_title_2 == ''" class="px15" style="  color: blue;font-weight: normal;text-decoration: underline;  font-size: 15px;margin:0!important;margin-top: 2px!important;">{{infos.link_2}}</h6>
+                    </div>
+                </div>
+                <div class="row" ng-show="!infos.link_3 ==''">
+                    <div class="col">{{ 'Buzcard.Link3' | translate }}</div>
+                    <div class="col col-67 buz" id="link_3" ng-click="getlink_3()">
+                    	<h6  ng-if="infos.link_title_3 != ''" class="px15" style="  color: blue;font-weight: normal;text-decoration: underline;  font-size: 15px;margin:0!important;margin-top: 2px!important;">{{infos.link_title_3 | escape}}</h6>
+                    	<h6 ng-if="infos.link_title_3 == ''" class="px15" style="  color: blue;font-weight: normal;text-decoration: underline;  font-size: 15px;margin:0!important;margin-top: 2px!important;">{{infos.link_3}}</h6>
+                    </div>
+                </div>
+                <div class="row" ng-show="!infos.link_4 ==''">
+                    <div class="col">{{ 'Buzcard.Link4' | translate }}</div>
+                    <div class="col col-67 buz" id="link_4" ng-click="getlink_4()">
+                    	<h6 ng-if="infos.link_title_4 != ''" class="px15" style="  color: blue;font-weight: normal;text-decoration: underline;  font-size: 15px;margin:0!important;margin-top: 2px!important;">{{infos.link_title_4 | escape}}</h6>
+                    	<h6 ng-if="infos.link_title_4 == ''" class="px15" style="  color: blue;font-weight: normal;text-decoration: underline;  font-size: 15px;margin:0!important;margin-top: 2px!important;">{{infos.link_4}}</h6>
+                    </div>
+                </div>
+                <div class="row" ng-show="!infos.news_1 ==''">
+                    <div class="col">{{ 'Buzcard.News1' | translate }}</div>
+                    <div class="col col-67 buz px15" id="news_1">{{infos.news_1 | escape}}</div>
+                </div>
+                <div class="row" ng-show="!infos.news_2 ==''">
+                    <div class="col">{{ 'Buzcard.News2' | translate }}</div>
+                    <div class="col col-67 buz px15" id="news_2">{{infos.news_2 | escape}}</div>
+                </div>
+                <div class="row" ng-show="!infos.news_3 ==''">
+                    <div class="col">{{ 'Buzcard.News3' | translate }}</div>
+                    <div class="col col-67 buz px15" id="news_3">{{infos.news_3 | escape}}</div>
+                </div>
+            </div>
+            <button class="button button-full button-light btn-buzcard btn-bottom" nav-direction="forward"  ng-click="updateAll()" ng-style="{border : firstColor , backgroundColor: firstColor}" menu-close>
+                {{ 'Buzcard.Update' | translate }}
+            </button>
+             <button class="button button-full button-light btn-buzcard" nav-direction="forward"   ui-sref="app.buzcardSend"   ng-style="{border : firstColor , backgroundColor: firstColor}" menu-close>
+                {{ 'Buzcard.Send' | translate }}
+            </button>
+        </div>
+        <br><br>
+    </ion-content>
+</ion-view>

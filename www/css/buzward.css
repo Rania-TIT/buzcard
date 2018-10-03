@@ -1,0 +1,123 @@
+.buzwardContainer{
+	
+    background-image:url('../img/tour_Efffel_nouveau.jpg');
+    background-repeat:no-repeat;
+  	background-size: cover;
+    position: fixed;
+    background-position: 35% 30%;
+}
+.divEmail{
+	margin-top: 56px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 22px;
+    
+}.divEmail input[type="text"]
+{
+	    width: 100%;
+    background: transparent;
+    
+    border: 1px solid #FFF;
+    
+    border-radius: 0px;
+    height: 32px;	
+    font-size:18px;
+    text-transform: lowercase;
+}.buzwardButtom{
+	background-color: #000000;
+/*     width: 240px; */
+    top: 17px;
+    font-size: 16px;
+    height: 30px;
+    vertical-align: middle;
+    display: block;
+    margin-top: 0px;
+    position: relative;
+    z-index: 9999999;
+    padding-top: 5px;
+    margin: 0 auto;
+}.leftButtombuzward{
+	font-size: 18px !important;
+    text-decoration: initial !important;
+    margin: 0 auto !important;
+    width: 240px !important;
+}.divinfo{
+	margin-top: 5px;
+	padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom:15px;
+}
+.info_label{
+	color: #fff;
+	font-size:16px;
+	text-align:left;
+	padding-left: 5px;
+}.spaninfo{
+	
+text-transform: Capitalize;
+	
+}.info_checkbox{
+	float: right;
+    margin-right: 15px;
+    padding-bottom: 15px;
+}.buzward_msg_title{
+	padding-top:15px !important;
+	font-size:16px;
+	padding-left:10px;
+	padding-right: 10px;
+	color:#999;
+	font-style: italic;
+    text-align: center;
+	padding-bottom:15px;
+	width: 197px;
+    margin: 0 auto;
+	
+}.buzward_msg{
+	padding-top:0px !important;
+	padding-left:10px;
+	padding-right: 10px;
+	font-size:16px;
+	color:#fff;
+	
+}.buzward_msg_div{
+	border: 1px solid #fff;
+    width: 100%;
+    padding: 5px;
+    font-size:16px;
+}.buzward_send{
+	margin-top: 0px !important;
+	padding-left: 10px;
+    padding-right: 10px;
+}.button_send{
+/* 	 width: 199px !important; */
+    margin: 0 auto;
+    font-weight: normal;
+    font-size: 18px;
+}.buzward_cancel{
+/* 	padding-top: 30px !important; */
+	padding-left: 10px;
+    padding-right: 10px;
+}.buzward_cancel_btn{
+	color:#FFF;
+	
+	width:80px;
+	margin:0 auto; 
+	font-weight: normal;
+    font-size: 18px;
+}.imgQR{
+	border: none !important;
+}
+.divEmail input[type="text"]::-webkit-input-placeholder{
+	 color:    #999;
+    font-style: italic;
+    text-align: center;
+	text-transform: none;
+}.divEmail input[type="text"]::-moz-placeholder{
+	 color:    #999;
+    font-style: italic;
+    text-align: center;
+	text-transform: none;
+}.textareabuzward{
+	background:transparent;
+	border-radius: 0px;
+}

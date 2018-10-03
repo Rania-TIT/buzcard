@@ -1,0 +1,392 @@
+<ion-view align-title="center" animation="slide-right-left" class="business-attachement">
+    <ion-content scroll="true" delegate-handle="content" class="has-footer contactcontainer">
+        <!-- ******** begin search form ********-->
+        <div class="buzcard-content contacts-list" >
+
+          <div class="contactlistcontainer">
+          <div class="contactlistcell">
+              <div class="opacblock">
+
+            <div class="search-contact" >
+                <div class="item-input-wrapper" style="overflow:hidden!important;">
+                    <input type="search" placeholder="{{ 'ContactList.Search' | translate }} " id="searchinput" ng-model="criteria" ng-change="changeHandler(criteria)" ng-blur="blur()" ng-focus="focus()">
+                <button class="button button-icon ion-android-close input-button clear-button" ng-click="clearSearch()" ng-if="criteria.length>0 && hidesearch == false"></button>
+
+                <button class="button icon ion-ios-search buttonsearch" ng-click="btnSearch(criteria)"></button></div>
+
+<!--                 <input type="submit" class="button button-light" ng-click="btnSearch(criteria)" value="OK"> -->
+            </div>
+            <div class="sep-input"></div>
+
+                      <!-- ******** begin search tab ********-->
+
+            <ion-list animation="no-animation" class="onglet_premier" ng-if="show">
+                        <ion-item  animation="no-animation"  id="idSearch" class="onglet_premier item-stable searchContact" ng-click="toggleGroup(search,'idSearch')" ng-class="{active: isGroupShown(search)}">
+                          {{'ContactList.SearchName' | translate}}
+                        <i class="icon-right-contact" ng-class="isGroupShown(search) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i>
+                        </ion-item>
+                        <ion-item  animation="no-animation"  class="item-accordion" ng-repeat="item in search.items track by $index" ng-if="isGroupShown(search)">
+                            <!-- **** cas par d�fault ****-->
+                            <a class="item item-avatar" href="#/app/contactShow/{{item.id}}" ng-if="!search.empty">
+                                <img  ng-class=" ( (item.first_name.length > 0 && item.email.length >0) ||  (item.last_name.length > 0 && item.email.length >0) || (item.first_name.length > 0 && item.phone_1.length >0) ||  (item.last_name.length > 0 && item.phone_1.length >0) || (item.first_name.length > 0 && item.phone_2.length >0) ||  (item.last_name.length > 0 && item.phone_2.length >0)) ? 'itemLarge' : ''" ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg">
+                                 <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail !=''">{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret   }}</p>
+                                  <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail ==''" >{{item.alerteemailcreationdate | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
+                                  <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  |escape}}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape  }}</span>
+                            <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'"  >{{ item.email  }}</h4>
+                            <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4>
+                           <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0" >{{ item.phone_2 }}</h4>
+
+                            </a>
+                            <!-- fin-->
+                        </ion-item>
+                        <a class="item item-avatar pas_de_contact" href="#" ng-show="search.empty && isGroupShown(search)">
+                            {{ 'ContactList.SearchVide' | translate }}
+                        </a>
+            </ion-list>
+            <!-- end search -->
+            <!-- ******** fin ******-->
+
+            <ion-list animation="no-animation" class="no-animation">
+                <!-- ******** begin  tabs for all contacts********-->
+                <div>
+                    <ion-item  animation="no-animation" ng-class="{onglet_premier : !show}" id="TousContact" class="item-stable item-contact" ng-click="toggleGroup('tousContact','TousContact')" ng-class="{active: isGroupShown('tousContact')}">
+                       {{ 'ContactList.AllContact' | translate }} ({{countAllContact}})
+                    <i class="icon-right-contact" ng-class="isGroupShown('tousContact') ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i>
+                    </ion-item>
+                    <ion-item  animation="no-animation" class="item-accordion" ng-if="isGroupShown('tousContact')">
+   						<ion-item  animation="no-animation" class="item-stable item-grp" id="Followers" ng-click="toggleGroupX('followers','Followers')" ng-class="{active: isGroupShownX('followers')}">
+                       {{ 'ContactList.AllFollowers' | translate }} ({{tousContact[0].count}})
+                     <i class="icon-right-contact" ng-class="isGroupShownX('followers') ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i>
+                  </ion-item>
+                     <div ng-if="isGroupShownX('followers') && !tousContact[0].empty && tousContact[0].totalPages >1" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewind(0)"></a>
+                        <a class="button buttonpagination">{{tousContact[0].page}}/{{tousContact[0].totalPages}}</a>
+                        <a class="button ion-chevron-right" ng-click="forward(0)"></a>
+                    </div>
+                   <ion-item  animation="no-animation" class="item-accordion" ng-repeat="item in tousContact[0].items track by $index" ng-if="isGroupShownX('followers')">
+                            <a class="item item-avatar" href="#/app/contactShow/{{tousContact[0].items[$index].id}}"  ng-if="!tousContact[1].empty">
+                            <img ng-class=" ( (item.first_name.length > 0 && item.email.length >0) ||  (item.last_name.length > 0 && item.email.length >0) || (item.first_name.length > 0 && item.phone_1.length >0) ||  (item.last_name.length > 0 && item.phone_1.length >0) || (item.first_name.length > 0 && item.phone_2.length >0) ||  (item.last_name.length > 0 && item.phone_2.length >0)) ? 'itemLarge' : ''"  ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  >
+                              <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail !=''">{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
+                                  <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail ==''" >{{item.alerteemailcreationdate | toFrFormat}} {{item.meeting_point | toTiret   }}</p>
+
+                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape  }}</span>
+                              <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.email.length > 0" >{{ item.email }}</h4>
+                               <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4>
+                           <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0" >{{ item.phone_2 }}</h4>
+                         </a>
+                        <!-- fin-->
+                    </ion-item>
+                    <div ng-if="isGroupShownX('followers') && !tousContact[0].empty && tousContact[0].totalPages >1" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewind(0)"></a>
+                        <a class="button buttonpagination">{{tousContact[0].page}}/{{tousContact[0].totalPages}}</a>
+                        <a class="button ion-chevron-right" ng-click="forward(0)"></a>
+                    </div>
+
+
+                   	<ion-item  animation="no-animation" class="item-stable item-grp" id="NoFollowers" ng-click="toggleGroupX('nofollowers','NoFollowers')" ng-class="{active: isGroupShownX('nofollowers')}">
+                       {{ 'ContactList.AllNotFollowers' | translate }} ({{tousContact[1].count}})
+                     <i class="icon-right-contact" ng-class="isGroupShownX('nofollowers') ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i>
+                    </ion-item>
+                     <div ng-if="isGroupShownX('nofollowers') && !tousContact[1].empty && tousContact[1].totalPages >1" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewind(1)"></a>
+                        <a class="button buttonpagination">{{tousContact[1].page}}/{{tousContact[1].totalPages}}</a>
+                        <a class="button ion-chevron-right" ng-click="forward(1)"></a>
+                    </div>
+                     <ion-item  animation="no-animation" class="item-accordion" ng-repeat="item in tousContact[1].items track by $index" ng-if="isGroupShownX('nofollowers')">
+                        <a class="item item-avatar" href="#/app/contactShow/{{tousContact[1].items[$index].id}}"  ng-if="!tousContact[1].empty">
+                            <img ng-class=" ( (item.first_name.length > 0 && item.email.length >0) ||  (item.last_name.length > 0 && item.email.length >0) || (item.first_name.length > 0 && item.phone_1.length >0) ||  (item.last_name.length > 0 && item.phone_1.length >0) || (item.first_name.length > 0 && item.phone_2.length >0) ||  (item.last_name.length > 0 && item.phone_2.length >0)) ? 'itemLarge' : ''"  ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  >
+                              <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail !=''">{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
+                                  <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail ==''" >{{item.alerteemailcreationdate | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
+
+                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape  }}</span>
+                              <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.email.length > 0" >{{ item.email }}</h4>
+                               <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4>
+                           <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0" >{{ item.phone_2 }}</h4>
+                         </a>
+                        <!-- fin-->
+                    </ion-item>
+                    <div ng-if="isGroupShownX('nofollowers') && !tousContact[1].empty && tousContact[1].totalPages >1" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewind(1)"></a>
+                        <a class="button buttonpagination">{{tousContact[1].page}}/{{tousContact[1].totalPages}}</a>
+                        <a class="button ion-chevron-right" ng-click="forward(1)"></a>
+                    </div>
+
+                    </ion-item>
+
+                </div>
+
+                <!-- ******** fin ********-->
+
+                <!-- ******** begin tabs for groups ********-->
+                <div>
+                    <ion-item  animation="no-animation"  delegate-handle="groupsX" class="item-stable item-contact" id="Groups" ng-click="toggleGroup(groups,'Groups')" ng-class="{active: isGroupShown(groups)}">
+                       {{ 'ContactList.Groups' | translate }} ({{groupNumber}})
+                     <i class="icon-right-contact" ng-class="isGroupShown(groups) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i>
+                    </ion-item>
+                    <ion-item  animation="no-animation"  class="item-accordion" ng-repeat="item in groups track by $index" ng-if="isGroupShown(groups)">
+                        <!--  second level -->
+                        <ion-item  animation="no-animation"  id="gr{{$index}}" style="color:#FFF !important;text-decoration:none !important;"  class="item-stable item-grp" ng-click="toggleGroupX(item,'gr{{$index}}')" ng-class="{active: isGroupShownX(item)}">
+                         {{item.name | escape}} ({{item.count}})
+                       <i class="icon-right-contact" ng-class="isGroupShownX(item) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i>
+                        </ion-item>
+                         <div ng-if="groups[$index].nbrpage > 1 && isGroupShownX(item)" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewindgroups($index,'gr{{$index}}')" href="javascript:void(0)"></a>
+                        <a class="button buttonpagination ">{{groups[$index].page}} / {{groups[$index].nbrpage}}</a>
+                        <a class="button ion-chevron-right" ng-click="forwardgroups($index,'gr{{$index}}')"></a>
+                    </div>
+                        <ion-item  animation="no-animation"  delegate-handle="gr{{$index}}" class="item-accordion" ng-repeat="itemx in item.items track by $index" ng-if="isGroupShownX(item)">
+                            <div class="item item-avatar pas_de_contact"  ng-if="tab.empty">
+                                <p ng-show="tab.id !=2">{{ 'ContactList.ListVide' | translate }}</p>
+                            </div>
+
+                            <a class="item item-avatar"  href="#/app/contactShow/{{itemx.id}}"    ng-if="!tab.empty">
+                                <img ng-class=" ( (itemx.first_name.length > 0 && itemx.email.length >0) ||  (itemx.last_name.length > 0 && itemx.email.length >0) || (itemx.first_name.length > 0 && itemx.phone_1.length >0) ||  (itemx.last_name.length > 0 && itemx.phone_1.length >0) || (itemx.first_name.length > 0 && itemx.phone_2.length >0) ||  (itemx.last_name.length > 0 && itemx.phone_2.length >0)) ? 'itemLarge' : ''"  ng-src="{{itemx.photofilelocation}}" src="img/photo_top_title.jpg">
+                                  <p  class="paragraphe_Item" ng-class="(itemx.email.length ==0 && itemx.phone_1.length==0 && itemx.phone_2.length==0 && itemx.last_name.length ==0 && itemx.first_name.length ==0) ? 'itemShort': ''" ng-if="itemx.lastsendemail !=''">{{itemx.lastsendemail | toFrFormat}} {{itemx.meeting_point | toTiret   }}</p>
+                                  <p  class="paragraphe_Item" ng-class="(itemx.email.length ==0 && itemx.phone_1.length==0 && itemx.phone_2.length==0 && itemx.last_name.length ==0 && itemx.first_name.length ==0) ? 'itemShort': ''" ng-if="itemx.lastsendemail ==''" >{{itemx.alerteemailcreationdate | toFrFormat}} {{itemx.meeting_point | toTiret   }}</p>
+
+                                <span class="Name_Item" ng-if="itemx.first_name.length > 0" >{{itemx.first_name  |escape }}</span> <span class="Name_Item" ng-if="itemx.last_name.length > 0">{{itemx.last_name  |escape  }}<span ng-if="item.last_name.length > 13">...</span></span>
+								  <h4 ng-class=" ( itemx.first_name.length > 0 &&   itemx.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="itemx.email.length > 0" >{{ itemx.email }}</h4>
+                               <h4 ng-class=" ( itemx.first_name.length > 0 &&   itemx.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="itemx.phone_1.length > 0 && itemx.email.length ==0" >{{ itemx.phone_1 }}</h4>
+                              <h4 ng-class=" ( itemx.first_name.length > 0 &&   itemx.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="itemx.phone_1.length == 0 && itemx.email.length ==0 && itemx.phone_2.length >0" >{{ itemx.phone_2 }}</h4>
+                            </a>
+                        </ion-item>
+                    <div ng-if="groups[$index].nbrpage > 1 && isGroupShownX(item)" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewindgroups($index,'gr{{$index}}')" href="javascript:void(0)"></a>
+                        <a class="button buttonpagination ">{{groups[$index].page}} / {{groups[$index].nbrpage}}</a>
+                        <a class="button ion-chevron-right" ng-click="forwardgroups($index,'gr{{$index}}')"></a>
+                    </div>
+                        <!--  second level end -->
+                    </ion-item>
+                </div>
+                <!-- ******** End ********-->
+                <!-- begin contact sans group -->
+
+<!--                  <div> -->
+<!--                     <ion-item  animation="no-animation"  delegate-handle="contactSansgrp" class="item-stable item-contact" id="NoGroups" ng-click="toggleGroup('sansgroups','NoGroups')" ng-class="{active: isGroupShown('sansgroups')}"> -->
+<!--                        {{ 'ContactList.NoGroups' | translate }} ({{nogroups.count}}) -->
+<!--                      <i class="icon-right-contact" ng-class="isGroupShown('sansgroups') ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i> -->
+<!--                     </ion-item> -->
+<!--                          <div ng-if="isGroupShown('sansgroups') && !nogroups.empty && nogroups.totalPages >1" class="button-bar pagination-listcontact"> -->
+<!--                         <a class="button ion-chevron-left" ng-click="rewind(2)"></a> -->
+<!--                         <a class="button buttonpagination">{{nogroups.page}}/{{nogroups.totalPages}}</a> -->
+<!--                         <a class="button ion-chevron-right" ng-click="forward(2)"></a> -->
+<!--                     </div> -->
+<!--                     <ion-item  animation="no-animation" class="item-accordion" ng-repeat="item in nogroups.items track by $index" ng-if="isGroupShown('sansgroups')">                   -->
+<!--                         <a class="item item-avatar" href="#/app/contactShow/{{nogroups.items[$index].id}}"    ng-if="!nogroups.empty"> -->
+<!--                             <img ng-class=" ( (item.first_name.length > 0 && item.email.length >0) ||  (item.last_name.length > 0 && item.email.length >0) || (item.first_name.length > 0 && item.phone_1.length >0) ||  (item.last_name.length > 0 && item.phone_1.length >0) || (item.first_name.length > 0 && item.phone_2.length >0) ||  (item.last_name.length > 0 && item.phone_2.length >0)) ? 'itemLarge' : ''"  ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  > -->
+<!--                                <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail !=''">{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret}}</p> -->
+<!--                                   <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail ==''" >{{item.alerteemailcreationdate | toFrFormat}} {{item.meeting_point | toTiret}}</p> -->
+
+<!--                                <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape}}</span>  -->
+<!--                               <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.email.length > 0" >{{ item.email }}</h4> -->
+<!--                                <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4> -->
+<!--                            <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0" >{{ item.phone_2 }}</h4> -->
+<!--                          </a> -->
+<!--                         fin -->
+<!--                     </ion-item> -->
+<!--                     <div ng-if="isGroupShown('sansgroups') && !nogroups.empty && nogroups.totalPages >1" class="button-bar pagination-listcontact"> -->
+<!--                         <a class="button ion-chevron-left" ng-click="rewind(2)"></a> -->
+<!--                         <a class="button buttonpagination">{{nogroups.page}}/{{nogroups.totalPages}}</a> -->
+<!--                         <a class="button ion-chevron-right" ng-click="forward(2)"></a> -->
+<!--                     </div> -->
+<!--                     <div class="item item-avatar  pas_de_contact"  ng-if="nogroups.empty && isGroupShown('sansgroups')"> -->
+<!--                           {{ 'ContactList.doublonsVide' | translate }} -->
+<!--                         </div>  -->
+<!--                 </div> -->
+
+                <!-- **** end  -->
+
+                 <!-- begin contact sans adress mail -->
+
+<!--                  <div> -->
+<!--                     <ion-item  animation="no-animation"  delegate-handle="contactSansMail" class="item-stable item-contact" id="NoEmails" ng-click="toggleGroup('sansemails','NoEmails')" ng-class="{active: isGroupShown('sansemails')}"> -->
+<!--                        {{ 'ContactList.NoEmails' | translate }} ({{noemails.count}}) -->
+<!--                      <i class="icon-right-contact" ng-class="isGroupShown('sansemails') ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i> -->
+<!--                     </ion-item> -->
+<!--                      <div ng-if="isGroupShown('sansemails') && !noemails.empty && noemails.totalPages >1" class="button-bar pagination-listcontact"> -->
+<!--                         <a class="button ion-chevron-left" ng-click="rewind(3)"></a>  -->
+<!--                         <a class="button buttonpagination">{{noemails.page}}/{{noemails.totalPages}}</a> -->
+<!--                         <a class="button ion-chevron-right" ng-click="forward(3)"></a> -->
+<!--                     </div> -->
+<!--                     <ion-item  animation="no-animation" class="item-accordion" ng-repeat="item in noemails.items track by $index" ng-if="isGroupShown('sansemails')">                   -->
+<!--                         <a class="item item-avatar" href="#/app/contactShow/{{noemails.items[$index].id}}"    ng-if="!noemails.empty"> -->
+<!--                             <img ng-class=" ( (item.first_name.length > 0 && item.email.length >0) ||  (item.last_name.length > 0 && item.email.length >0) || (item.first_name.length > 0 && item.phone_1.length >0) ||  (item.last_name.length > 0 && item.phone_1.length >0) || (item.first_name.length > 0 && item.phone_2.length >0) ||  (item.last_name.length > 0 && item.phone_2.length >0)) ? 'itemLarge' : ''" ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  > -->
+<!--                              <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail !=''">{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret}}</p> -->
+<!--                                   <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail ==''" >{{item.alerteemailcreationdate | toFrFormat}} {{item.meeting_point | toTiret}}</p> -->
+
+
+<!--                                <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape}}</span>  -->
+<!--                              <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0"  >{{ item.phone_1 }}</h4> -->
+<!--                               <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'"  ng-if="item.phone_2.length > 0 && item.phone_1.length ==0" > {{ item.phone_2 }}</h4> -->
+
+<!--                          </a> -->
+<!--                         fin -->
+<!--                     </ion-item> -->
+<!--                     <div ng-if="isGroupShown('sansemails') && !noemails.empty && noemails.totalPages >1" class="button-bar pagination-listcontact"> -->
+<!--                         <a class="button ion-chevron-left" ng-click="rewind(3)"></a>  -->
+<!--                         <a class="button buttonpagination ">{{noemails.page}}/{{noemails.totalPages}}</a> -->
+<!--                         <a class="button ion-chevron-right" ng-click="forward(3)"></a> -->
+<!--                     </div> -->
+<!--                     <div class="item item-avatar  pas_de_contact"  ng-if="noemails.empty && isGroupShown('sansemails')"> -->
+<!--                           {{ 'ContactList.doublonsVide' | translate }} -->
+<!--                         </div>  -->
+<!--                 </div> -->
+
+                <!-- **** end  -->
+
+                 <!-- begin contact doublons probable-->
+
+<!--                  <div> -->
+<!--                     <ion-item  animation="no-animation"  delegate-handle="doublonsProbable" class="item-stable item-contact" id="Doublons" ng-click="toggleGroup('Gdoublons','Doublons')" ng-class="{active: isGroupShown('Gdoublons')}"> -->
+<!--                        {{ 'ContactList.DoublonsPRobables' | translate }} ({{doublons.count}}) -->
+<!--                      <i class="icon-right-contact" ng-class="isGroupShown('Gdoublons') ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i> -->
+<!--                     </ion-item> -->
+<!--                       <div class="item item-avatar  pas_de_contact info-doublons"  ng-if="isGroupShown('Gdoublons') && !doublons.empty "> -->
+<!--                             {{ 'ContactList.FusionContact' | translate }} -->
+<!--                         </div> -->
+<!--                           <div ng-if="isGroupShown('Gdoublons') && !doublons.empty && doublons.totalPages >1" class="button-bar pagination-listcontact"> -->
+<!--                         <a class="button ion-chevron-left" ng-click="rewind(4)"></a> -->
+<!--                         <a class="button buttonpagination">{{doublons.page}}/{{doublons.totalPages}}</a> -->
+<!--                         <a class="button ion-chevron-right" ng-click="forward(4)"></a> -->
+<!--                     </div> -->
+<!--                       <ion-item  animation="no-animation" class="item-accordion" ng-repeat="item in doublons.items track by $index" ng-if="isGroupShown('Gdoublons')">                   -->
+<!--                         <a class="item item-avatar" href="#/app/contactShow/{{doublons.items[$index].id}}" ng-if="!doublons.empty"> -->
+<!--                             <img ng-class=" ( item.first_name.length > 0  ||  item.last_name.length > 0) ? 'itemLarge' : ''" ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  > -->
+<!--                               <p  class="paragraphe_Item" >{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret}}</p> -->
+<!--                                <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape}}</span>  -->
+<!--                               <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.email.length > 0" >{{ item.email }}</h4> -->
+<!--                                <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4> -->
+<!--                          </a> -->
+<!--                         fin -->
+<!--                     </ion-item> -->
+<!--                     <div ng-if="isGroupShown('Gdoublons') && !doublons.empty && doublons.totalPages >1" class="button-bar pagination-listcontact"> -->
+<!--                         <a class="button ion-chevron-left" ng-click="rewind(4)"></a> -->
+<!--                         <a class="button buttonpagination">{{doublons.page}}/{{doublons.totalPages}}</a> -->
+<!--                         <a class="button ion-chevron-right" ng-click="forward(4)"></a> -->
+<!--                     </div> -->
+<!--                       <div class="item item-avatar  pas_de_contact"  ng-if="doublons.empty && isGroupShown('Gdoublons')"> -->
+<!--                            {{ 'ContactList.doublonsVide' | translate }} -->
+<!--                         </div> -->
+<!--                 </div> -->
+
+                <!-- **** end  -->
+                <!-- ******** begin tabs for recontact ********-->
+<!--                 <div> -->
+<!--                     <div> -->
+<!--                         <ion-item  animation="no-animation" class="item-stable item-contact" id="Recont" ng-click="toggleGroup(recontact,'Recont')" ng-class="{active: isGroupShown(recontact)}"> -->
+<!--                           {{ 'ContactList.Recontact' | translate }} ({{recontact.count}}) -->
+<!--                         <i class="icon-right-contact" ng-class="isGroupShown(recontact) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i> -->
+<!--                         </ion-item> -->
+<!--                         <ion-item  animation="no-animation"   class=" item-accordion" ng-repeat="item in recontact.items track by $index" ng-if="isGroupShown(recontact)"> -->
+
+<!--                             <a  class="item item-avatar" href="#/app/contactShow/{{item.id}}"   ng-if="!recontact.empty"> -->
+<!--                                 <img ng-class=" ( (item.first_name.length > 0 && item.email.length >0) ||  (item.last_name.length > 0 && item.email.length >0) || (item.first_name.length > 0 && item.phone_1.length >0) ||  (item.last_name.length > 0 && item.phone_1.length >0) || (item.first_name.length > 0 && item.phone_2.length >0) ||  (item.last_name.length > 0 && item.phone_2.length >0)) ? 'itemLarge' : ''"  ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"> -->
+<!--                                 <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail !=''">{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret}}</p> -->
+<!--                                   <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail ==''" >{{item.alerteemailcreationdate | toFrFormat}} {{item.meeting_point | toTiret}}</p> -->
+
+<!--                                <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  |escape}}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape}}</span>  -->
+<!--                         <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.email.length > 0" >{{ item.email }}</h4> -->
+<!--                                <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4> -->
+<!--                              <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0" >{{ item.phone_2 }}</h4> -->
+<!--                             </a> -->
+<!--                             fin -->
+<!--                         </ion-item> -->
+<!--                         **** cas ou il y a pas de contact **** -->
+<!--                         <div class="item item-avatar  pas_de_contact"  ng-if="recontact.empty && isGroupShown(recontact)"> -->
+<!--                            {{ 'ContactList.RDVVide' | translate }} -->
+<!--                         </div> -->
+<!--                     </div> -->
+<!--                 </div> -->
+                <!-- ******** End ********-->
+
+
+                 <!-- begin contact doublons probable-->
+
+<!--                  <div> -->
+<!--                     <ion-item  animation="no-animation"  delegate-handle="buzwards" class="item-stable item-contact" id="Buzward" ng-click="toggleGroup('Gbuzward','Buzward')" ng-class="{active: isGroupShown('Gbuzward')}"> -->
+<!--                        {{ 'ContactList.Buzward' | translate }} ({{buzward.count}}) -->
+<!--                      <i class="icon-right-contact" ng-class="isGroupShown(buzward) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i> -->
+<!--                     </ion-item> -->
+<!--                      <ion-item  animation="no-animation" class="item-accordion" ng-repeat="item in buzward.items track by $index" ng-if="isGroupShown('Gbuzward')">                   -->
+<!--                         <a class="item item-avatar" href="#/app/contactShow/{{buzward.items[$index].id}}" ng-if="!buzward.empty"> -->
+<!--                             <img ng-class=" ( item.first_name.length > 0  ||  item.last_name.length > 0) ? 'itemLarge' : ''" ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  > -->
+<!--                               <p  class="paragraphe_Item" >{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret}}</p> -->
+<!--                                <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape}}</span>  -->
+<!--                              <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'"  >{{ item.email }}</h4> -->
+<!--                          </a> -->
+<!--                         fin -->
+<!--                     </ion-item> -->
+<!--                     <div ng-if="isGroupShown('Gbuzward') && !buzward.empty && buzward.totalPages >1" class="button-bar pagination-listcontact"> -->
+<!--                         <a class="button ion-chevron-left" ng-click="rewind(5)"></a> -->
+<!--                         <a class="button buttonpagination">{{buzward.page}}/{{buzward.totalPages}}</a> -->
+<!--                         <a class="button ion-chevron-right" ng-click="forward(5)"></a> -->
+<!--                     </div> -->
+<!--                       <div class="item item-avatar  pas_de_contact"  ng-if="buzward.empty && isGroupShown('Gbuzward')"> -->
+<!--                            {{ 'ContactList.doublonsVide' | translate }} -->
+<!--                         </div> -->
+<!--                 </div> -->
+
+                <!-- **** end  -->
+                  <!-- begin contact doublons probable-->
+
+                 <div>
+                    <ion-item  animation="no-animation"  delegate-handle="Filleuls" class="item-stable item-contact" id="Filleuls" ng-click="toggleGroup('Gfilleuls','Filleuls')" ng-class="{active: isGroupShown('Gfilleuls'),onglet_dernier: !isGroupShown('Gfilleuls')}">
+                       {{ 'ContactList.Filleuls' | translate }} ({{filleuls.count}})
+                     <i class="icon-right-contact" ng-class="isGroupShown('Gfilleuls') ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i>
+                    </ion-item>
+                      <div ng-if="isGroupShown('Gfilleuls') && !filleuls.empty && filleuls.totalPages >1" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewind(6)"></a>
+                        <a class="button buttonpagination">{{filleuls.page}}/{{filleuls.totalPages}}</a>
+                        <a class="button ion-chevron-right" ng-click="forward(6)"></a>
+                    </div>
+                    <ion-item  animation="no-animation" class="item-accordion" ng-repeat="item in filleuls.items track by $index" ng-if="isGroupShown('Gfilleuls')">
+                        <a class="item item-avatar" href="#/app/contactShow/{{filleuls.items[$index].id}}"    ng-if="!filleuls.empty">
+                            <img ng-class=" ( (item.first_name.length > 0 && item.email.length >0) ||  (item.last_name.length > 0 && item.email.length >0) || (item.first_name.length > 0 && item.phone_1.length >0) ||  (item.last_name.length > 0 && item.phone_1.length >0) || (item.first_name.length > 0 && item.phone_2.length >0) ||  (item.last_name.length > 0 && item.phone_2.length >0)) ? 'itemLarge' : ''"  ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  >
+                              <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" >{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
+                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape  }}</span>
+                              <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.email.length > 0" >{{ item.email }}</h4>
+                               <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4>
+                           <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0" >{{ item.phone_2 }}</h4>
+                         </a>
+
+                    </ion-item>
+                    <div ng-if="isGroupShown('Gfilleuls') && !filleuls.empty && filleuls.totalPages >1" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewind(6)"></a>
+                        <a class="button buttonpagination">{{filleuls.page}}/{{filleuls.totalPages}}</a>
+                        <a class="button ion-chevron-right" ng-click="forward(6)"></a>
+                    </div>
+                    <div class="item item-avatar  pas_de_contact"  ng-if="filleuls.empty && isGroupShown('Gfilleuls')">
+                          {{ 'ContactList.doublonsVide' | translate }}
+                        </div>
+                </div>
+
+                <!-- **** end  -->
+            </ion-list>
+
+
+
+             <div class="contacts-footer">
+      <p class="need-help"  ui-sref="app.creditParrainage"> <i class="icon ion-information-circled"></i> {{ 'ContactList.Parrainage' | translate }} : <span style="text-decoration:none;"><u>{{creditParrainage}} &euro;</u></span></p>
+    </div>
+          </div>
+              <div class="business-row">
+          <div class="business-col">
+             <div class="buttoninfoBulle" >
+              <button class="button button-full button-light btn-qrcode-scann"  ng-click="createContact()" menu-close >
+                   {{ 'contactList.AddContact' | translate }}
+                </button>
+                 <i class="ion-ios-information-outline iconinfobulle" ng-click="ShowinfoContact()" ></i> 
+             <div class="info-text my-show-hide-animation" style="width:98%;margin-top: 0px;" ng-if="infoContact" ng-click="ShowinfoContact()"  translate="{{ 'contactList.ContactInfo' }}"></div>
+            
+          </div>
+          </div>
+        </div>
+
+		</div>
+          </div>
+
+        </div>
+         <br><br>
+           <br><br>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,371 @@
+<ion-view align-title="center" animation="slide-right-left">
+    <ion-content scroll="true" class="has-footer buzcardcontainer" ng-class="(isCusto)?'containerIsCusto':'t'">
+        <div class="list">
+            <div class="edit-vcard">
+                <div class="header-vcardedit">
+                    <img id="profil" ng-src="{{photoProfil}}" src="img/photo_top_title.jpg">
+                </div>
+                <div class="capture-camera">
+                    <div class="row">
+                        <div class="col-80">
+                            <form name="formUpload" enctype="multipart/form-data">
+                                <div id="uploadImage">
+                                          <input ng-blur="blur()" ng-focus="focus()" type="button" class="chooseFile" value="{{ 'choseFile' | translate }}" ng-click="choseFile()"/><span class="ouCamera">{{ 'CameraOR' | translate }}</span>
+                                    <input ng-blur="blur()" ng-focus="focus()"  type="file" onclick="return false;" name="photo">
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-20">
+                            <a class="button camera-buz" ng-click="getPhoto()"></a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+
+                <ion-item class="item-stable" ng-click="selectElement('Coordonnes',$event)">
+                    {{ 'BuzcardEdit.Coordonnes' | translate }}
+                    <i ng-class="isSelectedCordonnees ? 'ion-arrow-down-b' : 'ion-arrow-left-b'"   data-pack="default" data-tags=""></i>
+                </ion-item>
+                <ion-item class="item-accordion" ng-if="isSelectedCordonnees" class="ng-hide">
+
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.FirstName' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.first_name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.LastName' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.last_name"  ng-keypress="keyPressed($event)" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Company' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.company" ng-keypress="keyPressed($event)"  type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Position' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.position" ng-keypress="keyPressed($event)"  type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Network' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.network" ng-keypress="keyPressed($event)" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Mobile' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.mobile_1" ng-keypress="keyPressed($event)"  type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Mobile2' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.mobile_2" ng-keypress="keyPressed($event)" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.LandLine1' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.landline_1" ng-keypress="keyPressed($event)" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.LandLine2' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.landline_2" ng-keypress="keyPressed($event)" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Fax' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.fax" ng-keypress="keyPressed($event)" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Skype' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.skype" ng-keypress="keyPressed($event)" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Email' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" disabled="disabled" ng-model="infos.email" ng-keypress="keyPressed($event)" type="email">
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Email2' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" ng-model="infos.email_2" ng-keypress="keyPressed($event)" type="email">
+                        </div>
+                    </div>
+                </ion-item>
+
+                <ion-item class="item-stable" ng-click="selectElement('Adresse',$event)">
+                    {{ 'BuzcardEdit.Adresse' | translate }}
+                    <i  ng-class="isSelectedAdresse ? 'ion-arrow-down-b' : 'ion-arrow-left-b'"   data-pack="default" data-tags=""></i>
+                </ion-item>
+                <ion-item class="item-accordion"  class="isSelectedAdresse" ng-if="isSelectedAdresse" class="ng-hide">
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Adresse' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"  ng-keypress="keyPressed($event)" ng-model="infos.address_line_1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.address_line_2">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.address_line_3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.CP' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)"  ng-model="infos.postal_code">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.City' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.city">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Country' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.country">
+                        </div>
+                    </div>
+
+                </ion-item>
+					<!-- Onglet Adresse  2-->
+				  <ion-item class="item-stable" ng-click="selectElement('Adresse_p',$event)">
+                    {{ 'BuzcardEdit.Adresse_p' | translate }}
+                    <i  ng-class="isSelectedAdresse_p ? 'ion-arrow-down-b' : 'ion-arrow-left-b'"   data-pack="default" data-tags=""></i>
+                </ion-item>
+                <ion-item class="item-accordion"  class="isSelectedAdresse_p" ng-if="isSelectedAdresse_p" class="ng-hide">
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Adresse_p' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"   ng-model="infos.address_p_line_1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"  ng-model="infos.address_p_line_2">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"  ng-model="infos.address_p_line_3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.postal_code_p' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"   ng-model="infos.postal_code_p">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.city_p' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"  ng-model="infos.city_p">
+                        </div>
+                    </div>
+
+                </ion-item>
+
+
+                <ion-item class="item-stable" ng-click="selectElement('rxSociaux',$event)">
+                    {{ 'BuzcardEdit.RxSociaux' | translate }}
+                    <i ng-class="isSelectedrxSociaux ? 'ion-arrow-down-b' : 'ion-arrow-left-b'" data-pack="default" data-tags=""></i>
+                </ion-item>
+                <ion-item class="item-accordion" ng-if="isSelectedrxSociaux" class="ng-hide">
+                    <div class="row">
+                        <div class="col label"><img src="img/facebook.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)"  ng-model="infos.facebook" placeholder="{{ 'BuzcardEdit.Facebook' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><img src="img/twitter.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.twitter" placeholder="{{ 'BuzcardEdit.Twitter' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><img src="img/pinterest.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.pinterest" placeholder="{{ 'BuzcardEdit.Pinterest' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><img src="img/google-plus.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.googleplus" placeholder="{{ 'BuzcardEdit.GooglePlus' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><img src="img/linkedin.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.linkedin" placeholder="{{ 'BuzcardEdit.Linkedin' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><img src="img/viadeo.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.viadeo" placeholder="{{ 'BuzcardEdit.Viadeo' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><img src="img/foursquare.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.foursquare" placeholder="{{ 'BuzcardEdit.Foursquare' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><img src="img/delicious.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.delicious" placeholder="{{ 'BuzcardEdit.Delicious' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><img src="img/myspace.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.myspace" placeholder="{{ 'BuzcardEdit.Myspace' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><img src="img/rss.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)"  ng-model="infos.rss" placeholder="{{ 'BuzcardEdit.Rss' | translate }}">
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col label"><img src="img/instagram.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"   ng-model="infos.instagram" placeholder="{{ 'BuzcardEdit.Instagram' | translate }}">
+                        </div>
+                    </div>
+                       <div class="row">
+                        <div class="col label"><img src="img/youtube.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"   ng-model="infos.youtube" placeholder="{{ 'BuzcardEdit.Youtube' | translate }}">
+                        </div>
+                    </div>
+                       <div class="row">
+                        <div class="col label"><img src="img/snapchat.png" width="22px"></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"   ng-model="infos.snapchat" placeholder="{{ 'BuzcardEdit.Snapchat' | translate }}">
+                        </div>
+                    </div>
+
+                </ion-item>
+                <ion-item class="item-stable" ng-click="selectElement('link',$event)">
+                   {{ 'BuzcardEdit.Links' | translate }}
+                    <i ng-class="isSelectedLink ? 'ion-arrow-down-b' : 'ion-arrow-left-b'"  data-pack="default" data-tags=""></i>
+                </ion-item>
+                <ion-item class="item-accordion" ng-if="isSelectedLink" class="ng-hide">
+
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Titre1' | translate }} </span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)"  ng-model="infos.link_title_1" placeholder="{{ 'BuzcardEdit.TitleL' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Link1' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)"  ng-model="infos.link_1" placeholder="{{ 'BuzcardEdit.LinkL' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Titre2' | translate }} </span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.link_title_2" placeholder="{{ 'BuzcardEdit.TitleL' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Link2' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.link_2" placeholder="{{ 'BuzcardEdit.LinkL' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Titre3' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)"  ng-model="infos.link_title_3" placeholder="{{ 'BuzcardEdit.TitleL' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Link3' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.link_3" placeholder="{{ 'BuzcardEdit.LinkL' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Titre4' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text" ng-keypress="keyPressed($event)" ng-model="infos.link_title_4" placeholder="{{ 'BuzcardEdit.TitleL' | translate }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.Link4' | translate }}</span></div>
+                        <div class="col col-75">
+                            <input ng-blur="blur()" ng-focus="focus()" type="text"  ng-keypress="keyPressed($event)" ng-model="infos.link_4" placeholder="{{ 'BuzcardEdit.LinkL' | translate }}">
+                        </div>
+                    </div>
+
+                </ion-item>
+                <ion-item class="item-stable" ng-click="selectElement('news',$event)">
+                    {{ 'BuzcardEdit.News' | translate }}
+                    <i ng-class="isSelectedNews ? 'ion-arrow-down-b' : 'ion-arrow-left-b'"  data-pack="default" data-tags=""></i>
+                </ion-item>
+                <ion-item class="item-accordion" ng-if="isSelectedNews" class="ng-hide">
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.News1' | translate }}</span></div>
+                        <div class="col col-75">
+                            <textarea ng-blur="blur()" ng-focus="focus()" ng-model="infos.news_1" ng-keypress="keyPressed($event)"  placeholder="{{ 'BuzcardEdit.NewsP' | translate }}"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.News2' | translate }}</span></div>
+                        <div class="col col-75">
+                            <textarea ng-blur="blur()" ng-focus="focus()" ng-model="infos.news_2" ng-keypress="keyPressed($event)" placeholder="{{ 'BuzcardEdit.News2P' | translate }}"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label"><span>{{ 'BuzcardEdit.News3' | translate }}</span></div>
+                        <div class="col col-75">
+                            <textarea ng-blur="blur()" ng-focus="focus()" ng-model="infos.news_3" ng-keypress="keyPressed($event)" placeholder="{{ 'BuzcardEdit.News3P' | translate }}"></textarea>
+                        </div>
+                    </div>
+                </ion-item>
+            </div>
+            <div class="send">
+                <button class="button button-full button-light btn-buzcard btn-bottom"  ng-click="updateProfile()" ng-style="{border : firstColor , backgroundColor: firstColor}"menu-close >
+                   {{ 'BuzcardEdit.Validate' | translate }}
+                </button>
+            </div>
+
+        </div>
+         <br><br>
+    </ion-content>
+</ion-view>

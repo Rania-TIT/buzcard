@@ -1,0 +1,412 @@
+<ion-view align-title="center" animation="slide-right-left">
+  <ion-content scroll="true" delegate-handle="content" class="has-footer contactcontainer">
+
+    <div class="buzcard-content contacts-list">
+      <div class="faq">
+        <ion-list animation="no-animation" class="no-animation">
+          <!-- ******** Question1 ********-->
+          <div>
+            <ion-item animation="no-animation" ng-class="{onglet_premier : !show}" id="q1" class="item-stable" ng-click="toggleGroup('q1')" ng-class="{active: isGroupShown('q1')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q1') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 1.{{ 'FAQ.Q1' |translate}}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q1')">
+
+              <div class="item">
+                <p class="faq-p" translate="{{ 'FAQ.R1_1'}}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R1_2' }}"></p>
+              </div>
+
+
+            </ion-item>
+
+            <!-- ******** fin ********-->
+            <!-- ******** Question2 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q2" ng-click="toggleGroup('q2')" ng-class="{active: isGroupShown('q2')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q2') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 2. {{ 'FAQ.Q2'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q2')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R2_1' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R2_2'  }}">
+                </p>
+                <p class="faq-p" translate="{{'FAQ.R2_3'}}"></p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+            <!-- ******** Question3 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q3" ng-click="toggleGroup('q3')" ng-class="{active: isGroupShown('q3')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q3') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 3.{{ 'FAQ.Q3'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion faq"  ng-if="isGroupShown('q3')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R3_1'}}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R3_2'}}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R3_3' }}"></p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question4 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q4" ng-click="toggleGroup('q4')" ng-class="{active: isGroupShown('q4')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q4') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp;4. {{ 'FAQ.Q4'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q4')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R4_1'}}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R4_2' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R4_3' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R4_4' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R4_5' }}"></p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question5 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q5" ng-click="toggleGroup('q5')" ng-class="{active: isGroupShown('q5')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q5') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp;5. {{ 'FAQ.Q5'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q5')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R5_1' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R5_2' }} ">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R5_3' }}">
+
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R5_4' }}">
+
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question6 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q6" ng-click="toggleGroup('q6')" ng-class="{active: isGroupShown('q6')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q6') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp;6. {{ 'FAQ.Q6' |translate}}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q6')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R6_1'}}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R6_2' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R6_3' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question7 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q7" ng-click="toggleGroup('q7')" ng-class="{active: isGroupShown('q7')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q7') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 7. {{ 'FAQ.Q7'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q7')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R7_1' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R7_2' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R7_3' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R7_4' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R7_5' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question8 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q8" ng-click="toggleGroup('q8')" ng-class="{active: isGroupShown('q8')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q8') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 8. {{ 'FAQ.Q8'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q8')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R8_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R8_2' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question9 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q9" ng-click="toggleGroup('q9')" ng-class="{active: isGroupShown('q9')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q9') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 9. {{ 'FAQ.Q9' |translate}}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q9')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R9_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R9_2' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R9_3' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question10 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q10" ng-click="toggleGroup('q10')" ng-class="{active: isGroupShown('q10')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q10') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 10. {{ 'FAQ.Q10'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q10')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R10_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R10_2' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R10_3' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question11 ********-->
+
+            <ion-item animation="no-animation" class="item-stable " id="q11" ng-click="toggleGroup('q11')" ng-class="{active: isGroupShown('q11') }">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q11') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 11. {{ 'FAQ.Q11' |translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q11')">
+
+              <div class="item">
+                <p class="faq-p" translate="{{ 'FAQ.R11_1' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R11_2' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R11_21' }}"></p>
+                <p class="faq-p"translate="{{ 'FAQ.R11_22' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R11_3' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R11_4' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R11_5' }}"></p>
+                <br><br>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+
+            <!-- ******** Question12 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q12" ng-click="toggleGroup('q12')" ng-class="{active: isGroupShown('q12')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q12') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp;12. {{ 'FAQ.Q12'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q12')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R12_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R12_2' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R12_3' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R12_4' }}"></p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question13 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q13" ng-click="toggleGroup('q13')" ng-class="{active: isGroupShown('q13')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q13') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 13. {{ 'FAQ.Q13'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q13')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R13_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R13_2' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R13_3' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R13_4' }}">
+
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R13_5' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+            <!-- ******** Question14 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q14" ng-click="toggleGroup('q14')" ng-class="{active: isGroupShown('q14')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q14') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp;14. {{ 'FAQ.Q14' |translate}}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q14')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R14_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R14_2' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question15 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q15" ng-click="toggleGroup('q15')" ng-class="{active: isGroupShown('q15')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q15') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 15.{{ 'FAQ.Q15' |translate}}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q15')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R15_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R15_2' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R15_3' }}"></p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+            <!-- ******** Question 16 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q16" ng-click="toggleGroup('q16')" ng-class="{active: isGroupShown('q16')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q16') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 16.{{ 'FAQ.Q16'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q16')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R16_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R16_2' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R16_3' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question 17 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q17" ng-click="toggleGroup('q17')" ng-class="{active: isGroupShown('q17')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q17') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 17.{{ 'FAQ.Q17' |translate}}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q17')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R17_1' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R17_2' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R17_3' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R17_4' }}"></p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question 18 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q18" ng-click="toggleGroup('q18')" ng-class="{active: isGroupShown('q18')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q18') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 18. {{ 'FAQ.Q18'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q18')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R18_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R18_2' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R18_3' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question 19 ********-->
+            <ion-item animation="no-animation" class="item-stable" id="q19" ng-click="toggleGroup('q19')" ng-class="{active: isGroupShown('q19')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q19') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 19. {{ 'FAQ.Q19'|translate }}
+            </ion-item>
+            <ion-item animation="no-animation" class="item-accordion" ng-if="isGroupShown('q19')">
+
+              <div class="item ">
+                <p class="faq-p" translate="{{ 'FAQ.R19_1' }}">
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R19_2' }}">
+
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R19_3' }}">
+
+                </p>
+                <p class="faq-p" translate="{{ 'FAQ.R19_4' }}">
+                </p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+            <!-- ******** Question 20********-->
+            <ion-item animation="no-animation" class="item-stable " id="q20" ng-click="toggleGroup('q20')" ng-class="{active: isGroupShown('q20'), last : !isGroupShown('q20')}">
+              <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown('q20') ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; 20. {{ 'FAQ.Q20' |translate }}
+            </ion-item>
+            <ion-item animation="no-animation " class="item-accordion" ng-if="isGroupShown('q20')">
+
+              <div class="item last">
+                <p class="faq-p" translate="{{ 'FAQ.R20_1' }}"></p>
+                <p class="faq-p" translate="{{ 'FAQ.R20_2' }}"></p>
+              </div>
+
+            </ion-item>
+
+
+            <!-- ******** fin ********-->
+
+          </div>
+
+        </ion-list>
+      </div>
+      <br/>
+      <br/>
+      <br/>
+
+    </div>
+  </ion-content>
+</ion-view>

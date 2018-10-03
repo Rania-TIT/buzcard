@@ -1,0 +1,190 @@
+<ion-side-menus enable-menu-with-back-views="false">
+
+  <ion-side-menu-content drag-content="false">
+<!--   class="has-header has-footer" -->
+ <ion-nav-bar style="display:block;" class="header-active"  ng-if="$state.current.name != &apos;app.login&apos; && $state.current.name != &apos;app.createAccount&apos; && $state.current.name != &apos;app.synchro&apos; && $state.current.name != &apos;app.loading&apos;">
+ <div class="buttons" style="overflow:hidden;">
+   <button class="button button-icon button-clear ion-android-menu btn-menuuu" ng-if="$state.current.name != &apos;app.login&apos; && $state.current.name != &apos;app.createAccount&apos; && $state.current.name != &apos;app.synchro&apos; && $state.current.name != &apos;app.loading&apos;"  menu-toggle="left" style="display:block!important;position:absolute;top:0;"></button>
+ </div>
+ <div class="switch_menu" ng-switch="$state.current.name">
+  <div ng-switch-when="app.buzcard">
+   <img ng-if="isCusto" height="height:66px;" class="img-headerCusto" ng-src="{{imgCusto}}" />
+    <h1 class="title-menu" ng-if="!isCusto"><span class="vert" ng-style="{color: firstColor}"> {{ 'menu.mabuzcardonline1' | translate }}</span> <span class="blanc">{{ 'menu.mabuzcardonline2' | translate }}</span> <span class="vert" ng-style="{color: firstColor}">{{ 'menu.mabuzcardonline3' | translate }}</span></h1>
+
+  </div>
+  <div ng-switch-when="app.buzcardEdit">
+    <h1 class="title-menu"><span class="vert" ng-style="{color: firstColor}">{{ 'menu.mabuzcardonline1' | translate }}</span> <span class="blanc">{{ 'menu.mabuzcardonline2' | translate }}</span> <span class="vert" ng-style="{color: firstColor}">{{ 'menu.mabuzcardonline3' | translate }}</span></h1>
+
+  </div>
+  <div ng-switch-when="app.buzcardSend">
+    <h1 class="title-menu"><span class="vert" ng-style="{color: firstColor}">{{ 'menu.mabuzcardonline1' | translate }}</span> <span class="blanc">{{ 'menu.mabuzcardonline2' | translate }}</span> <span class="vert" ng-style="{color: firstColor}">{{ 'menu.mabuzcardonline3' | translate }}</span></h1>
+
+  </div>
+
+  <div ng-switch-when="app.contactList">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.mescontacts1' | translate }}</span> <span class="vert" >{{ 'menu.mescontacts2' | translate }}</span></h1>
+
+  </div>
+   <div ng-switch-when="app.contactEdit">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.moncontact1' | translate }}</span> <span class="vert" >{{ 'menu.moncontact2' | translate }}</span></h1>
+
+  </div>
+   <div ng-switch-when="app.contactShow">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.moncontact1' | translate }}</span> <span class="vert" >{{ 'menu.moncontact2' | translate }}</span></h1>
+
+  </div>
+  <div ng-switch-when="app.urgency">
+    <h1 class="title-menu" style="padding-left:1%"><span class="blanc">{{ 'menu.urgency1' | translate }}</span> <span class="vert" >{{ 'menu.urgency2' | translate }}</span> <span class="blanc">{{ 'menu.urgency3' | translate }}</span></h1>
+
+  </div>
+
+  <div ng-switch-when="app.urgencyEdit">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.urgency1' | translate }}</span> <span class="vert" > {{ 'menu.urgency2' | translate }}</span> <span class="blanc"> {{ 'menu.urgency3' | translate }}</span></h1>
+
+  </div>
+  <div ng-switch-when="app.commandes">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.faq1' | translate }}</span> <span class="vert" >{{ 'menu.faq2' | translate }}</span> <span class="blanc">{{ 'menu.faq3' | translate }}</span></h1>
+
+  </div>
+  <div ng-switch-when="app.creditParrainage">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.parainage1' | translate }}</span> <span class="vert" >{{ 'menu.parainage2' | translate }}</span></h1>
+
+  </div>
+   <div ng-switch-when="app.confidential">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.privancy1' | translate }}</span> <span class="vert" >{{ 'menu.privancy2' | translate }}</span></h1>
+
+  </div>
+   <div ng-switch-when="app.mesqrcodes">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.qrcode1' | translate }}</span> <span class="vert" >{{ 'menu.qrcode2' | translate }}</span> <span class="blanc">{{ 'menu.qrcode3' | translate }}</span></h1>
+
+  </div>
+   <div ng-switch-when="app.buzward">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.buzward1' | translate }}</span> <span class="vert" >{{ 'menu.buzward2' | translate }}</span><span class="blanc">{{ 'menu.buzward3' | translate }}</span></h1>
+
+  </div>
+  <div ng-switch-when="app.multi">
+    <h1 class="title-menu"><span class="blanc">{{ 'menu.mult1' | translate }}</span> <span class="vert" >{{ 'menu.mult2' | translate }}</span></h1>
+
+  </div>
+
+  <div ng-switch-default>
+   <img height="height:66px;" class="img-header1" src="img/logo-flasher.png"  />
+
+  </div>
+</div>
+<button id="btn-sync" type="button" name="button" class="loop-button"  ng-class="(isBackgroudRuning ? 'spining': '') +' '+(!emptyQueue  ? 'full-queue': '')+' '+(isDelta  ? 'delta': '')" ng-click="synchronizeUpdate()">
+  <i class="icon ion-loop"></i>
+</button>
+  </ion-nav-bar>
+
+    <ion-nav-view name="menuContent"  ng-class="($state.current.name == &apos;app.buzcard&apos; || $state.current.name == &apos;app.buzcardSend&apos; || $state.current.name == &apos;app.buzcardEdit&apos;) ? &apos;buzcardcontainer&apos; : &apos;contactcontainer&apos;" class="has-header has-footer" animation="slide-left-right" drag-content="false"></ion-nav-view>
+
+    <ion-footer-bar class="tabs-striped bar-dark footer" align-title="bottom" ng-if="$state.current.name != &apos;app.login&apos; && $state.current.name != &apos;app.createAccount&apos; &&  $state.current.name != &apos;app.synchro&apos; && $state.current.name != &apos;app.loading&apos; && !focused " >
+				<a class="btn-footer-vital tab-item" on-tap="goTo('app.urgencyIndex')"  ng-click="goTo('app.urgencyIndex')" ng-class="($state.current.name == &apos;app.urgency&apos; || $state.current.name == &apos;app.urgencyEdit&apos; || $state.current.name == &apos;app.urgencyIndex&apos;) ? &apos;active&apos; : &apos;&apos;">
+				  <i class="icon ion-medkit"></i>
+				  {{ 'Menu.vital' | translate }}
+				</a>
+					<a class="btn-footer-qrcode tab-item" on-tap="goTo('app.qrcode')" ng-click="goTo('app.qrcode')" ng-class="($state.current.name == &apos;app.qrcode&apos;) ? &apos;active&apos; : &apos;&apos;">
+				  <i class="icon ion-briefcase"></i>
+				  {{ 'Menu.Business' | translate }}
+				</a>
+				<a class="btn-footer-profil tab-item" on-tap="goTo('app.buzcard')"  ng-click="goTo('app.buzcard')" ng-class="($state.current.name == &apos;app.buzcard&apos; || $state.current.name == &apos;app.buzcardEdit&apos; || $state.current.name == &apos;app.buzcardSend&apos;) ? &apos;active&apos; : &apos;&apos;">
+				  <i class="icon ion-person"></i>
+				   {{ 'Menu.Profil' | translate }}
+				</a>
+				<a class="btn-footer-contacts tab-item" on-tap="goTo('app.contactList')" ng-click="goTo('app.contactList')" ng-class="($state.current.name == &apos;app.contactList&apos; || $state.current.name == &apos;app.contactShow&apos; || $state.current.name == &apos;app.contactEdit&apos;) ? &apos;active&apos; : &apos;&apos;">
+				  <i class="icon ion-person-stalker"></i>
+				  {{ 'Menu.Contacts' | translate }}
+				</a>
+
+
+		</ion-footer-bar>
+  </ion-side-menu-content>
+  <ion-side-menu side="left" ng-if="$state.current.name != &apos;app.login&apos; && $state.current.name != &apos;app.createAccount&apos; && $state.current.name != &apos;app.synchro&apos; && $state.current.name != &apos;app.loading&apos;">
+
+    <ion-content class="menu">
+      <ion-list>
+
+       <ion-item class="item-menu"  menu-close  ng-click="synchronize()">
+          {{ 'Menu.Synchroniser' | translate }}
+        </ion-item>
+	    <div class="sep-header"  style="position: relative;z-index: 9999;"></div>
+
+       <ion-item class="item-menu"  menu-close  ng-click="SynchroniseContact()">
+          {{ 'Menu.ImportContact' | translate }}
+        </ion-item>
+	    <div class="sep-header"  style="position: relative;z-index: 9999;"></div>
+
+<!-- 		<ion-item class="item-menu"  menu-close  > -->
+<!--          Mes mut'interests  -->
+<!--         </ion-item> -->
+        <ion-item class="item-menu"  menu-close  ng-click="goTo('app.mesqrcodes')" >
+        	  {{ 'Menu.MesQR' | translate }}
+        </ion-item>
+        <ion-item class="item-menu"  menu-close  ng-click="goTo('app.multi')" >
+        	  {{ 'Menu.Multi' | translate }}
+        </ion-item>
+        <div class="sep-header"  style="position: relative;z-index: 9999;"></div>
+
+         <ion-item class="item-menu"  menu-close  ng-click="goTo('app.commandes')">
+          {{ 'Menu.FAQ' | translate }}
+        </ion-item>
+        <ion-item class="item-menu"  menu-close ng-click="creditdeparrainage()">
+            {{ 'Menu.Parrainage' | translate }}
+        </ion-item>
+        <ion-item class="item-menu"  menu-close ng-click="gotoConfidential()">
+            {{ 'Menu.confidential' | translate }}
+        </ion-item>
+         <ion-item class="item-menu"  menu-close ng-click="ResetPassword()">
+            {{ 'Menu.ResetPassword' | translate }}
+        </ion-item>
+          <div class="sep-header"  style="position: relative;z-index: 9999;"></div>
+
+         <ion-item class="item-menu"  menu-close  ng-click="getchangeLangue()">
+          {{ 'Menu.Langue' | translate }}
+        </ion-item>
+
+         <ion-item class="item-menu"  menu-close  ng-click="deconnexion()">
+          {{ 'Menu.Deconexion' | translate }}
+        </ion-item>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <ion-item class="item-menu" menu-close>
+        <a class="mailto" href="mailto:support@buzcard.fr?subject=Questions%20ou%20suggestions">
+        {{ 'Menu.desQuestions' | translate }}
+        </a>
+        </ion-item>
+         <br />
+        <br />
+	<ion-item class="item-menu" menu-close>
+        
+        <span style="text-align:center;margin:0 auto;display:block;position:relative;color:#FFF">v {{versionApp}} ({{dateUpdate}})</span>
+      
+        </ion-item>
+
+          <ion-item class="item-menu chat"  menu-close  >
+
+        </ion-item>
+
+          <ion-item class="item-menu chat"  menu-close  >
+
+        </ion-item>
+          <ion-item class="item-menu chat"  menu-close  >
+
+        </ion-item>
+          <ion-item class="item-menu chat"   menu-close >
+
+        </ion-item>
+
+<!--          <ion-item class="item-menu chat"  menu-close  > -->
+<!--           {{ 'Menu.Chat' | translate }} -->
+<!--         </ion-item> -->
+
+
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

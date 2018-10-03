@@ -1,0 +1,72 @@
+.icon-right-contact{
+	float:right;
+}.item-contact{
+	background-color: #4b4b4b !important;
+	border-radius:0px !important;
+	border-color: #4b4b4b !important;
+}.info-doublons{
+	white-space: normal;
+    font-size: 13px;
+    font-style: italic;
+}.item-grp{
+background-color: #7f7f7f !important;
+    border-radius: 0px !important;
+    color: #FFF !important;
+    text-decoration: none !important;
+    border-color:#7f7f7f !important;
+
+}.searchContact{
+	border-radius: 5px !important;
+}.pas_de_contact{
+	font-size:15px !important;
+	    color: #666 !important;
+}.buttonpagination{
+	font-weight: normal;
+}.search-contact .buttonsearch{
+	width: 21px;
+	z-index:999999999;
+	background: #79A436;
+}.itemHeigth{
+	height:75px
+}.right-item{
+	height: 55px;
+    margin: auto;
+}.itemShort{
+	margin-top:10px;
+}.bulle-info{
+	color: #79A436;
+	font-size:30px;
+}.text-info{
+	float:right;
+	padding-top:5px;
+	text-decoration:underline;
+	font-size:14px;
+}.search-contact .item-input-wrapper{
+	width:100%;
+}.clear-button{
+	backgrund: none;
+	margin-right: 10px;
+}.contacts-footer{
+	 position: relative;
+  
+  margin: 5px auto 5px  auto;
+  display: block;
+  width: 100%;
+}.opacblock{
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+        margin-top: 10px;
+        width:100%;
+}.contactContent{
+	top:70px !important;
+}.contactlistcontainer{
+	display: block;
+    width: 100%;
+    height: 100%;
+	
+}.contactlistcell{
+	display: block;
+    vertical-align: middle;
+}.contactcontainer .scroll{
+	height:100%;
+}

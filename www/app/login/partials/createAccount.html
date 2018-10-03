@@ -1,0 +1,38 @@
+<ion-view   align-title="center" class="login-attachement" animation="slide-right-left">
+  <ion-content class="login">
+    <div class="login-page-header" style="overflow:visible">
+      <img class="img-header-login" src="img/logo-flasher.png" />
+      <div class="sep-header"></div>
+    </div>
+    <div class="logon">
+      <div class="login-page-content">
+        <div class="login-page">
+          <div class="overflow">
+            <h4 class="center meconecter">{{ 'Titre.CA' | translate }}</h4>
+            <!-- <br> (ou l’essayer gratuitement 30 jours) -->
+        
+          <div class="formActivate">
+            <form name="activateForm" novalidate ng-submit="createCompte(email,password,confirmpassword)">
+              <input type="email" ng-model="email" class="input-login" placeholder="Email" required="true" /><span class="input-label"></span>
+              <input type="password" class="input-login" ng-model="password"  placeholder="{{ 'Password.CA' | translate }}"><span class="input-label"></span>
+               <input type="password" class="input-login" ng-model="confirmpassword"  placeholder="{{ 'confirmPassword' | translate }}"><span class="input-label"></span>
+            <div class="recreePassword">
+                <div class="c80">
+                  <p  style="color:#FFF;font-size: 12px;line-height: 10px;" translate="{{ 'indicPassword' }}"></p>
+                </div>
+                <div class="c20">
+                  <input value="OK" type="submit"  class="button button-light button-login">
+                </div>
+              </div>
+            </form>
+          </div>
+             <div style="color: #79a436;font-size: 18px;position: relative;margin: 0 auto;margin-top: 20px;text-align: center;" ui-sref="app.login"  nav-direction="back" >
+                        {{ 'CA.Back' | translate }}</div>
+          
+          <div style="color:#FFF;font-size: 12px;position: relative;margin: 0 auto;margin-top: 30px;text-align: center;">{{'login.confidentiel' | translate }}</div>
+        </div>
+      </div>
+    </div>
+    </div></div>
+  </ion-content>
+</ion-view>

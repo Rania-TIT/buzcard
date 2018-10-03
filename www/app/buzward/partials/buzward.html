@@ -1,0 +1,44 @@
+<ion-view align-title="center" class="buzwardContainer"  animation="slide-right-left">
+    <ion-content scroll="true" class="has-footer buzcardcontainer " >
+             <div class="divEmail">
+
+<!-- 				<input ng-blur="blur()" ng-focus="focus()" id="email" type="email" ng-model="email"  class="input-send" ng-keypress="keyPressed($event)"	placeholder=""/> -->
+<!-- 						<br/> -->
+				<angucomplete  pause="300" ng-model="email" selectedobject="email" localdata="domaines" searchfields="domaine" placeholder="{{ 'BuzcardSend.Email' | translate }}" titlefield="domaine" minlength="" inputClass="classmail send-header-email transparent-background"  matchclass="highlight" />
+
+				</div>
+					<div class="row divinfo"><input checked="checked" type="checkbox" style="margin-top: 2px;" ng-model="checkInfo" />
+				  <div class="col info_label" translate="Buzward.checkbox" translate-values="{ element: contact.first_name, value: contact.last_name }"> </div>
+	</div>
+		<div class="row divinfo"><input checked="checked" type="checkbox" ng-change="checkjointcontact(checkjoint2)" style="margin-top: 2px;" ng-model="checkjoint2" />
+				  <div class="col info_label" translate="Buzward.joint2"> </div>
+
+				</div>
+
+
+		<div class="row buzward_msg_title">
+		{{ 'Buzward.msgTitle' | translate }}:
+		</div>
+		<div class="row buzward_msg">
+		<div class="buzward_msg_div">
+		<textarea rows="8" cols="100" id="message" class="textareabuzward" ng-model="messagebuzward"></textarea>
+		</div>
+
+		</div>
+
+
+                <div class="row buzward_send">
+
+                    <button class="button button-full button-light btn-buzcard btn-bottom" menu-close ng-click="sendVcard(contact,email,messagebuzward, checkInfo , checkjoint2)" >
+                        {{ 'Buzward.send' | translate }}
+                    </button>
+                </div>
+
+                <div class="row buzward_cancel">
+
+                    <a  class="buzward_cancel_btn" menu-close ng-click="cancelsahre()" >
+                       {{ 'Buzward.cancel' | translate }}
+                    </a>
+                </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,94 @@
+<ion-view align-title="center" class="attachement" animation="slide-right-left">
+  <ion-content scroll="true" class="has-footer buzcardcontainer " ng-class="(isCusto)?'containerIsCusto':'t'">
+    <div class="list">
+      <div class=" send-inputs ">
+        <div class="send-header-input" ng-style="headertop">
+
+          <angucomplete pause="100" placeholder="{{ 'BuzcardSend.Email' | translate }}" ng-model="email" selectedobject="email" localdata="domaines" searchfields="domaine" titlefield="domaine" minlength="" inputClass="classmail send-header-email transparent-background"
+            matchclass="highlight" />
+
+        </div>
+        <div class="link-options" ng-model="options" ng-click="showOptions()" ng-style="displaydrowdown" >{{options_text}}</div>
+        <div class="camera" ng-if="false">
+          <div style="width:98%">
+
+            <div style="width:65%;margin-top:12px;">
+              <label class="label-Send">
+                <font>{{ 'BuzcardSend.Photo' | translate }}</font>
+              </label>
+            </div>
+            <div style="width:45px;float:right;margin-top: -33px;">
+              <a class="camera-buz-send" ng-click="getPhoto()"></a>
+            </div>
+
+          </div>
+        </div>
+        <div ng-show="options" style="position: relative;margin-top:5px;" ng-style="displaydrowdown">
+          <div class="checkFoll-Buz" style="width:90%;padding-bottom:0px;margin-left: 12px;">
+
+            <div style="width:65%;margin-top: 10px;">
+              <label class="label-Send">
+                <font> {{ 'BuzcardSend.Sendmobile' | translate }} </font>
+              </label>
+            </div>
+            <div style="width:35%;float:right;margin-top: -22px;">
+              <select ng-model="sendMobile" class="select-buz send-header-select transparent-background ion-arrow-left-b">
+                <option value="1">{{ 'BuzcardSend.Oui' | translate }}</option>
+                <option value="2">{{ 'BuzcardSend.Non' | translate }}</option>
+              </select>
+            </div>
+
+          </div>
+  	<div class="rdv-Buz">
+            <div>
+
+              <div style="width:65%;margin-top: 15px;">
+                <label class="label-Send">
+                  <font>{{ 'BuzcardSend.RDV' | translate }} </font>
+                </label>
+              </div>
+              <div style="float: right;margin-top: -26px;right: 0;" class="send-chid-beTil-calendar">
+                <input type="text" ng-model="dateRDV" placeholder="{{ 'dateRDVPlaceholer' | translate}}" ng-blur="blur()" ng-focus="focus()" class="dateOverflow datepickerDirective send-input-date transparent-background send-chid-beTil" id="datepickerDirective" ng-focus="blur()" />
+              </div>
+              <i class="ion-ios-information-outline info-icon" ng-click="showInfoFn()"></i>
+              <div class="info-text my-show-hide-animation" ng-hide="!showinfo">Elle sera copiée dans l'agenda de votre mobile, avec les informations sur le contact et le contexte de la rencontre.</div>
+            </div>
+          </div>
+          <div class="lang_Buzcard">
+            <div>
+
+              <div style="width:65%;margin-top: 15px;">
+                <label class="label-Send">
+                  <font>{{ 'BuzcardSend.Lang' | translate }} </font>
+                </label>
+              </div>
+              <div style="width:35%;float:right;margin-top: -22px;">
+                <select id="selectLangId" ng-change="changedLanguage(selectLang)"   ng-model="selectLang"  class="select-buz send-header-select transparent-background ion-arrow-left-b">
+                  <option ng-selected= "{{value.lcid == defaultLn }}" ng-repeat="value in tradEmailArray" value="{{value.lcid}}">{{value.languageid}} </option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+
+
+          <div class="tradEmail">
+            <textarea ng-model="$parent.tradEmailContent"  style="height:{{textAreaHeight}}px !important;line-height: 20px;font-size:15px !important;padding:5px;text-transform:none;" class="classmail send-header-email transparent-background ng-touched" ng-blur="blur()" ng-focus="focus()" ></textarea>
+          </div>
+        </div>
+        <div style="clear: both;width: 100%;margin: 0 auto;display: block;" ng-style="displaydrowdown1">
+          <button class="button button-light btn-buzcard " ng-blur="blur()" ng-focus="focus()" menu-close ng-click="sendBuzcard(email,selectLang,checkFollower,sendMobile,dateRDV)" ng-style="{border : firstColor , backgroundColor: firstColor}">
+            {{ 'BuzcardSend.Send' | translate }}
+          </button>
+          <a class="send-link" ui-sref="app.qrcode" ng-blur="blur()" ng-focus="focus()" nav-direction="back" menu-close>
+                        {{ 'BuzcardSend.Back' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <br>
+  </ion-content>
+</ion-view>

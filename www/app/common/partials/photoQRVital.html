@@ -1,0 +1,9 @@
+<div class="modal image-modal transparent" ng-click="closeModalV()">
+    <ion-pane class="transparent">
+        <a class="button button-icon icon ion-close-circled close" ng-click="closeModalV()"></a>
+        <h3 class="mesqr-title" style="width:150px;">{{ 'MesQR.Vital' | translate }}</h3>
+        <img ng-src="{{qrVital}}" class="fullscreen-image2" style="background: #FFF;" ng-click="gotoVital()" />
+         <p class="textQR" data-ng-bind-html="'Scan.txtVital' | translate"></p>
+         
+    </ion-pane>
+</div>

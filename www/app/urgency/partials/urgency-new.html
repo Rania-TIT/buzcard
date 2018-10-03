@@ -1,0 +1,300 @@
+<ion-view align-title="center" animation="slide-right-left">
+    <ion-content class="has-footer urgency-container buzcardcontainer" scroll="true" autofocus>
+      <div class="profile-header">
+        <div class="image-block">
+          <img class="profile-image" ng-click="openModal()" ng-src="{{photoProfil}}" src="img/photo_top_title.jpg"/>
+            <div class="profilQR">
+                 <img class="imgQR" height="40"  ng-click="openModalV()" style="background: #FFF;" ng-src="{{qrVital}}" /></div>
+        </div>
+        <div class="profile-info">
+          <h4 class="profile-title" align="center" >{{card.first_name}} {{card.last_name}}</h4>
+          <div class="inline-block">
+            <h4  class="profile-title-inline" ng-show='card.sex != "" ' >{{card.sex}}</h4><span class="tiret-sex-year" ng-hide="card.sex == '' ||card.birthday_year == '' "> - </span>
+            <h4 class="profile-title-inline " align="center" ng-show='card.birthday_year != "" '> {{card.birthday_year | getAge}} </h4>
+          </div>
+          <h4 class="profile-title2" align="center" ng-show='card.country != "" '>{{card.country}}</h4>
+          <h4 class="profile-title2 last-title" align="center" ng-hide='card.height == "" && card.weight == "" ' ><span ng-hide="card.height == '' "> {{ card.height}} </span><span ng-hide="card.weight == '' "><span ng-hide="card.height == '' ||card.height == '' ">- </span>{{card.weight}}</span></h4>
+        </div>
+      </div>
+      <div class="profile-body">
+        <!-- **************** SECTION 1 ******************** -->
+        <ion-list>
+            <ion-item class="item-stable urgency-tab" ng-click="toggleGroup(shown, 'tab1')" ng-class="{active: !shown}" style="  border-bottom: 1px solid #fff;z-index: 3;">
+                <i class="icon pull-right" ng-class="!shown ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"></i>
+                  <h3  align="center" class="urgency-tab-title">
+                      {{'UrgencyEdit.Onglet1'| translate }}
+                  </h3>
+            </ion-item>
+
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.familyname1 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.familyname1' }}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.familyname1 | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.familynumber1 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.familynumber1' }}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value"><a href="tel:{{card.familynumber1}} "> {{card.familynumber1 | escape}}</a></label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.familyemail1 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.familyemail1' }}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value"><a href="mailto:{{card.familyemail1}} "> {{card.familyemail1 | escape}}</a></label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.familyname2 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.familyname2' }}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.familyname2 | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.familynumber2 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.familynumber2' }}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value"><a href="tel:{{card.familynumber2}} "> {{card.familynumber2 | escape}}</a></label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.familyemail2 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.familyemail2'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value"><a href="mailto:{{card.familyemail2}} "> {{card.familyemail2 | escape}}</a></label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.familyname3 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.familyname3' }}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.familyname3 | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.familynumber3 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.familynumber3' }}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value"><a href="tel:{{card.familynumber3}} "> {{card.familynumber3 | escape}}</a></label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.familyemail3 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.familyemail3'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value"><a href="mailto:{{card.familyemail3}} "> {{card.familyemail3 | escape}}</a></label>
+                      </div>
+            </ion-item>
+<!--             <ion-item class="item-accordion urg-item " ng-if="!shown && card.doctorname != '' "> -->
+<!--                       <div class="row" > -->
+<!--                           <span translate="{{ 'Urgency.doctorname'}}" class="col col-33 urg-label"> </span> -->
+<!--                           <label class="col col-66 urg-value">{{card.doctorname | escape}}</label> -->
+<!--                       </div> -->
+<!--             </ion-item> -->
+<!--             <ion-item class="item-accordion urg-item " ng-if="!shown && card.doctornumber != '' "> -->
+<!--                       <div class="row" > -->
+<!--                           <span translate="{{ 'Urgency.doctornumber' }}" class="col col-33 urg-label"> </span> -->
+<!--                           <label class="col col-66 urg-value"><a href="tel:{{card.doctornumber}} "> {{card.doctornumber | escape}}</a></label> -->
+<!--                       </div> -->
+<!--             </ion-item> -->
+<!--             <ion-item class="item-accordion urg-item " ng-if="!shown && card.doctoreamail != '' "> -->
+<!--                       <div class="row" > -->
+<!--                           <span translate="{{ 'Urgency.doctoreamail'}}" class="col col-33 urg-label"> </span> -->
+<!--                           <label class="col col-66 urg-value"><a href="mailto:{{card.doctoreamail}} "> {{card.doctoreamail | escape}}</a></label> -->
+<!--                       </div> -->
+<!--             </ion-item> -->
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.comment1 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.comment1'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value"> {{card.comment1 | escape}} </label>
+                      </div>
+            </ion-item>
+            <!-- <ion-item class="item-accordion urg-item " ng-if="!shown && card.link_title_1 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.Link1' }}" class="col col-33 urg-label"> </span>
+                          <label ng-if="card.link_title_1 != ''"  class="col col-66 urg-value" ng-click="getlink_1()"> {{card.link_title_1 | escape }} </label>
+                          <label ng-if="card.link_title_1 =='' &&  card.link_1 !='' "  class="col col-66 urg-value" ng-click="getlink_1()"> {{card.link_1 | escape }} </label>
+
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="!shown && card.link_title_2 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.Link2' }}" class="col col-33 urg-label"> </span>
+                          <label ng-if="card.link_title_2 != ''"  class="col col-66 urg-value" ng-click="getlink_2()"> {{card.link_title_2 | escape }} </label>
+                          <label ng-if="card.link_title_2 =='' &&  card.link_2 !='' "  class="col col-66 urg-value" ng-click="getlink_2()"> {{card.link_2 | escape }} </label>
+
+                      </div>
+            </ion-item> -->
+            <!-- <ion-item class="item-accordion urg-item " ng-if="!shown && card.link_title_3 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.Link3' }}" class="col col-33 urg-label"> </span>
+                          <label ng-if="card.link_title_3 != ''"  class="col col-66 urg-value" ng-click="getlink_3()"> {{card.link_title_3 | escape }} </label>
+                          <label ng-if="card.link_title_3 =='' &&  card.link_3 !='' "  class="col col-66 urg-value" ng-click="getlink_3()"> {{card.link_3 | escape }} </label>
+
+                      </div>
+            </ion-item> -->
+            <!-- <ion-item class="item-accordion urg-item " ng-if="!shown && card.link_title_4 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.Link4' }}" class="col col-33 urg-label"> </span>
+                          <label ng-if="card.link_title_4 != ''"  class="col col-66 urg-value" ng-click="getlink_4()"> {{card.link_title_4 | escape }} </label>
+                          <label ng-if="card.link_title_4 =='' &&  card.link_1 !='' "  class="col col-66 urg-value" ng-click="getlink_4()"> {{card.link_4 | escape }} </label>
+
+                      </div>
+            </ion-item> -->
+
+        </ion-list>
+        <!-- **************** SECTION 2 ******************** -->
+
+        <ion-list>
+
+            <ion-item class="item-stable urgency-tab"
+                      ng-click="toggleGroup(shown2,'tab2')"
+                      ng-class="{active: shown2}">
+                <i class="icon pull-right" ng-class="shown2 ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"></i>
+                  <h3  align="center" class="urgency-tab-title">
+                      {{'Urgency.section3'| translate }}
+                  </h3>
+            </ion-item>
+            <!-- <ion-item class="item-accordion urg-item " ng-if="shown2 && card.social_welfare_number != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.social_welfare_number'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.social_welfare_number | escape}}</label>
+                      </div>
+            </ion-item> -->
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.insurance != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.insurance'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.insurance | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.insurance_number != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.insurance_number'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.insurance_number | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.mutual != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.mutual'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.mutual | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.mutual_number != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.mutual_number'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.mutual_number | escape}}</label>
+                      </div>
+            </ion-item>
+
+                        <!-- <ion-item class="item-accordion urg-item " ng-if="shown2 && card.schedule_of_benefits != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.schedule_of_benefits'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.schedule_of_benefits | escape}}</label>
+                      </div>
+            </ion-item> -->
+                        <!-- <ion-item class="item-accordion urg-item " ng-if="shown2 && card.limits_and_exclusions != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.limits_and_exclusions'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.limits_and_exclusions | escape}}</label>
+                      </div>
+            </ion-item> -->
+
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.doctorname != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.doctorname'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.doctorname | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.doctornumber != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.doctornumber' }}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value"><a href="tel:{{card.doctornumber}} "> {{card.doctornumber | escape}}</a></label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.doctoreamail != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.doctoreamail'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value"><a href="mailto:{{card.doctoreamail}} "> {{card.doctoreamail | escape}}</a></label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.specalistenumber1 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.specalistenumber1'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.specalistenumber1 | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.specalistenumber2 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.specalistenumber2'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.specalistenumber2 | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.antecedents != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.antecedents'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.antecedents | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.pathology != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.pathology'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.pathology | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.treatment != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.treatment'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.treatment | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.allergies != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.allergies'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.allergies | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.blood_group != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.blood_group'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.blood_group | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.contact_lens != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.contact_lens'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.contact_lens | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.organ_donation != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.organ_donation'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.organ_donation | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.first_aid != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.first_aid'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.first_aid | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.risk_sports != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.risk_sports'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.risk_sports | escape}}</label>
+                      </div>
+            </ion-item>
+            <ion-item class="item-accordion urg-item " ng-if="shown2 && card.comment2 != '' ">
+                      <div class="row" >
+                          <span translate="{{ 'Urgency.comment2'}}" class="col col-33 urg-label"> </span>
+                          <label class="col col-66 urg-value">{{card.comment2 | escape}}</label>
+                      </div>
+            </ion-item>
+
+        </ion-list>
+
+
+
+      </div>
+      <div class="profile-footer">
+        <button class="button button-full btn-urgency btn-buzcard btn-bottom" nav-direction="forward"  ng-click="updateAll()"  menu-close>
+            {{ 'Urgency.Update' | translate }}
+        </button>
+      </div>
+      <br><br>
+    </ion-content>
+</ion-view>

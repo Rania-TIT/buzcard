@@ -1,0 +1,8 @@
+<div class="modal image-modal transparent" ng-click="closeModall()">
+    <ion-pane class="transparent">
+   <h3 class="mesqr-title">{{ 'MesQR.Buzcard' | translate }}</h3>
+        <a class="button button-icon icon ion-close-circled close" ng-click="closeModall()"></a>
+        <img ng-src="{{qrProfil}}" style="background: #FFF;" class="fullscreen-image2" ng-click="showImageQR()" />
+        <p class="textQR" data-ng-bind-html="'Scan.textQR' | translate "></p>
+    </ion-pane>
+</div>

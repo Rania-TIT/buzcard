@@ -1,0 +1,152 @@
+<ion-view align-title="center" animation="slide-right-left">
+    <ion-content scroll="true" delegate-handle="content" class="has-footer contactcontainer">
+        <!-- ******** begin search form ********-->
+        <div class="buzcard-content contacts-list">
+        <div class="label">
+         <a >{{ 'ContactList.Search' | translate }} : </a>
+        </div>
+            <div class="search-contact" >
+                <label class="item-input-wrapper" style="overflow:hidden!important;">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                    <input type="search" placeholder="{{ContactList.SearchPlaceholder}} " ng-model="criteria" ng-change="changeHandler(criteria)" ng-blur="blur()" ng-focus="focus()">
+                </label>
+                <input type="submit" class="button button-light" ng-click="btnSearch(criteria)" value="OK">
+            </div>
+            <div class="sep-input"></div>
+            <!-- ******** fin ******-->
+            <!-- ******** begin search tab ********-->
+            <ion-list animation="no-animation" class="onglet_premier" ng-if="show">
+                        <ion-item  animation="no-animation"  id="idSearch" class="onglet_premier item-stable" ng-click="toggleGroup(search,'idSearch')" ng-class="{active: isGroupShown(search)}">
+                            <i class="icon"  class="ion-android-add-circle" ng-class="isGroupShown(search) ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; {{'ContactList.SearchName' | translate}}
+                        </ion-item>
+                        <ion-item  animation="no-animation"  class="item-accordion" ng-repeat="item in search.items track by $index" ng-if="isGroupShown(search)">
+                            <!-- **** cas par d�fault ****-->
+                            <a class="item item-avatar" href="#/app/contactShow/{{item.id}}" ng-if="!search.empty">
+                                <img  ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg">
+                                 <p  class="paragraphe_Item" >{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret}}</p>
+                                  <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  |escape}}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape}}</span> 
+                            <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'"  >{{ item.email  }}</h4>
+                            </a>
+                            <!-- fin-->
+                        </ion-item>
+                        <a class="item item-avatar pas_de_contact" href="#" ng-show="search.empty && isGroupShown(search)">
+                            <p>{{ 'ContactList.SearchVide' | translate }}</p>
+                        </a>
+            </ion-list>
+            <!-- end search -->
+            <ion-list animation="no-animation" class="no-animation">
+                <!-- ******** begin  tabs for all contacts and followers ********-->
+                <div>
+                    <ion-item  animation="no-animation" ng-class="{onglet_premier : !show}" id="TousContact" class="item-stable" ng-click="toggleGroup(tabs[0],'TousContact')" ng-class="{active: isGroupShown(tabs[0])}">
+                        <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown(tabs[0]) ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; {{ 'ContactList.AllContact' | translate }} ({{tabs[0].count}})
+                    </ion-item>
+                    <ion-item  animation="no-animation" class="item-accordion" ng-repeat="item in tabs[0].items track by $index" ng-if="isGroupShown(tabs[0])">
+<!--                         **** cas par d�fault **** -->
+<!--                         <a class="item item-avatar pas_de_contact" href="#" ng-show="tabs[0].empty"> -->
+<!--                             <p ng-show="tabs[0].id !=2">Pas de contact &agrave; afficher</p>  -->
+<!--                         </a> -->
+                        <a class="item item-avatar" href="#/app/contactShow/{{tabs[0].items[$index].id}}" ng-if="!tabs[0].empty">
+                            <img ng-class=" ( item.first_name.length > 0  ||  item.last_name.length > 0) ? 'itemLarge' : ''" ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  >
+                              <p  class="paragraphe_Item" >{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret}}</p>
+                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape}}</span> 
+                             <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'"  >{{ item.email }}</h4>
+                         </a>
+                        <!-- fin-->
+                    </ion-item>
+                    <div ng-if="tabs[0].id !=2  && isGroupShown(tabs[0]) && !tabs[0].empty && tabs[0].totalPages >1" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewind(0)"></a>
+                        <a class="button ">{{tabs[0].page}}/{{tabs[0].totalPages}}</a>
+                        <a class="button ion-chevron-right" ng-click="forward(0)"></a>
+                    </div>
+                <!-- ******** fin ********-->
+                <!-- ******** begin  tabs for all contacts and followers ********-->
+                    <ion-item  animation="no-animation" class="item-stable" id="Followers" ng-click="toggleGroup(tabs[1],'Followers')" ng-class="{active: isGroupShown(tabs[1])}">
+                        <i class="icon"  class="ion-android-add-circle" ng-class="isGroupShown(tabs[1]) ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; {{ 'ContactList.AllFollowers' | translate }} ({{tabs[1].count}})
+                    </ion-item>
+                    <ion-item  animation="no-animation"  class="item-accordion" ng-repeat="item in tabs[1].items track by $index" ng-if="isGroupShown(tabs[1])">
+<!--                         **** cas par d�fault **** -->
+<!--                         <a class="item item-avatar pas_de_contact" href="#" ng-show="tabs[1].empty"> -->
+<!--                             <p ng-show="tabs[1].id !=2">Pas de contact &agrave; afficher</p>  -->
+<!--                         </a> -->
+                        <a class="item item-avatar" href="#/app/contactShow/{{tabs[1].items[$index].id}}" ng-if="!tabs[1].empty">
+                            <img ng-class=" ( item.first_name.length > 0  ||  item.last_name.length > 0) ? 'itemLarge' : ''" ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  >
+                              <p  class="paragraphe_Item" >{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret}}</p>
+                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  |escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape}}</span> 
+                             <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'"  >{{ item.email }}</h4>
+                         </a>
+                        <!-- fin-->
+                    </ion-item>
+                    <div ng-if="isGroupShown(tabs[1]) && !tabs[1].empty && tabs[1].totalPages >1" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewind(1)"></a>
+                        <a class="button ">{{tabs[1].page}}/{{tabs[1].totalPages}}</a>
+                        <a class="button ion-chevron-right" ng-click="forward(1)"></a>
+                    </div>
+                </div>
+                <!-- ******** fin ********-->
+                <!-- ******** begin tabs for groups ********-->
+                <div>
+                    <ion-item  animation="no-animation"  delegate-handle="groupsX" class="item-stable" id="Groups" ng-click="toggleGroup(groups,'Groups')" ng-class="{active: isGroupShown(groups)}">
+                        <i class="icon"  class="ion-android-add-circle" ng-class="isGroupShown(groups) ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; {{ 'ContactList.Groups' | translate }} ({{groupNumber}})
+                    </ion-item>
+                    <ion-item  animation="no-animation"  class="item-accordion" ng-repeat="item in groups track by $index" ng-if="isGroupShown(groups)">
+                        <!--  second level -->
+                        <ion-item  animation="no-animation"  id="gr{{$index}}"  class="item-stable item-grp" ng-click="toggleGroupX(item,'gr{{$index}}')" ng-class="{active: isGroupShownX(item)}">
+                            <i class="icon" ng-class="isGroupShownX(item) ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; {{item.name | escape}}
+                        </ion-item>
+                        <ion-item  animation="no-animation"  delegate-handle="gr{{$index}}" class="item-accordion" ng-repeat="itemx in item.items track by $index" ng-if="isGroupShownX(item)">
+                            <div class="item item-avatar pas_de_contact"  ng-if="tab.empty">
+                                <p ng-show="tab.id !=2">{{ 'ContactList.ListVide' | translate }}</p>
+                            </div>
+                            <a class="item item-avatar"  href="#/app/contactShow/{{itemx.id}}" ng-if="!tab.empty">
+                                <img ng-class=" ( itemx.first_name.length > 0  ||  itemx.last_name.length > 0) ? 'itemLarge' : ''" ng-src="{{itemx.photofilelocation}}" src="img/photo_top_title.jpg">
+                                    <p class="paragraphe_Item" >{{itemx.lastsendemail  | toFrFormat }} {{itemx.meeting_point | toTiret}}</p>
+                                <span class="Name_Item" ng-if="itemx.first_name.length > 0" >{{itemx.first_name  |escape }}</span> <span class="Name_Item" ng-if="itemx.last_name.length > 0">{{itemx.last_name  |escape}}</span> 
+								<h4 ng-class=" ( itemx.first_name.length > 0 &&   itemx.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'"  >{{ itemx.email }}</h4>
+                            </a>
+                        </ion-item>
+                    <div ng-if="groups[$index].nbr > 1 && isGroupShownX(item)" class="button-bar pagination-listcontact">
+                        <a class="button ion-chevron-left" ng-click="rewindgroups($index,'gr{{$index}}')" href="javascript:void(0)"></a>
+                        <a class="button ">{{groups[$index].page}} / {{groups[$index].nbr}}</a>
+                        <a class="button ion-chevron-right" ng-click="forwardgroups($index,'gr{{$index}}')"></a>
+                    </div>
+                        <!--  second level end -->
+                    </ion-item>
+                </div>
+                <!-- ******** End ********-->
+                <!-- ******** begin tabs for recontact ********-->
+                <div>
+                    <div>
+                        <ion-item  animation="no-animation" class="item-stable" id="Recont" ng-click="toggleGroup(recontact,'Recont')" ng-class="{active: isGroupShown(recontact),onglet_dernier: !isGroupShown(recontact)}">
+                            <i class="icon" class="ion-android-add-circle" ng-class="isGroupShown(recontact) ? 'ion-android-remove-circle' : 'ion-android-add-circle'"></i> &nbsp; {{ 'ContactList.Recontact' | translate }} ({{recontact.count}})
+                        </ion-item>
+                        <ion-item  animation="no-animation"  ng-class="{'onglet_dernier':$last}" class=" item-accordion" ng-repeat="item in recontact.items track by $index" ng-if="isGroupShown(recontact)">
+                            
+                            <a  class="item item-avatar" href="#/app/contactShow/{{item.id}}" ng-if="!recontact.empty">
+                                <img ng-class=" ( item.first_name.length > 0  ||  item.last_name.length > 0) ? 'itemLarge' : ''" ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg">
+                                 <p  class="paragraphe_Item" >{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret }}</p>
+                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  |escape}}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape}}</span> 
+                            <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'"  >{{ item.email}}</h4>
+                            </a>
+                            <!-- fin-->
+                        </ion-item>
+                        <!-- **** cas ou il y a pas de contact ****-->
+                        <div class="item item-avatar onglet_dernier pas_de_contact"  ng-if="recontact.empty && isGroupShown(recontact)">
+                            <p>{{ 'ContactList.RDVVide' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- ******** End ********-->
+            </ion-list>
+            <div>
+            <div class="creditParainage">
+				<button class="button button-outline button-light width100 btn_credit" nav-direction="forward"  ui-sref="app.creditParrainage" menu-close>{{ 'ContactList.Parrainage' | translate }} : <span><u>{{creditParrainage}} &euro;</u></span></button>
+			</div>
+<!-- 			<div class="synchroContact" ng-controller="MenuController"> --> 
+<!-- 			<p>{{ 'ContactList.text1' | translate }} <a style="text-decoration:underline;" ng-click="synchronize()">{{ 'ContactList.text2' | translate }}</a>,  -->
+<!--                {{ 'ContactList.text3' | translate }} </p> -->
+<!-- 			</div> -->
+            </div>
+        </div>
+         <br><br>
+    </ion-content>
+</ion-view>

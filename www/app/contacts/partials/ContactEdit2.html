@@ -1,0 +1,175 @@
+ <div class="naviguation" >
+		<a class="left"   href="javascript:void(0)" ng-click="back(contact)"   nav-direction="back"   menu-close>{{ 'ContactEdit.Retour' | translate }}</a>
+		<a class="right" href="javascript:void(0)" ng-click="updateContact(contact)"    menu-close>{{ 'ContactEdit.Enregistrer' | translate }}</a>
+	</div>
+<ion-view align-title="center" animation="slide-right-left">
+    <ion-content scroll="true" class="has-footer buzcardcontainer contactContent" >
+  
+        <div class="list">
+          <div ng-if="imageExist" class="block-text-contact" ng-click="getPhoto()">
+            <p class="contact-show-photographier" >
+               {{ "ContactShow.photographier"| translate}} <br>
+                {{ "ContactShow.photographier2"| translate}}
+            </p>
+<!--             <p class="contact-show-nous-saisirons" > -->
+<!--                {{ "ContactShow.nousSaisirons"| translate}} -->
+<!--             </p> -->
+          </div>
+            <div class="edit-vcard" style="background-color:#cac4c4">
+                <div class="header-vcardedit" style="padding-top:25px;">
+                    <img class="photo-slider" ng-src="{{photoProfil}}" >
+                </div>
+                <div class="capture-camera">
+                    <div class="row">
+                        <div class="col-80">
+                            <form name="formUpload" enctype="multipart/form-data">
+                                <div id="uploadImage">
+                                          <input ng-blur="blur()" ng-focus="focus()" type="button" class="chooseFile" value="{{ 'choseFile' | translate }}" ng-click="choseFile()"/> <span class="ouCamera"> {{ 'CameraOR' | translate }} </span>
+                                    <input ng-blur="blur()" ng-focus="focus()"  type="file" onclick="return false;" name="photo">
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-20">
+                            <a class="button camera-buz" ng-click="getPhoto()"></a>
+                        </div>
+                    </div>
+                </div>
+               
+               <ion-item class="item-accordion edit-ctc" >
+                 <div class="row">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Email' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                          <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.email"  style="text-transform:lowercase"  type="email" >
+<!--                            <span><a  style=" white-space: pre-line;overflow: auto;color:#777;">{{contact.email | toFormatEmail }}</a></span> -->
+                        </div>
+                    </div>
+                       <div class="row" ng-if="contact.LanguageText !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.LangueEmail' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                          <span class="ValueLine"> {{contact.LanguageText}} </span>
+                        </div>
+                    </div>
+					<div class="row" ng-if="tmp && contact.firstsendemail !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.FirstBuz' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                            <span class="firstLastBuz">{{contact.firstsendemail | toFrFormat}}</span>
+                        </div>
+                    </div>
+                     <div class="row" >
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Meeting_point' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                         <textarea class="adressEdit" ng-blur="blur()" ng-focus="focus()"  ng-model="contact.meeting_point" rows="2" cols="80"></textarea>
+<!--                           <span class="meeting-contact">{{contact.meeting_point}}</span> -->
+                        </div>
+                    </div>
+                    <div class="row" ng-if="showLast && tmp && contact.lastsendemail !=''">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.LastBuz' | translate }} </span></div>
+                        <div class="col col-75 contact-value">
+                          <span class="firstLastBuz" >{{contact.lastsendemail | toFrFormat }}</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col label labelcontact"><span >{{ 'ContactEdit.Recontact' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                            <input  id="dateX" type="text"   ng-model="contact.rendez_vous" placeholder="JJ/MM/AA"  class="RendezVEdit datepickerDirective"  />
+                        </div>
+                    </div>
+                      <div class="row" id="groupe-combo-editcontact">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Groupe' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                          <input id="nogroupeid" ng-show="noGroup" type="text" style="position: relative;width: 54.29%;z-index:2;" ng-model="noG" ng-click="test()">
+				  <select id="groupeId"  ng-model="contact.list" class="item-select"
+						ng-options="group for group in groups" ng-change="changeHandler()">
+						<option value="" selected hidden />
+					</select>
+					<input ng-show="contact.list != language && contact.list != null && contact.list != '' " ng-blur="blur()" disabled="true" type="text" ng-focus="focus()" ng-focus="isFocusable"  id="newGroupeName" />
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.FirstName' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                           <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.first_name" autocapitalize="words"  type="text">
+                        </div>
+                    </div>
+                       <div class="row">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.LastName' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                           <input ng-blur="blur()" ng-focus="focus()"  ng-model="contact.last_name"  type="text" >
+                        </div>
+                    </div>
+
+                 <div class="row">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Company' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                        <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.company" autocapitalize="words"   type="text" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Function' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                        <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.fonction"    type="text" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Tel' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                         <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.phone_1"  type="text" >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Tel2' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                          <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.phone_2"  type="text" >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Address' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                        <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.addressline1"  type="text" />
+                        <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.addressline2"   type="text" />
+                        <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.addressline3"   type="text" />
+                        <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.postalcode"   type="text" />
+                        <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.city"   type="text" />
+                        </div>
+                    </div>
+                    <div class="row" style="display:none">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Actus' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                        <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.actu"   type="text" />
+                        </div>
+                    </div>
+                      <div class="row" ng-if="contact.Link_CardOnline !=''">
+                        <div class="col label labelcontact" ><span translate="{{ 'ContactEdit.linkBuzcard'}}"></span></div>
+                         <div class="col col-75 contact-value">
+                        <span ><a  ng-click="getLink(contact.Link_CardOnline)" >{{contact.Link_CardOnline |escape}}</a></span>
+                        </div>
+                    </div> 
+                      <div class="row">
+                        <div class="col label labelcontact"><span>{{ 'ContactEdit.Comments' | translate }}</span></div>
+                        <div class="col col-75 contact-value">
+                         <textarea class="adressEdit" ng-blur="blur()" ng-focus="focus()" ng-model="contact.comment" rows="3" cols="80"></textarea>
+                        </div>
+                    </div>
+                  
+
+
+          </ion-item>
+
+
+            </div>
+        
+		 <a class=" button button-full button-light btn-buzcard btn-bottom" style="width:284px !important" ng-if="fromState !='app.buzcardSend'" href="javascript:void(0)" ng-click="sendBuz(contact)"    menu-close>{{ 'ContactEdit.Send' | translate }}</a>
+		<div class="deleteDiv">
+				<a class="deleteLink" href="javascript:void(0)" menu-close ng-click="deleteContact(contact)">
+					{{ 'ContactEdit.delete' | translate }}
+				</a>
+			</div>
+
+        </div>
+         <br><br>
+    </ion-content>
+</ion-view>

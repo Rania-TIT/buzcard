@@ -1,0 +1,267 @@
+.urgency-container {
+  background-color: #46963C;
+  font-family: "lubalin" !important;
+}
+.profile-header {
+  background-color: #46963C;
+  width: 100% font-family: "lubalin" !important;
+}
+.profile-image {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 120px;
+}
+.image-block {
+  padding-top: 15px;
+  width: 120px;
+  margin: 0 auto;
+  position: relative;
+}
+.profile-info {
+  margin-top: 10px;
+  padding: 0;
+  padding-bottom: 15px;
+  font-family: "lubalin" !important;
+}
+.profile-title {
+  margin-top: 5px;
+  font-size: 23px;
+  color: #ffffff;
+  font-family: "lubalin" !important;
+  margin-bottom: 5px;
+  font-weight: normal;
+}
+.profile-title2 {
+  margin-top: 5px;
+  font-size: 17px;
+  color: #ffffff;
+  font-family: "lubalin" !important;
+  margin-bottom: 5px;
+  font-weight: normal;
+}
+.last-title {
+  margin-bottom: 0;
+}
+.profile-body {}
+.urgency-tab {
+  background-color: #7F7F7F !important;
+  color: #ffffff !important;
+  border: 0;
+  font-family: "lubalin" !important;
+}
+.urgency-tab-title {
+  color: #FFFFFF !important;
+  font-size: 13px;
+  font-weight: normal;
+  font-family: "lubalin" !important;
+  text-align: center;
+  font-size:16px !important;
+}
+.btn-urgency {
+  color: #46963C;
+}
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+.urg-label {
+  font-size: 12px;
+  color: #777777;
+  padding: 8px 0;
+  line-height: 20px;
+  white-space: pre-wrap;
+  margin: auto;
+}
+.urg-value {
+  font-size: 15px;
+  float: left;
+  text-align: left;
+  margin: auto;
+  color: #000000;
+  white-space: pre-wrap;
+  line-height: 22px;
+}
+.urg-item {
+  border-bottom: 1px solid #EFEFEF;
+  transition: 0.09s all linear;
+  line-height: 30px !important;
+}
+.password-popup {
+  background-color: #46963C;
+  /*   padding-left: 5px; */
+  /*   padding-right: 5px; */
+  border: 1px solid #FFFFFF;
+}
+.inline-display {
+  display: inline-flex;
+  width: 100%;
+}
+.btn-popup-password {
+  color: #46963C;
+  background-color: #FFFFFF;
+  border: 0;
+  margin-left: 6px;
+  border-radius: 5px;
+  width: 18.5%;
+  font-size: 18px;
+  padding-bottom: 9px;
+  padding-top: 11px;
+  padding-left: 11px;
+  padding-right: 11px;
+}
+.input-popup-password {
+  background-color: #FFFFFF !important;
+  color: #222 !important;
+  border-radius: 5px !important;
+  width: 79% !important;
+  float: left;
+}
+.link-popup-password {
+  background-color: #46963C !important;
+  color: #111111 !important;
+  font-size: 15px
+}
+.profile-title-inline {
+  font-size: 23px;
+  color: #ffffff;
+  margin: 0;
+  display: inline-block;
+  font-weight: normal;
+}
+.inline-block {
+  margin: 0 auto;
+  text-align: center;
+}
+.no-border div.row {
+  border-bottom: 0 !important;
+  margin-top: 2px;
+}
+.urgency-input-background {
+  background-color: #FFFFFF !important;
+  border: 1px solid #939393 !important;
+  -webkit-appearance: none;
+  padding-top: 3px !important;
+}
+.blink_me {
+  color: red;
+  -webkit-animation-name: example;
+  /* Chrome, Safari, Opera */
+  -webkit-animation-duration: 1s;
+  /* Chrome, Safari, Opera */
+  animation-name: example;
+  animation-duration: 1s;
+}
+.item-checkbox {
+  background: transparent;
+  border: none;
+  color: #fff;
+  text-align: left;
+}
+.checkbox input:checked:before, .checkbox input:checked+.checkbox-icon:before {
+  background: #46963C;
+  border-color: #46963C;
+}
+.btn-popup-onglet2 {
+  color: #FFFFFF;
+  background-color: #46963C;
+  border: 0;
+  margin-left: 6px;
+  border-radius: 5px;
+  width: 24.5%;
+  font-size: 18px;
+  padding-bottom: 9px;
+  padding-top: 11px;
+  padding-left: 11px;
+  padding-right: 11px;
+  margin-top: 19px;
+  margin-bottom: 2px;
+}
+
+/* Chrome, Safari, Opera */
+
+@-webkit-keyframes example {
+  from {
+    color: red;
+  }
+  to {
+    color: #46963C;
+  }
+}
+
+/* Standard syntax */
+
+@keyframes example {
+  from {
+    color: red;
+  }
+  to {
+    color: #46963C;
+  }
+}
+.urgency-index-global .scroll {
+  height: 100%;
+}
+.urgency-index {
+  display: table;
+  width: 100%;
+  height: 100%;
+  margin-top: 10%;
+}
+.urgency-index-container {
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.top-divider {
+  margin-top: 20%;
+  height: 1px;
+  width: 1px;
+}
+.urgency-index-row {
+  display: table;
+  height: 70px;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+}
+.urgency-extra-margin {
+  margin-top: 20px !important;
+}
+.urgency-index-col {
+  display: table-cell;
+  vertical-align: middle;
+}
+.urgency-index-footer {
+  position: fixed;
+  bottom: 18%;
+  margin: auto;
+  display: block;
+  width: 100%;
+}
+.urgency-need-help {
+  font-size: 19px;
+  color: #FFF;
+  text-decoration: underline;
+  display: block;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+.urgency-index-attachement {
+  background-attachment: fixed;
+  background-image: url(../img/tour_Efffel_nouveau_NS.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  background-position: 35% 30%;
+}
+.urgency-business-footer{
+
+  position: relative;
+  display: block;
+  width: 100%;
+  padding-top: 22px;
+  }

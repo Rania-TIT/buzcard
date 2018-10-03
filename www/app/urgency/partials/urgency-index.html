@@ -1,0 +1,39 @@
+<ion-view align-title="center" animation="slide-right-left" class="urgency-index-attachement">
+  <ion-content class="urgency-index-global" autofocus>
+    <div class="urgency-index">
+      <div class="urgency-index-container">
+        <div class="urgency-index-row">
+          <div class="urgency-index-col">
+           <div class="buttoninfoBulle" >
+            <button class="button button-full button-light btn-qrcode-scann"   ui-sref="app.urgency" >
+             {{ 'urgence.info' | translate }} 
+            </button>
+             <i class="ion-ios-information-outline iconinfobulle" ng-click="ShowinfoUrgency()"></i> 
+              <div class="info-text my-show-hide-animation" style="width:98%;margin-top: 0px;" ng-if="infoUrgency" ng-click="ShowinfoUrgency()" translate="{{ 'urgence.UrgencyInfo'}}"></div>
+            
+          </div>
+          </div>
+        </div>
+        <div class="urgency-index-row urgency-extra-margin">
+          <div class="urgency-index-col">
+           <div class="buttoninfoBulle" >
+            <button class="button button-full button-light btn-qrcode-scann" ng-click="scanBarcodeUrgency()" >
+             {{ 'urgence.flasher' | translate }}  
+            </button>
+               <i class="ion-ios-information-outline iconinfobulle" ng-click="ShowinfourgencyFlash()"></i> 
+             <div class="info-text my-show-hide-animation" style="width:98%;margin-top: 0px;" ng-if="infourgencyFlash" ng-click="ShowinfourgencyFlash()" translate="{{ 'urgence.flacherInfo'}}"></div>
+             
+          </div>
+          </div>
+        </div>
+    <div class="urgency-business-footer">
+          <p class="need-help"  ui-sref="app.commandes"> <i class="icon ion-help-circled" style="margin-right: 5px;"></i>{{'busines.needhelp' | translate }}</p>
+        </div>
+          <div class="urgency-business-footer">
+          <p class="need-help"  ng-click="tutorials()"> <i class="icon ion-help-circled"></i> {{ 'busines.tuto' | translate }} </p>
+        </div>
+
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

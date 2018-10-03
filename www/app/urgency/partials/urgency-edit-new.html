@@ -1,0 +1,658 @@
+<ion-view align-title="center" animation="slide-right-left">
+<ion-content scroll="true" class="has-footer buzcardcontainer"
+	style="background-color:#46963C"
+	ng-class="(isCusto)?'containerIsCusto':'t'">
+<div class="list">
+	<div class="edit-vcard" style="background-color: #46963C">
+		<div class="header-vcardedit" style="background-color: #46963C">
+			<img id="profil" ng-src="{{photoProfil}}"
+				src="img/photo_top_title.jpg">
+		</div>
+		<div class="capture-camera">
+			<div class="row">
+				<div class="col-80">
+					<form name="formUpload" enctype="multipart/form-data">
+						<div id="uploadImage">
+							<input style="background-color: #FFFFFF" ng-blur="blur()"
+								ng-focus="focus()" type="button" class="chooseFile"
+								value="{{ 'choseFile' | translate }}" ng-click="choseFile()" />
+							<input ng-blur="blur()" ng-focus="focus()" type="file"
+								onclick="return false;" name="photo"
+								style="background-color: #46963C">
+						</div>
+					</form>
+				</div>
+
+				<div class="col-20">
+					<a style="background-color: #46963C" class="button camera-buz"
+						ng-click="getPhoto()"></a>
+				</div>
+			</div>
+		</div>
+		<br>
+
+		<!-- section 1 -->
+		<ion-item class="item-stable"
+			ng-click="selectElement('Onglet1',$event)"> {{
+		'UrgencyEdit.Onglet1' | translate }} <i class="icon pull-right"
+			ng-class="isSelectedOnglet1 ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"
+			style="color: #FFFFFF" data-pack="default" data-tags=""></i> </ion-item>
+		<ion-item class="item-accordin no-border" ng-if="isSelectedOnglet1"
+			class="ng-hide">
+		<div class="row">
+			<div class="col urgency-edit-label label ">
+				<span translate="{{ 'UrgencyEdit.FirstName'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.first_name">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'UrgencyEdit.LastName' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.last_name" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'UrgencyEdit.sex' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.sex" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'UrgencyEdit.birthdate' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.birthday_year" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'UrgencyEdit.height' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.height" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'UrgencyEdit.weight' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.weight" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'UrgencyEdit.country' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.country" type="text">
+			</div>
+		</div>
+
+
+
+
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'Urgency.familyname1' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.familyname1" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'UrgencyEdit.familynumber1'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.familynumber1" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'Urgency.familyemail1' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.familyemail1" style="text-transform:lowercase" type="email">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label ">
+				<span translate="{{ 'Urgency.familyname2' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.familyname2" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'UrgencyEdit.familynumber2'  }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.familynumber2" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'Urgency.familyemail2' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.familyemail2" style="text-transform:lowercase" type="email">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col urgency-edit-label label">
+				<span translate="{{ 'Urgency.familyname3'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.familyname3" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.familynumber3' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.familynumber3" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'Urgency.familyemail3'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.familyemail3" style="text-transform:lowercase" type="email">
+			</div>
+		</div>
+		<!--                     <div class="row"> --> <!--                         <div class="col label urgency-edit-label"><span translate="{{ 'Urgency.doctorname' }}" class="urgency urgency-edit-span"></span></div> -->
+		<!--                         <div class="col col-73 margin-auto-0"> -->
+		<!--                             <input ng-blur="blur()" class="urgency-input-background urgency-edit-text" ng-focus="focus()" ng-model="card.doctorname"  type="text"> -->
+		<!--                         </div> --> <!--                     </div> -->
+		<!--                     <div class="row"> --> <!--                         <div class="col label urgency-edit-label"><span translate="{{ 'UrgencyEdit.doctornumber' }}" class="urgency urgency-edit-span"></span></div> -->
+		<!--                         <div class="col col-73 margin-auto-0"> -->
+		<!--                             <input ng-blur="blur()" class="urgency-input-background urgency-edit-text" ng-focus="focus()" ng-model="card.doctornumber"  type="text"> -->
+		<!--                         </div> --> <!--                     </div> -->
+		<!--                     <div class="row"> --> <!--                         <div class="col label urgency-edit-label"><span translate="{{ 'Urgency.doctoreamail' }}" class="urgency urgency-edit-span"></span></div> -->
+		<!--                         <div class="col col-73 margin-auto-0"> -->
+		<!--                             <input ng-blur="blur()" class="urgency-input-background urgency-edit-text" ng-focus="focus()" ng-model="card.doctoreamail"  type="text"> -->
+		<!--                         </div> --> <!--                     </div> -->
+
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.comment1'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<textarea ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.comment1"></textarea>
+			</div>
+		</div>
+
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.Titre1' }}"
+					class="urgency urgency-edit-span"> </span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.link_title_1"
+					placeholder="{{ 'UrgencyEdit.TitleL' | translate }}">
+			</div>
+		</div> -->
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate=" {{ 'UrgencyEdit.Link1' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.link_1"
+					placeholder="{{ 'UrgencyEdit.LinkL' | translate }}">
+			</div>
+		</div> -->
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.Titre2'}} "
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.link_title_2"
+					placeholder="{{ 'UrgencyEdit.TitleL2' | translate }}">
+			</div>
+		</div> -->
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.Link2' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.link_2"
+					placeholder="{{ 'UrgencyEdit.LinkL2' | translate }}">
+			</div>
+		</div> -->
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.Titre3' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.link_title_3"
+					placeholder="{{ 'UrgencyEdit.TitleL3' | translate }}">
+			</div>
+		</div> -->
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate=" {{ 'UrgencyEdit.Link3'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.link_3"
+					placeholder="{{ 'UrgencyEdit.LinkL3' | translate }}">
+			</div>
+		</div> -->
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.Titre4' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.link_title_4"
+					placeholder="{{ 'UrgencyEdit.TitleL4' | translate }}">
+			</div>
+		</div> -->
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.Link4'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.link_4"
+					placeholder="{{ 'UrgencyEdit.LinkL4' | translate }}">
+			</div>
+		</div> -->
+
+		</ion-item>
+
+		<!-------------------------------- SECTION 2 --------------------------------->
+
+		<ion-item class="item-stable"
+			ng-click="selectElement('Onglet2',$event)"> {{
+		'UrgencyEdit.Onglet2' | translate }} <i class="icon pull-right"
+			ng-class="isSelectedOnglet2 ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"
+			style="color: #FFFFFF" data-pack="default" data-tags=""></i> </ion-item>
+		<ion-item class="item-accordion  no-border" class="isSelectedOnglet2"
+			ng-if="isSelectedOnglet2" class="ng-hide">
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.social_welfare_number'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.social_welfare_number"
+					type="text" />
+			</div>
+		</div> -->
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.insurance'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.insurance" type="text" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.insurance_number' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.insurance_number" type="text" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.mutual' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.mutual" type="text" />
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.mutual_number'  }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.mutual_number" type="text" />
+			</div>
+		</div>
+		<!-- new field  -->
+		<!-- <div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.schedule_of_benefits'  }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.schedule_of_benefits" type="text" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.limits_and_exclusions'  }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.limits_and_exclusions" type="text" />
+			</div>
+		</div> -->
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'Urgency.doctorname' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.doctorname" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.doctornumber' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.doctornumber" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'Urgency.doctoreamail' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.doctoreamail" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.specalistenumber1'  }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.specalistenumber1" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.specalistenumber2' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.specalistenumber2" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'Urgency.antecedents' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.antecedents" type="text">
+			</div>
+		</div>
+		<div class="row" ng-show="false">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'Urgency.antecedents2'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.antecedents2" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'Urgency.pathology'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.pathology" type="text">
+			</div>
+		</div>
+		<div class="row" ng-show="false">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'Urgency.pathology2'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.pathology2" type="text">
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.treatment' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.treatment" type="text">
+			</div>
+		</div>
+		<div class="row" ng-show="false">
+			<div class="col label urgency-edit-label">
+				<span translate=" {{ 'UrgencyEdit.treatment2' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.treatment2" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.allergies' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.allergies" type="text">
+			</div>
+		</div>
+		<div class="row" ng-show="false">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.allergies2' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.allergies2" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.blood_group'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.blood_group" type="text">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'Urgency.contact_lens'  }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.contact_lens" type="text">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.organ_donation'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.organ_donation">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.first_aid'}}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.first_aid">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'Urgency.risk_sports' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<input ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" type="text" ng-model="card.risk_sports">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col label urgency-edit-label">
+				<span translate="{{ 'UrgencyEdit.comment2' }}"
+					class="urgency urgency-edit-span"></span>
+			</div>
+			<div class="col col-73 margin-auto-0">
+				<textarea ng-blur="blur()"
+					class="urgency-input-background urgency-edit-text"
+					ng-focus="focus()" ng-model="card.comment2"></textarea>
+			</div>
+		</div>
+		</ion-item>
+	</div>
+	<div class="send">
+		<button class="button button-full btn-urgency btn-buzcard btn-bottom "
+			ng-click="update(card)" menu-close>{{
+			'UrgencyEdit.Validate' | translate }}</button>
+	</div>
+
+</div>
+<br>
+<br>
+</ion-content> </ion-view>
