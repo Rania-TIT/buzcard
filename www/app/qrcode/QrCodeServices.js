@@ -653,14 +653,18 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 			          ContactsService.updateContactByField(db, "status", "not_selected", id, function() {
 			          ContactsService.updateContactByField(db, "vcardprofil", "1", id, function() {
 			          ContactsService.updateContactByField(db, "Filleul", "0", id, function() {
-			            var first_name = ($translate.use() == "fr") ? 'Photo à traiter' : "Picture to be processed" ;
-			          ContactsService.updateContactByField(db, "first_name", first_name, id, function() {
-			            ContactsService.updateContactByField(db, "date", moment().unix(), id, function() {
-			              ContactsService.updateContactByField(db, "alerteemailcreationdate", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm:ss'), id, function() {
-			            	  
-			            	  return callBack(id);
-			              });
-			              });
+			          //  var first_name = ($translate.use() == "fr") ? 'Photo à traiter' : "Picture to be processed" ;
+			          ContactsService.updateContactByField(db, "first_name", $translate.instant('loading.data'), id, function() {
+                  ContactsService.updateContactByField(db, "last_name", $translate.instant('loading.data'), id, function() {
+                      ContactsService.updateContactByField(db, "email", $translate.instant('loading.data'), id, function () {
+                          ContactsService.updateContactByField(db, "date", moment().unix(), id, function () {
+                            ContactsService.updateContactByField(db, "alerteemailcreationdate", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm:ss'), id, function () {
+
+                              return callBack(id);
+                            });
+                          });
+                    });
+                  });
 			          });//
 			          });//
 			          });//

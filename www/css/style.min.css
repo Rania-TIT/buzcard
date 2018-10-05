@@ -588,12 +588,17 @@ margin-right:-10px
   /*     cursor: pointer; */
 
   width: 25%;
-  border: 1px solid #666;
+  border: none;
   cursor: pointer;
   margin-left: 8%;
   margin-top: 6%;
+  border-radius: 10px;
 }
-
+.pictolabel{
+  margin: auto 5px auto;
+  position: relative;
+  display: block;
+  border-radius: 5px;
 }
 .vcard-infos .row .col {
   font-size: 13px;
@@ -950,17 +955,16 @@ body.keyboard-open .has-footer {
   text-decoration: initial;
 }
 .camera-buz {
-  background-image: url('../img/camera-icon-hi.png');
+  background-image: url('../img/camera-icon-hi-gris.png');
   background-position:center center;
   background-size:80%;
   background-repeat:no-repeat;
-  background-color:transparent;
+  background-color: transparent;
   border:none;
   box-shadow:none;
-  min-width: 44px;
+  min-width: 40px;
   min-height: 29px;
   float: right;
-  margin-top: -1px;
 }
 .Name_Item {
   font-size:15px !important;
@@ -1754,9 +1758,9 @@ span.firstLastBuz {
   font-size: 24px;
   text-align: center;
   background: #000;
-  padding: 13px;
+  padding: 5px;
   opacity: 0.7;
-  line-height: 30px;
+  line-height: 26px;
 }
 .contact-show-nous-saisirons {
   color: #FFF;

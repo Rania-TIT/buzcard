@@ -518,8 +518,8 @@
    "Multi.noEvent" : "Votre adresse email ne figure dans acun évènement partenaire",
    "BuzcardSend.successSendSMS":"Le lien de votre buzcard on-line a bien été envoyé au <a> {{phone}}</a>. <br> (au tarif en vigueur de votre opérateur mobile)",
    "BuzcardSend.errorSendSMS":"Le SMS n'a pas été envoyé.",
-    "ContactShow.nousSaisirons" : "Les numéros reconnus vous seront envoyés.",
-  "ContactShow.photographier": "Photographiez sa carte.",
+    "ContactShow.nousSaisirons" : "Les coordonnées seront reconnues puis manuellement vérifiées dans les 24h.",
+  "ContactShow.photographier": "Photographiez sa carte de visite",
   "ContactShow.photographier2":"",
   "ContactEdit.deleteContact":"Cette fiche a bien été supprimée de votre compte Buzcard.",
   "OfflineQRcodeNoContact":"La fiche \"vivante\" de ce contact va apparaître dans l'app <br/> (rdv dans Réglages pour la voir copiée dans votre répertoire mobile).",
@@ -626,7 +626,9 @@
   "Buzward.checkbox2Msg":"Vos 2 contacts vont recevoir un email avec leurs fiches respectives.",
   "popupBuz.ButtonSend":"Lui envoyer votre fiche",
   "business.waiting":"Une synchronisation serveur a été lancée.<br><br>Merci de patienter..",
-  "SendQRcode":"Votre interlocuteur recevra votre fiche \"vivante\" dans quelques minutes."
+  "SendQRcode":"Votre interlocuteur recevra votre fiche \"vivante\" dans quelques minutes.",
+  "loading.data": "En cours de traitement...",
+  "ContactEdit.Enregistrer2": "Enregistrer cette fiche"
   
 
 

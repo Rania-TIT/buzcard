@@ -1,24 +1,29 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>buzcard</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+<widget id="fr.buzcard.buzcard" version="3.4.6" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Buzcard</name>
+    <description>
+    Buzcard mobile application
+  </description>
+    <author email="contact@buzcard.fr" href="http://www.buzcard.fr/">
+    BUZCARD
+  </author>
     <content src="index.html" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-    <preference name="ScrollEnabled" value="false" />
-    <preference name="android-minSdkVersion" value="16" />
+    <access launch-external="yes" origin="*" />
+    <allow-navigation href="*" />
+    <allow-intent href="*" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="UIWebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
     <preference name="BackupWebStorage" value="none" />
-    <preference name="SplashMaintainAspectRatio" value="true" />
-    <preference name="FadeSplashScreenDuration" value="300" />
-    <preference name="SplashShowOnlyFirstTime" value="false" />
+    <preference name="android-minSdkVersion" value="16" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="Fullscreen" value="false" />
+    <preference name="SplashScreenDelay" value="1000" />
+    <preference name="FadeSplashScreen" value="false" />
+    <preference name="orientation" value="portrait" />
+    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -41,6 +46,31 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+        <plugin name="cordova-custom-config" version="*" />
+        <config-file parent="NSLocationAlwaysUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Nous avons besoin de l'accès à votre localisation afin d'indiquer dans la fiche de chaque contact, le lieu où vous lui avez envoyé votre buzcard.</string>
+        </config-file>
+        <config-file parent="NSLocationWhenInUseUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Nous avons besoin de l'accès à votre localisation afin d'indiquer dans la fiche de chaque contact, le lieu où vous lui avez envoyé votre buzcard.</string>
+        </config-file>
+        <config-file parent="NSCalendarsUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Chaque date de rappel indiquée dans l'app sera ainsi automatiquement inscrite dans votre agenda.</string>
+        </config-file>
+        <config-file parent="NSBluetoothPeripheralUsageDescription" platform="ios" target="*-Info.plist">
+            <string>BluetoothPeripheralUsageDescription</string>
+        </config-file>
+        <config-file parent="NSMicrophoneUsageDescription" platform="ios" target="*-Info.plist">
+            <string>MicrophoneUsageDescription</string>
+        </config-file>
+        <config-file parent="NSPhotoLibraryUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Vous pourrez ainsi sélectionner votre photo de profil ou des photos de cartes de visite à traiter.</string>
+        </config-file>
+        <config-file parent="NSCameraUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Vous pourrez ainsi photographier les cartes de vos interlocuteurs dont les numéros seront reconnus par nos soins, et flasher les QR codes de votre choix.</string>
+        </config-file>
+        <config-file parent="NSContactsUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Chaque nouvelle fiche-contact créée dans l'app sera ainsi systématiquement copiée dans votre répertoire mobile.</string>
+        </config-file>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -76,50 +106,30 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
-    <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
-    <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
-    <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
-    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <plugin name="cordova-plugin-android-permissions" spec="1.0.0" />
-    <plugin name="cordova-plugin-background-mode" spec="0.7.2" />
-    <plugin name="cordova-plugin-app-version" spec="0.1.9" />
-    <plugin name="cordova-plugin-console" spec="1.1.0" />
+    <plugin name="cordova-plugin-whitelist" spec="~1.3.3" />
+    <plugin name="cordova-plugin-statusbar" spec="~2.4.2" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
-    <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
-    <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
-    <plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.3.6">
-        <variable name="GOOGLE_PLAY_SERVICES_VERSION" value="11+" />
-        <variable name="ANDROID_SUPPORT_LIBRARY_VERSION" value="23+" />
-        <variable name="ICON" value="@mipmap/icon" />
-        <variable name="SMALL_ICON" value="@mipmap/icon" />
-        <variable name="ACCOUNT_NAME" value="@string/app_name" />
-        <variable name="ACCOUNT_LABEL" value="@string/app_name" />
-        <variable name="ACCOUNT_TYPE" value="$PACKAGE_NAME.account" />
-        <variable name="CONTENT_AUTHORITY" value="$PACKAGE_NAME" />
-        <variable name="ALWAYS_USAGE_DESCRIPTION" value="This app always requires location tracking" />
-    </plugin>
-    <plugin name="cordova-plugin-nativeaudio" spec="3.0.9" />
-    <plugin name="cordova-sqlite-storage" spec="0.7.11" />
-    <plugin name="cordova-plugin-file" spec="4.3.3" />
-    <plugin name="cordova-plugin-file-transfer" spec="1.5.1" />
-    <plugin name="cordova-plugin-buildinfo" spec="2.0.2" />
-    <plugin name="cordova-custom-config" spec="5.0.2" />
-    <plugin name="cordova.plugins.diagnostic" spec="3.1.1" />
-    <plugin name="cordova-plugin-camera" spec="2.4.1">
-        <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
-    </plugin>
-    <plugin name="cordova-plugin-compat" spec="1.2.0" />
-    <plugin name="cordova-plugin-contacts" spec="2.1.0" />
-    <plugin name="cordova-plugin-calendar" spec="4.5.1" />
-    <plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/phonegap/phonegap-plugin-barcodescanner.git" />
-    <plugin name="cordova-plugin-crosswalk-webview" spec="2.4.0">
-        <variable name="XWALK_VERSION" value="23+" />
-        <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+" />
-        <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect" />
-        <variable name="XWALK_MODE" value="embedded" />
-        <variable name="XWALK_MULTIPLEAPK" value="true" />
-    </plugin>
+    <plugin name="cordova-plugin-splashscreen" spec="~5.0.2" />
+    <plugin name="cordova-plugin-android-permissions" spec="~1.0.0" />
+    <plugin name="cordova-plugin-background-mode" spec="~0.7.2" />
+    <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
+    <plugin name="cordova-plugin-console" spec="~1.1.0" />
+    <plugin name="cordova-plugin-geolocation" spec="~4.0.1" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~3.0.0" />
+    <plugin name="cordova-plugin-mauron85-background-geolocation" spec="~2.3.6" />
+    <plugin name="cordova-plugin-nativeaudio" spec="~3.0.9" />
+    <plugin name="cordova-plugin-file" spec="~4.3.3" />
+    <plugin name="cordova-plugin-file-transfer" spec="~1.5.1" />
+    <plugin name="cordova-plugin-buildinfo" spec="~2.0.2" />
+    <plugin name="cordova-custom-config" spec="~5.0.2" />
+    <plugin name="cordova.plugins.diagnostic" spec="~3.1.1" />
+    <plugin name="cordova-plugin-camera" spec="~2.4.1" />
+    <plugin name="cordova-plugin-contacts" spec="~2.1.0" />
+    <plugin name="cordova-plugin-calendar" spec="~4.5.1" />
+    <plugin name="cordova-plugin-crosswalk-webview" spec="~2.4.0" />
+    <plugin name="phonegap-plugin-barcodescanner" spec="~6.0.8" />
+    <plugin name="cordova-sqlite-storage" spec="^0.7.11" />
+    <plugin name="cordova-sms-plugin" spec="https://github.com/cordova-sms/cordova-sms-plugin.git" />
     <engine name="android" spec="6.2.3" />
-    <engine name="ios" spec="4.5.5" />
+    <engine name="ios" spec="^4.5.5" />
 </widget>

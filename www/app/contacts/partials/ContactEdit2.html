@@ -6,20 +6,26 @@
     <ion-content scroll="true" class="has-footer buzcardcontainer contactContent" >
   
         <div class="list">
-          <div ng-if="imageExist" class="block-text-contact" ng-click="getPhoto()">
-            <p class="contact-show-photographier" >
+
+          <div ng-if="imageExist" class="block-text-contact" style=" transform: translateY(60px);-webkit-transform: translateY(60px);" ng-click="getPhoto()">
+            <p class="contact-show-photographier" style="background:none;color:#999;font-size: 20px;padding:5px">
                {{ "ContactShow.photographier"| translate}} <br>
                 {{ "ContactShow.photographier2"| translate}}
             </p>
-<!--             <p class="contact-show-nous-saisirons" > -->
-<!--                {{ "ContactShow.nousSaisirons"| translate}} -->
-<!--             </p> -->
+             <p class="contact-show-photographier" style="background:none;color:#999;font-size: 16px;margin-top: 10px; padding-top:5px">
+               {{ "ContactShow.nousSaisirons"| translate}}
+            </p>
+
           </div>
-            <div class="edit-vcard" style="background-color:#cac4c4">
-                <div class="header-vcardedit" style="padding-top:25px;">
-                    <img class="photo-slider" ng-src="{{photoProfil}}" >
+            <div class="edit-vcard" style="background-color:#FFFFFF">
+              <div class="header-vcardedit header-contactInfo">
+
+                <div class="center-slider">
+               <!-- <div class="header-vcardedit" style="padding-top:25px;"> -->
+                    <img class="photo-slider" ng-if="photoProfil != 'img/photocontact.png'" ng-src="{{photoProfil}}" >
                 </div>
-                <div class="capture-camera">
+              </div>
+                <div class="capture-camera" >
                     <div class="row">
                         <div class="col-80">
                             <form name="formUpload" enctype="multipart/form-data">
@@ -35,12 +41,12 @@
                         </div>
                     </div>
                 </div>
-               
+
                <ion-item class="item-accordion edit-ctc" >
                  <div class="row">
                         <div class="col label labelcontact"><span>{{ 'ContactEdit.Email' | translate }}</span></div>
                         <div class="col col-75 contact-value">
-                          <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.email"  style="text-transform:lowercase"  type="email" >
+                          <input ng-blur="blur()" ng-focus="focus()" ng-model="contact.email"  type="text" >
 <!--                            <span><a  style=" white-space: pre-line;overflow: auto;color:#777;">{{contact.email | toFormatEmail }}</a></span> -->
                         </div>
                     </div>
@@ -161,9 +167,9 @@
 
 
             </div>
-        
-		 <a class=" button button-full button-light btn-buzcard btn-bottom" style="width:284px !important" ng-if="fromState !='app.buzcardSend'" href="javascript:void(0)" ng-click="sendBuz(contact)"    menu-close>{{ 'ContactEdit.Send' | translate }}</a>
-		<div class="deleteDiv">
+          <a class=" button button-full button-light btn-buzcard btn-bottom" style="width:284px !important"  href="javascript:void(0)" ng-click="updateContact(contact)"    menu-close>{{ 'ContactEdit.Enregistrer2' | translate }}</a>
+          <a class=" button button-full button-light btn-buzcard btn-bottom" style="width:284px !important" ng-if="fromState !='app.buzcardSend'" href="javascript:void(0)" ng-click="sendBuz(contact)"    menu-close>{{ 'ContactEdit.Send' | translate }}</a>
+		 	<div class="deleteDiv">
 				<a class="deleteLink" href="javascript:void(0)" menu-close ng-click="deleteContact(contact)">
 					{{ 'ContactEdit.delete' | translate }}
 				</a>

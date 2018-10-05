@@ -516,8 +516,8 @@
 "Multi.noEvent" : "Your email address can't be find in any Buzcard event.",
 "BuzcardSend.successSendSMS":"The link to your buzcard online has been sent to <a>{{phone}}</a>. <br> (at the current rate of your mobile operator)",
 "BuzcardSend.errorSendSMS":"Your TEXT hasn't been sent.",
-"ContactShow.nousSaisirons" : "Keying the content in your buzcard account is on us.",
-"ContactShow.photographier": "Take a picture of",
+"ContactShow.nousSaisirons" : "Details will be recognized then humanly checked within 24h.",
+"ContactShow.photographier": "Take a picture of his/her business card",
 "ContactShow.photographier2" :"",
 "ContactEdit.deleteContact":"This contact has been deleted from your Buzcard account.",
 "OfflineQRcode":"Insufficient or sturated network.<br>Ths buzer info will be recorded once the network will be back.",
@@ -627,7 +627,9 @@
   "OfflineQRcodeNoContact":"This contact info will be recorded in the app <br> (Go to your Phone Settings to have it also copied in your address book).",
   "OfflineQRcodeContact":"This contact info will be recorded in the app AND in your address book.",
   "business.waiting":"A server synchronization has been started.<br><br>Please wait ...",
-  "popupBuz.ButtonSend":"Send my contact info"
+  "popupBuz.ButtonSend":"Send my contact info",
+  "loading.data": "Process pending...",
+  "ContactEdit.Enregistrer2": "Save this card"
  
 
 

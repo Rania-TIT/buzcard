@@ -1727,7 +1727,11 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
                     var contactFromDB = result.rows.item(0);
                     //update
                    // updateContactInfoDateModification(db, contacts[i], function() {
-
+                      //updateRappel
+          if(contacts[i].rendez_vous != '')
+                  createAgendaRDV(db, contacts[i], toTimeStamp(contacts[i].rendez_vous), function(result) {
+                  });
+                  //endupdateRappel
                                 if (contacts[i].list.indexOf('Import') != -1) {
                                 	UpdateRepertoire(db, i + 1, total, contacts, callBack);
                                 } else {
@@ -1742,6 +1746,9 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
                                     });
                                 }
                 }else{
+                  if(contacts[i].rendez_vous != '')
+                    createAgendaRDV(db, contacts[i], toTimeStamp(contacts[i].rendez_vous), function(result) {
+                    });
                 	 if (contacts[i].list.indexOf('Import') != -1) {
                      	UpdateRepertoire(db, i + 1, total, contacts, callBack);
                      } else {
@@ -1765,7 +1772,9 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
                 if (result.rows.length > 0) {
                     var contactFromDB = result.rows.item(0);
                     //update
-
+                  if(contacts.rendez_vous != '')
+                    createAgendaRDV(db, contacts, toTimeStamp(contacts.rendez_vous), function(result) {
+                    });
                                 if (contacts.list.indexOf('Import') != -1) {
                                 	UpdateRepertoire(db, i + 1, total, contacts, callBack);
                                 } else {
@@ -1780,6 +1789,9 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
                                     });
                                 }
                 }else{
+                  if(contacts.rendez_vous != '')
+                    createAgendaRDV(db, contacts, toTimeStamp(contacts.rendez_vous), function(result) {
+                    });
                 	 if (contacts.list.indexOf('Import') != -1) {
                      	UpdateRepertoire(db, i + 1, total, contacts, callBack);
                      } else {
@@ -2433,8 +2445,7 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 
 		cordova.plugins.diagnostic.requestCalendarAuthorization(function(status){
 			   if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED){
-			       console.log("Calendar use is authorized");
-
+			       console.log(contact);
 
         var comment = "";
 		   var libele_nom =  ""; //"Rappel Buzcard: recontacter "+contact.email+", rencontré le "+$filter('toFrFormat')(contact.alerteemailcreationdate) +"  "+ $filter('toTiret')(contact.meeting_point) +". "

@@ -1,7 +1,7 @@
 appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServices', 'BuzcardService', 'ContactsService', 'LoadingService', '$rootScope',
-    'cameraService', 'MenuService', '$timeout', '$translate', 'UrgencyService', '$translate', 'QrCodeServices', 'BuzwardService', '$cordovaFile', '$state',
+    'cameraService', 'MenuService', '$timeout', '$translate', 'UrgencyService', '$translate', 'QrCodeServices', 'BuzwardService', '$cordovaFile', '$state', '$filter',
     function (LoginService, $http, SynchroServices, BuzcardService, ContactsService, LoadingService, $rootScope, cameraService, MenuService, $timeout, $translate,
-              UrgencyService, $translate, QrCodeServices, BuzwardService, $cordovaFile, $state) {
+              UrgencyService, $translate, QrCodeServices, BuzwardService, $cordovaFile, $state, $filter) {
 
 
         /**
@@ -184,7 +184,6 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                             if (remoteContact[key] != localContact[key])
                                                                 contactObj[key] = localContact[key];
 
-                                                        delete contactObj.rendez_vous;
                                                         delete contactObj.id;
                                                         delete contactObj.date;
                                                         delete contactObj.photofilelocation;
@@ -267,7 +266,6 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                         if (remoteContact[key] != localContact[key])
                                                             contactObj[key] = localContact[key];
 
-                                                    delete contactObj.rendez_vous;
                                                     delete contactObj.id;
                                                     delete contactObj.date;
                                                     delete contactObj.photofilelocation;
@@ -439,6 +437,8 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             delete contactAfterClean.modificationdate;
                             delete contactAfterClean.photofilelocation;
                             delete contactAfterClean.alerteemailcreationdate;
+                            if(contactAfterClean.rendez_vous)
+                            contactAfterClean.rendez_vous = $filter('toEnFormat')(contactAfterClean.rendez_vous);
 
                             console.warn("***************contact after clean******");
                             console.warn(JSON.stringify(contactAfterClean));
@@ -536,7 +536,6 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                                     if (contactServer[key] != contactLocal[key])
                                                                         contactObj[key] = contactLocal[key];
 
-                                                                delete contactObj.rendez_vous;
                                                                 delete contactObj.id;
                                                                 delete contactObj.date;
                                                                 delete contactObj.photofilelocation;
@@ -551,7 +550,11 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                                 delete contactObj.vcardprofil;
                                                                 delete contactObj.Filleul;
                                                                 delete contactObj.Link_CardOnline;
-                                                                /** end **/
+
+                                                              if(contactObj.rendez_vous)
+                                                                contactObj.rendez_vous = $filter('date')(new Date(contactObj.rendez_vous * 1000), 'dd/MM/yyyy');
+
+                                                              /** end **/
                                                                 console.log("********* contactObj::à Envoyer au serveur ***********");
                                                                 console.log(contactObj);
                                                                 //creer les requetes CONTACTEDIT
@@ -727,7 +730,15 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                     execReq(db, callBack);
                                 });
                             }, function () {
+                              if ($rootScope.contactPhoto > 2) {
+                                $rootScope.contactPhoto = 0;
+                                SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                  execReq(db, callBack);
+                                });
+                              } else {
+                                $rootScope.contactPhoto = $rootScope.contactPhoto + 1;
                                 execReq(db, callBack);
+                              }
                             });
                             break;
 
@@ -738,7 +749,15 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                     execReq(db, callBack);
                                 });
                             }, function () {
+                              if ($rootScope.contactDelete > 2) {
+                                $rootScope.contactDelete = 0;
+                                SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                  execReq(db, callBack);
+                                });
+                              } else {
+                                $rootScope.contactDelete = $rootScope.contactDelete + 1;
                                 execReq(db, callBack);
+                              }
                             });
 
                             break;
@@ -951,7 +970,6 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                             if (contactServer[key] != contactLocal[key])
                                                                 contactObj[key] = contactLocal[key];
 
-                                                        delete contactObj.rendez_vous;
                                                         delete contactObj.id;
                                                         delete contactObj.date;
                                                         delete contactObj.photofilelocation;
@@ -968,6 +986,9 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                         delete contactObj.vcardprofil;
                                                         delete contactObj.Filleul;
                                                         /** end **/
+                                                        if(contactObj.rendez_vous)
+                                                        contactObj.rendez_vous = $filter('date')(new Date(contactObj.rendez_vous * 1000), 'MM/dd/yyyy');
+
                                                         if (!isEmpty(contactObj)) {
                                                             ContactsService.updateContactServer(0, contactServer.id, contactObj, function () {
 

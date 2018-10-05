@@ -19,8 +19,17 @@ var appContext = angular.module('appContext', ['ionic', 'ngCordova', 'ngIOS9UIWe
         /**
          *
          */
-
+        $ionicPlatform.registerBackButtonAction(function (event) {
+          event.preventDefault();
+          if ($state.current.name == "app.qrcode") {
+            // do something for this state
+          } else {
+            navigator.app.backHistory();
+          }
+          //alert("back button action handler");
+        }, 999);
         $ionicPlatform.ready(function () {
+
             setTimeout(function () {
                 if (window.cordova) {
                     navigator.splashscreen.hide();
@@ -637,7 +646,22 @@ var appContext = angular.module('appContext', ['ionic', 'ngCordova', 'ngIOS9UIWe
         return function (htmlCode) {
             return $sce.trustAsHtml(htmlCode);
         };
-    }]);
+    }]).filter("toEnFormat", function(){
+      return function (input) {
+        var result = "";
+        input = input || "";
+
+        try {
+          var array1 = input.split("/");
+          return array1[1]+'/'+array1[0]+'/'+array1[2]
+        }catch (e) {
+
+          return input
+
+        }
+
+      }
+  });
 
 /**
  * special character escape

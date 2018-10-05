@@ -69,7 +69,7 @@
                               <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail !=''">{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
                                   <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail ==''" >{{item.alerteemailcreationdate | toFrFormat}} {{item.meeting_point | toTiret   }}</p>
 
-                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape  }}</span>
+                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0  && item.last_name != item.phone_2">{{item.last_name  |escape  }}</span>
                               <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.email.length > 0" >{{ item.email }}</h4>
                                <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4>
                            <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0" >{{ item.phone_2 }}</h4>
@@ -98,10 +98,10 @@
                               <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail !=''">{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
                                   <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail ==''" >{{item.alerteemailcreationdate | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
 
-                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape  }}</span>
+                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0 && item.last_name != item.phone_2">{{item.last_name  |escape  }}</span>
                               <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.email.length > 0" >{{ item.email }}</h4>
                                <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4>
-                           <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0" >{{ item.phone_2 }}</h4>
+                           <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0 && item.phone_2 != item.last_name" >{{ item.phone_2 }}</h4>
                          </a>
                         <!-- fin-->
                     </ion-item>
@@ -144,7 +144,7 @@
                                   <p  class="paragraphe_Item" ng-class="(itemx.email.length ==0 && itemx.phone_1.length==0 && itemx.phone_2.length==0 && itemx.last_name.length ==0 && itemx.first_name.length ==0) ? 'itemShort': ''" ng-if="itemx.lastsendemail !=''">{{itemx.lastsendemail | toFrFormat}} {{itemx.meeting_point | toTiret   }}</p>
                                   <p  class="paragraphe_Item" ng-class="(itemx.email.length ==0 && itemx.phone_1.length==0 && itemx.phone_2.length==0 && itemx.last_name.length ==0 && itemx.first_name.length ==0) ? 'itemShort': ''" ng-if="itemx.lastsendemail ==''" >{{itemx.alerteemailcreationdate | toFrFormat}} {{itemx.meeting_point | toTiret   }}</p>
 
-                                <span class="Name_Item" ng-if="itemx.first_name.length > 0" >{{itemx.first_name  |escape }}</span> <span class="Name_Item" ng-if="itemx.last_name.length > 0">{{itemx.last_name  |escape  }}<span ng-if="item.last_name.length > 13">...</span></span>
+                                <span class="Name_Item" ng-if="itemx.first_name.length > 0" >{{itemx.first_name  |escape }}</span> <span class="Name_Item" ng-if="itemx.last_name.length > 0  && item.last_name != item.phone_2">{{itemx.last_name  |escape  }}<span ng-if="item.last_name.length > 13  && item.last_name != item.phone_2">...</span></span>
 								  <h4 ng-class=" ( itemx.first_name.length > 0 &&   itemx.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="itemx.email.length > 0" >{{ itemx.email }}</h4>
                                <h4 ng-class=" ( itemx.first_name.length > 0 &&   itemx.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="itemx.phone_1.length > 0 && itemx.email.length ==0" >{{ itemx.phone_1 }}</h4>
                               <h4 ng-class=" ( itemx.first_name.length > 0 &&   itemx.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="itemx.phone_1.length == 0 && itemx.email.length ==0 && itemx.phone_2.length >0" >{{ itemx.phone_2 }}</h4>
@@ -343,7 +343,7 @@
                         <a class="item item-avatar" href="#/app/contactShow/{{filleuls.items[$index].id}}"    ng-if="!filleuls.empty">
                             <img ng-class=" ( (item.first_name.length > 0 && item.email.length >0) ||  (item.last_name.length > 0 && item.email.length >0) || (item.first_name.length > 0 && item.phone_1.length >0) ||  (item.last_name.length > 0 && item.phone_1.length >0) || (item.first_name.length > 0 && item.phone_2.length >0) ||  (item.last_name.length > 0 && item.phone_2.length >0)) ? 'itemLarge' : ''"  ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  >
                               <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" >{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
-                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0">{{item.last_name  |escape  }}</span>
+                               <span class="Name_Item" ng-if="item.first_name.length > 0" >{{item.first_name  | escape }}&nbsp;</span><span class="Name_Item" ng-if="item.last_name.length > 0  && item.last_name != item.phone_2">{{item.last_name  |escape  }}</span>
                               <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.email.length > 0" >{{ item.email }}</h4>
                                <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length > 0 && item.email.length ==0" >{{ item.phone_1 }}</h4>
                            <h4 ng-class=" ( item.first_name.length > 0 &&   item.last_name.length > 0) ? 'nothiing' : 'paragraphe_h6'" ng-if="item.phone_1.length == 0 && item.email.length ==0 && item.phone_2.length >0" >{{ item.phone_2 }}</h4>
@@ -375,9 +375,9 @@
               <button class="button button-full button-light btn-qrcode-scann"  ng-click="createContact()" menu-close >
                    {{ 'contactList.AddContact' | translate }}
                 </button>
-                 <i class="ion-ios-information-outline iconinfobulle" ng-click="ShowinfoContact()" ></i> 
+                 <i class="ion-ios-information-outline iconinfobulle" ng-click="ShowinfoContact()" ></i>
              <div class="info-text my-show-hide-animation" style="width:98%;margin-top: 0px;" ng-if="infoContact" ng-click="ShowinfoContact()"  translate="{{ 'contactList.ContactInfo' }}"></div>
-            
+
           </div>
           </div>
         </div>

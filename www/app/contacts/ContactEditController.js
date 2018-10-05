@@ -183,7 +183,7 @@ appContext.controller("ContactEditController", [
 
           $rootScope.oldRDV = result.rows.item(0).rendez_vous;
           // Use the picker object directly.
-
+            console.error(result.rows.item(0).rendez_vous)
           if (result.rows.item(0).rendez_vous && result.rows.item(0).rendez_vous != "NaN") {
         	  var picker = $('#dateX').pickadate('picker');
             $scope.contact.rendez_vous = $filter('date')(new Date(result.rows.item(0).rendez_vous * 1000), 'dd/MM/yyyy');
@@ -236,7 +236,7 @@ appContext.controller("ContactEditController", [
       else
         contact.rendez_vous = $('#dateX').val();
       $scope.contact = contact;
-
+  console.error($scope.contact)
       //cas de nouveau groupe & le champ est vide
       if (document.querySelector('#newGroupeName').value == "" && $scope.contact.list == $translate.instant('ContactEdit.NewGrp')) {
         LoadingService.error($translate.instant('ContactEdit.Msg1'), "ContactEditController");
@@ -324,6 +324,7 @@ appContext.controller("ContactEditController", [
 
         $rootScope.contactObj = contactObj;
         // LoadingService.loading($translate.instant('ContactEdit.Msg4'));
+        if(contact.email != $translate.instant('loading.data') && contact.first_name != $translate.instant('loading.data') && contact.last_name != $translate.instant('loading.data'))
         if ($rootScope.opened) {
           LoadingService.loading($translate.instant('LoadingSynchroCalender'));
 
@@ -365,8 +366,8 @@ appContext.controller("ContactEditController", [
 
             var contactObjx = {};
             for (var key in tmpContact)
-              if (contact[key] != tmpContact[key])
-                contactObjx[key] = addSlashes(contact[key]);
+              if ($scope.contact[key] != tmpContact[key])
+                contactObjx[key] = addSlashes($scope.contact[key]);
 
             delete contactObjx.id;
             delete contactObjx.date;
@@ -390,7 +391,7 @@ appContext.controller("ContactEditController", [
 
                     LoadingService.dismiss();
 
-                    if (!areTheSame($rootScope.tmpContact, contact))
+                    if (!areTheSame($rootScope.tmpContact, $scope.contact))
                       MenuService.setLocalStorage('ReloadContactList', 1);
                     LoadingService.dismiss();
 
@@ -444,7 +445,7 @@ appContext.controller("ContactEditController", [
                 } else {
                   // LoadingService.dismiss();
                   //
-                  if (!areTheSame($rootScope.tmpContact, contact))
+                  if (!areTheSame($rootScope.tmpContact, $scope.contact))
                     MenuService.setLocalStorage('ReloadContactList', 1);
                   // LoadingService.dismiss();
 
@@ -507,7 +508,7 @@ appContext.controller("ContactEditController", [
                 //
             	  console.log('request inserted '+JSON.stringify(contactObjx));
             	  console.log('from state '+$rootScope.fromState);
-                if (!areTheSame($rootScope.tmpContact, contact))
+                if (!areTheSame($rootScope.tmpContact, $scope.contact))
                   MenuService.setLocalStorage('ReloadContactList', 1);
                 // LoadingService.dismiss();
 
@@ -559,7 +560,7 @@ appContext.controller("ContactEditController", [
               });
             } else {
               // LoadingService.dismiss();
-              if (!areTheSame($rootScope.tmpContact, contact))
+              if (!areTheSame($rootScope.tmpContact, $scope.contact))
                 MenuService.setLocalStorage('ReloadContactList', 1);
               //LoadingService.dismiss();
               if ($rootScope.fromState == "app.buzcardSend") {
@@ -1307,10 +1308,10 @@ appContext.controller("ContactEditController", [
           //  });
         });
       } else {
-        if (!validateEmail(contact.email) && contact.email != "") {
+        if (!validateEmail(contact.email) && contact.email != "" && contact.email != $translate.instant('loading.data')) {
           LoadingService.error($translate.instant('ContactEdit.EmailIncorrect'), "ContactEditController");
         } else {
-          contact.email = contact.email.toLowerCase();
+      //    contact.email = contact.email.toLowerCase();
           $rootScope.contact = contact;
 
           //                checkExistEmail(contact.email, contact.id, function(exist){
