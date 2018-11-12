@@ -37,7 +37,7 @@ var appContext = angular.module('appContext', ['ionic', 'ngCordova', 'ngIOS9UIWe
             }, 100);
             if (window.cordova) {
                 if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-                    cordova.plugins.backgroundMode.setDefaults({text: ''});
+                    cordova.plugins.backgroundMode.setDefaults({silent: true});
                 } else {
                     cordova.plugins.backgroundMode.setDefaults({text: ''});
                 }

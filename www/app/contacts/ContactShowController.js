@@ -113,9 +113,7 @@ appContext.controller("ContactShowController", [
         	}
           /*******  show cut link  ******/
           console.warn($scope.contact.vcardprofil);
-          if ($scope.contact.vcardprofil.length == 0){
-              $scope.showCutLink =  false;
-          }else if(parseInt($scope.contact.vcardprofil) > 0 && $scope.contact.status == 'selected'){
+          if($scope.contact.status == 'selected'){
               $scope.showCutLink =  true;
           }else if($scope.contact.vcardprofil == -1) {
               $scope.showCutLink =  false;
@@ -698,7 +696,7 @@ appContext.controller("ContactShowController", [
           }, function(result) {
              ContactsService.updateContactByField(db,"vcardprofil","-1", contact_id,function(){
             	 ContactsService.updateContactByField(db,"status", "not_selected", contact_id,function(){
-            	 
+                 MenuService.setLocalStorage('ReloadContactList', 1);
                LoadingService.dismiss()
                $state.go('app.contactList');
             	 });

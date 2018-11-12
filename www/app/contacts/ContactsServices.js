@@ -1618,6 +1618,7 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
 
         //ca ou il y a plusieurs contacts
         if (contacts instanceof Array) {
+          console.error(contacts[i])
             getContactbyId(db, contacts[i].id, function(result) {
               // cas ou le contact déja exist
                 if (result.rows.length > 0) {
@@ -1625,6 +1626,8 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
                     //update
                     updateContactInfoDateModification(db, contacts[i], function() {
 
+                      createAgendaRDV(db, contacts[i], toTimeStamp(contacts[i].rendez_vous), function(result) {
+                      });
                         if (contacts[i].email == '') {
                             updateContactByField(db, "status", "cant_be_selected", contacts[i].id, function() {
 
@@ -1645,7 +1648,8 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
                   // cas d'un nouveau contact
                 } else {
                     insertIntoContactsTable(db, contacts[i], function() {
-
+                      createAgendaRDV(db, contacts[i], toTimeStamp(contacts[i].rendez_vous), function(result) {
+                      });
                         if (contacts[i].email == '') {
                             updateContactByField(db, "status", "cant_be_selected", contacts[i].id, function() {
 
@@ -1666,11 +1670,14 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
 
         //ca ou il y a un seul contact
         } else {
+          console.error(contacts)
             getContactbyId(db, contacts.id, function(result) {
                 // contact existe déja
                 if (result.rows.length > 0) {
                     var contactFromDB = result.rows.item(0);
                     //update
+                  createAgendaRDV(db, contacts, toTimeStamp(contacts.rendez_vous), function(result) {
+                  });
                     updateContactInfoDateModification(db, contacts, function() {
                         if (contacts.email == '') {
                             updateContactByField(db, "status", "cant_be_selected", contacts.id, function() {
@@ -1691,6 +1698,8 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
                 } else {
                     //insert
                     insertIntoContactsTable(db, contacts, function() {
+                      createAgendaRDV(db, contacts, toTimeStamp(contacts.rendez_vous), function(result) {
+                      });
                         if (contacts.email == '') {
                             updateContactByField(db, "status", "cant_be_selected", contacts.id, function() {
 
@@ -1728,9 +1737,7 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
                     //update
                    // updateContactInfoDateModification(db, contacts[i], function() {
                       //updateRappel
-          if(contacts[i].rendez_vous != '')
-                  createAgendaRDV(db, contacts[i], toTimeStamp(contacts[i].rendez_vous), function(result) {
-                  });
+
                   //endupdateRappel
                                 if (contacts[i].list.indexOf('Import') != -1) {
                                 	UpdateRepertoire(db, i + 1, total, contacts, callBack);
@@ -1746,9 +1753,6 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
                                     });
                                 }
                 }else{
-                  if(contacts[i].rendez_vous != '')
-                    createAgendaRDV(db, contacts[i], toTimeStamp(contacts[i].rendez_vous), function(result) {
-                    });
                 	 if (contacts[i].list.indexOf('Import') != -1) {
                      	UpdateRepertoire(db, i + 1, total, contacts, callBack);
                      } else {
@@ -1772,9 +1776,6 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
                 if (result.rows.length > 0) {
                     var contactFromDB = result.rows.item(0);
                     //update
-                  if(contacts.rendez_vous != '')
-                    createAgendaRDV(db, contacts, toTimeStamp(contacts.rendez_vous), function(result) {
-                    });
                                 if (contacts.list.indexOf('Import') != -1) {
                                 	UpdateRepertoire(db, i + 1, total, contacts, callBack);
                                 } else {
@@ -1789,9 +1790,6 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
                                     });
                                 }
                 }else{
-                  if(contacts.rendez_vous != '')
-                    createAgendaRDV(db, contacts, toTimeStamp(contacts.rendez_vous), function(result) {
-                    });
                 	 if (contacts.list.indexOf('Import') != -1) {
                      	UpdateRepertoire(db, i + 1, total, contacts, callBack);
                      } else {
@@ -2917,14 +2915,14 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
        * get address with gps position
        */
       var geolocalicationAdress = function (db, contact, callBack){
-//       	cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
-//       		console.log(status);
+
+        cordova.plugins.diagnostic.requestRuntimePermission(function(status){
+       		console.log(status);
       	    //if(status ==cordova.plugins.diagnostic.permissionStatus.GRANTED){
           	var lat  = 0;
           	var lng = 0;
           	  var posOptions = { enableHighAccuracy: true,
-          			  timeout: 6000,
-          			  maximumAge: 0};
+          			  };
       //  time12 = new Date().getTime();
           	  $cordovaGeolocation
           	    .getCurrentPosition(posOptions)
@@ -2986,13 +2984,13 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
       			  		});
 
           		});
-//      	   }else{
-//      		 callBack('');
-//      	   }
-//    	}, function(error){
-//      	    console.error(error);
-//      	  callBack('');
-//      	});
+      	//   }else{
+          //    console.warn("erreur permission");
+      		// callBack('');
+     	  // }
+   	}, function(error){
+       	  console.error(error);
+      	}, cordova.plugins.diagnostic.permission.ACCESS_FINE_LOCATION);
       };
 
       var searchContactInDevice = function(email, phone1, callBack, errorCallBack) {

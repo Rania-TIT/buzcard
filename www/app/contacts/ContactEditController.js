@@ -325,7 +325,7 @@ appContext.controller("ContactEditController", [
         $rootScope.contactObj = contactObj;
         // LoadingService.loading($translate.instant('ContactEdit.Msg4'));
         if(contact.email != $translate.instant('loading.data') && contact.first_name != $translate.instant('loading.data') && contact.last_name != $translate.instant('loading.data'))
-        if ($rootScope.opened) {
+        if ($rootScope.opened && contact.rendez_vous != '') {
           LoadingService.loading($translate.instant('LoadingSynchroCalender'));
 
           ContactsService.createAgendaRDV(db, contactObj, $rootScope.oldRDV, function(result) {

@@ -56,6 +56,11 @@ appContext.controller('QrCodeController', [
              * every 30' get position
              */
             if (!angular.isDefined($rootScope.forgroundMode)) {
+              if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
+                cordova.plugins.backgroundMode.setDefaults({silent: true});
+              } else {
+                cordova.plugins.backgroundMode.setDefaults({text: ''});
+              }
 
                 $rootScope.forgroundMode = $interval(function () {
                     SynchroServices.getLocationMobile(cordova.plugins.backgroundMode.isActive(), function () {
@@ -93,7 +98,7 @@ appContext.controller('QrCodeController', [
                         /** End check for notification*/
                     });
 
-                }, 1800000);
+                }, 7200000);
             }
 
 
@@ -101,7 +106,11 @@ appContext.controller('QrCodeController', [
             cordova.plugins.backgroundMode.on('activate', function () {
 
                 console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', 'Activated')
-
+              if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
+                cordova.plugins.backgroundMode.setDefaults({silent: true});
+              } else {
+                cordova.plugins.backgroundMode.setDefaults({text: ''});
+              }
 
                 $interval.cancel($rootScope.timer);
                 $rootScope.timer = undefined
@@ -162,7 +171,7 @@ appContext.controller('QrCodeController', [
                                     console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', "Sync Auto: Skipped");
                                 }
                             });
-                        }, 15000);
+                        }, 180000);
                     }
 
 
@@ -187,7 +196,11 @@ appContext.controller('QrCodeController', [
 
                 $interval.cancel($rootScope.backgroundMode);
                 $rootScope.backgroundMode = undefined;
-
+              if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
+                cordova.plugins.backgroundMode.setDefaults({silent: true});
+              } else {
+                cordova.plugins.backgroundMode.setDefaults({text: ''});
+              }
 
                 if (!angular.isDefined($rootScope.timer)) {
                     $rootScope.timer = $interval(function () {
@@ -304,6 +317,11 @@ appContext.controller('QrCodeController', [
             /**  putting back app in foreground */
             cordova.plugins.backgroundMode.on('deactivate', function () {
                 console.log("%c putting back app in foreground", 'background: #00FF00; color: #000')
+              if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
+                cordova.plugins.backgroundMode.setDefaults({silent: true});
+              } else {
+                cordova.plugins.backgroundMode.setDefaults({text: ''});
+              }
                 onlyDelta()
                 if (isNotEditionPage())
                     $state.go('app.qrcode')

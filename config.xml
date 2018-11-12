@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="fr.buzcard.buzcard" version="3.4.6" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="fr.buzcard.buzcard" version="3.4.9" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Buzcard</name>
     <description>
     Buzcard mobile application
@@ -130,6 +130,6 @@
     <plugin name="phonegap-plugin-barcodescanner" spec="~6.0.8" />
     <plugin name="cordova-sqlite-storage" spec="^0.7.11" />
     <plugin name="cordova-sms-plugin" spec="https://github.com/cordova-sms/cordova-sms-plugin.git" />
-    <engine name="android" spec="6.2.3" />
     <engine name="ios" spec="^4.5.5" />
+    <engine name="android" spec="6.2.3" />
 </widget>
