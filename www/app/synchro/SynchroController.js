@@ -10,10 +10,10 @@ appContext.controller("SynchroController", [
     '$ionicHistory',
     'SynchroServices',
     'LoginService',
-    'MenuService','$translate','UrgencyService','AutoCompleteService','autoCompleteDomaines','QrCodeServices','$window','MultiService',
+    'MenuService','$translate','UrgencyService','AutoCompleteService','autoCompleteDomaines','QrCodeServices','$window','MultiService','ConnectionService',
     function($state, $cordovaSQLite, $ionicPlatform, ContactsService, LoadingService,
        BuzcardService, $scope, $rootScope, $ionicHistory, SynchroServices, LoginService,MenuService,$translate,
-      UrgencyService,AutoCompleteService,autoCompleteDomaines,QrCodeServices,$window,MultiService) {
+      UrgencyService,AutoCompleteService,autoCompleteDomaines,QrCodeServices,$window,MultiService, ConnectionService) {
 
     	$scope.splashMargin = ($window.screen.height - $window.screen.width) /2
         if( /Android|BlackBerry Mini/i.test(navigator.userAgent) ) {
@@ -167,67 +167,70 @@ appContext.controller("SynchroController", [
 
 
                                                         	LoadingService.loadingWithPourcentage($translate.instant('Loading5'));
-                                                        	ContactsService.downloadAllPhotoContacts(db,function(){
-                                                            	ContactsService.getCreditParrainage(function(credit){
-                                                            		MenuService.setLocalStorage("credit",credit);
+                                                        	ContactsService.downloadAllPhotoContacts(db,function() {
+                                                            ContactsService.getCreditParrainage(function (credit) {
+                                                              MenuService.setLocalStorage("credit", credit);
 
-                                                            		var dateSynchronisation = MenuService.getDateUS();
-                                                            		MenuService.setLocalStorage("dateSynchronisation",dateSynchronisation);
-                                                            		LoginService.setCredentials(db, $rootScope.email, $rootScope.password,$rootScope.userId, function() {
-                                                            			 window.localStorage.setItem('VersionApp',$rootScope.versionApp);
-
-
-
-                                                            						//------------------------------------
-                                                            			QrCodeServices.createTableQRcodes(db, function(){
-                                                            				QrCodeServices.emptyTableQRcodes(db, function(){
-                                                            					QrCodeServices.downloadQRProfile(db,act, function(){
-                                                            						QrCodeServices.downloadQRVitale(db,act, function(){
+                                                              var dateSynchronisation = MenuService.getDateUS();
+                                                              MenuService.setLocalStorage("dateSynchronisation", dateSynchronisation);
+                                                              LoginService.setCredentials(db, $rootScope.email, $rootScope.password, $rootScope.userId, function () {
+                                                                window.localStorage.setItem('VersionApp', $rootScope.versionApp);
 
 
-                                                            					//_______
-                                                            			BuzcardService.getCustoFile(db,function(array){
-                                                            				if("404" != array){
-                                                            					console.log(array[2]);
-                                                            					BuzcardService.downloadPhotoCusto(array[2],"custo",function(imgUrl){
-                                                            						MenuService.setLocalStorage("customisation",array);
-                                                            						 $rootScope.imgCusto = imgUrl;
-                                                                					LoadingService.dismiss();
-                                                                                   // $state.go("app.buzcard");
-                                                                					 $state.go("app.qrcode");
-                                                            					});
+                                                                //------------------------------------
+                                                                QrCodeServices.createTableQRcodes(db, function () {
+                                                                  QrCodeServices.emptyTableQRcodes(db, function () {
+                                                                    QrCodeServices.downloadQRProfile(db, act, function () {
+                                                                      QrCodeServices.downloadQRVitale(db, act, function () {
+                                                                          ConnectionService.checkForSecouriste(act).then(function (res) {
+                                                                            console.log('------- secouriste ----------')
+                                                                            MenuService.setLocalStorage("isSecouriste", res.data.Secoursite.status)
 
-                                                            				}else{
-                                                            					 $rootScope.isCusto = false;
-                                                            		         	//  var arrayCusto = MenuService.getLocalStorage("customisation");
-                                                            		         	 $rootScope.secondColor = "";
-                                                            		               $rootScope.firstColor ="";
+                                                                            //_______
+                                                                            BuzcardService.getCustoFile(db, function (array) {
+                                                                              if ("404" != array) {
+                                                                                console.log(array[2]);
+                                                                                BuzcardService.downloadPhotoCusto(array[2], "custo", function (imgUrl) {
 
-                                                            		            	   $rootScope.imgCusto ="";
-                                                            					LoadingService.dismiss();
-                                                                              //  $state.go("app.buzcard");
-                                                            					 $state.go("app.qrcode");
-                                                            				}
+                                                                                  MenuService.setLocalStorage("customisation", array);
+                                                                                  $rootScope.imgCusto = imgUrl;
+                                                                                  LoadingService.dismiss();
+                                                                                  // $state.go("app.buzcard");
+                                                                                  $state.go("app.qrcode");
+                                                                                });
 
-                                                            						});
-                                                            				//---------------------------------------
+                                                                              } else {
+                                                                                $rootScope.isCusto = false;
+                                                                                //  var arrayCusto = MenuService.getLocalStorage("customisation");
+                                                                                $rootScope.secondColor = "";
+                                                                                $rootScope.firstColor = "";
 
-                                                            						});
+                                                                                $rootScope.imgCusto = "";
+                                                                                LoadingService.dismiss();
+                                                                                //  $state.go("app.buzcard");
+                                                                                $state.go("app.qrcode");
+                                                                              }
 
-                                                                        //sssss
-                                                            					});
-                                                            				});
-                                                            			});
-                                                            			//------8888888888888888888888
+                                                                            });
+                                                                            //---------------------------------------
 
-                                                            			///////////////999999999999999999
+                                                                          });
+
+                                                                          //sssss
+                                                                      });
+                                                                    });
+                                                                    //------8888888888888888888888
+
+                                                                    ///////////////999999999999999999
 
 
-                                                                 });
+                                                                  });
 
-                                                            	});
+                                                                });
 
-                                                            });
+                                                              });
+                                                            })
+                                                          })
                                                         }
                                                     });
                                                 });

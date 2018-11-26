@@ -4,7 +4,8 @@
 }
 .profile-header {
   background-color: #46963C;
-  width: 100% font-family: "lubalin" !important;
+  width: 100% ;
+  font-family: "lubalin" !important;
 }
 .profile-image {
   margin-left: auto;
@@ -208,7 +209,7 @@
   display: table;
   width: 100%;
   height: 100%;
-  margin-top: 10%;
+  margin-top: 5%;
 }
 .urgency-index-container {
   height: 100%;
@@ -224,11 +225,12 @@
 .urgency-index-row {
   display: table;
   height: 70px;
-  background-color: rgba(0, 0, 0, 0.7);
+  margin-top: 20px;
+  /*background-color: rgba(0, 0, 0, 0.7);*/
   width: 100%;
 }
 .urgency-extra-margin {
-  margin-top: 20px !important;
+  margin-top: 80px !important;
 }
 .urgency-index-col {
   display: table-cell;
@@ -263,5 +265,5 @@
   position: relative;
   display: block;
   width: 100%;
-  padding-top: 22px;
+  padding-top: 12px;
   }

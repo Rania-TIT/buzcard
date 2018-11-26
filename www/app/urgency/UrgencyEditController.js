@@ -303,28 +303,16 @@ appContext.controller('UrgencyEditController', [
 
       $scope.getPhoto = function() {
     	  if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-              cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
-              	var ArrayPermission=[];
-              	var i=0
-              	 for (var permission in statuses){
-              		 console.log(statuses[permission]);
-              		 if(statuses[permission] == cordova.plugins.diagnostic.permissionStatus.GRANTED){
-              			 ArrayPermission[i]=true;
-              			 i++;
-              		 }else{
-              			 ArrayPermission[i]=false;
-              			 i++; 
-              		 }
-     
-                }
-              if(ArrayPermission[0]  && ArrayPermission[1]){
+              cordova.plugins.diagnostic.requestRuntimePermission(function(status){
+
+              if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED){
           var options = {
-              quality: 50,
+              quality: 90,
               destinationType: Camera.DestinationType.FILE_URI,
               sourceType: Camera.PictureSourceType.CAMERA,
               encodingType: Camera.EncodingType.JPEG,
-              targetWidth: 500,
-              targetHeight: 500,
+              targetWidth: 700,
+              targetHeight: 700,
               correctOrientation: true,
               popoverOptions: CameraPopoverOptions
 
@@ -373,7 +361,7 @@ appContext.controller('UrgencyEditController', [
               }, function(error){
                   console.error("The following error occurred: "+error);
                   $rootScope.isBackgroudRuning = false;
-              }, [cordova.plugins.diagnostic.permission.CAMERA,cordova.plugins.diagnostic.permission.READ_EXTERNAL_STORAGE]);
+              },cordova.plugins.diagnostic.permission.CAMERA);
                 
        	 }else{
 
@@ -386,12 +374,12 @@ appContext.controller('UrgencyEditController', [
             	  if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED){
 
        	    	var options = {
-       	              quality: 50,
+       	              quality: 90,
        	              destinationType: Camera.DestinationType.FILE_URI,
        	              sourceType: Camera.PictureSourceType.CAMERA,
        	              encodingType: Camera.EncodingType.JPEG,
-       	              targetWidth: 500,
-       	              targetHeight: 500,
+       	              targetWidth: 700,
+       	              targetHeight: 700,
        	              correctOrientation: true,
        	              popoverOptions: CameraPopoverOptions
 
@@ -451,21 +439,9 @@ appContext.controller('UrgencyEditController', [
     	  if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
      		
 
-              cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
-              	var ArrayPermission=[];
-              	var i=0
-              	 for (var permission in statuses){
-              		 console.log(statuses[permission]);
-              		 if(statuses[permission] == cordova.plugins.diagnostic.permissionStatus.GRANTED){
-              			 ArrayPermission[i]=true;
-              			 i++;
-              		 }else{
-              			 ArrayPermission[i]=false;
-              			 i++; 
-              		 }
-     
-                }
-              if(ArrayPermission[0]  && ArrayPermission[1]){
+              cordova.plugins.diagnostic.requestRuntimePermission(function(status){
+
+              if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED){
       	  var options = {
                     quality: 100,
                     destinationType: Camera.DestinationType.FILE_URI,
@@ -524,7 +500,7 @@ appContext.controller('UrgencyEditController', [
              }, function(error){
                  console.error("The following error occurred: "+error);
                  $rootScope.isBackgroudRuning = false;
-             }, [cordova.plugins.diagnostic.permission.CAMERA,cordova.plugins.diagnostic.permission.READ_EXTERNAL_STORAGE]);
+             },cordova.plugins.diagnostic.permission.READ_EXTERNAL_STORAGE);
                
       	 }else{
 

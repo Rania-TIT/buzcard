@@ -1016,19 +1016,6 @@ appContext.controller("ContactListController", [
 
 
          $scope.createContact = function(){
-        	 var count = 0;
-
-       	  $rootScope.$watch("isBackgroudRuning", function(){
-       		  if(!$rootScope.isBackgroudRuning && count == 0){
-       			  count=1;
-       			  LoadingService.dismiss();
-           $rootScope.isBackgroudRuning = true;
-          // LoadingService.loading($translate.instant("Loading4"));
-        	 $rootScope.fromState = "app.contactList";
-           ConnectionService.isConnectedWithoutSync(db,function(){
-                //there is no connected mode here
-           },function(){
-             // not connected
              var id = new Date().getTime();
              ContactsService.createContactDB(db,id,function(res){
                SynchroServices.insertRequest(db,"CONTACTCREATE",{idTmp : id},function(rs){
@@ -1052,11 +1039,6 @@ appContext.controller("ContactListController", [
                  });
              });
              });
-           });
-       		  }else if($rootScope.isBackgroudRuning && count == 0){
-    			  LoadingService.loading($translate.instant("Loading4"));
-    		  }
-    	  }, true);
          };
 
          $scope.okDelete = function(){

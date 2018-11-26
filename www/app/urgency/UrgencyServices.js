@@ -1,4 +1,4 @@
-appContext.factory("UrgencyService", ['$http', '$cordovaSQLite','cameraService','$cordovaFile','MenuService', function($http, $cordovaSQLite,cameraService,$cordovaFile,MenuService ) {
+appContext.factory("UrgencyService", ['$http', '$cordovaSQLite','cameraService','$cordovaFile','MenuService','$cordovaGeolocation', function($http, $cordovaSQLite,cameraService,$cordovaFile,MenuService, $cordovaGeolocation ) {
   /**
    * get carde info from server
    */
@@ -462,8 +462,119 @@ appContext.factory("UrgencyService", ['$http', '$cordovaSQLite','cameraService',
 
 	        });
 	      };
+  /**
+   * get  gps position
+   */
+  var getPosition = function (callBack){
+      console.log('eeeeeeee')
+    cordova.plugins.diagnostic.getLocationAuthorizationStatus(function(status){
+      console.log(status);
+      if(status == cordova.plugins.diagnostic.permissionStatus.DENIED)
+        return callBack('DENIED')
+      else {
+        var lat = 0;
+        var lng = 0;
+        var posOptions = {
+          enableHighAccuracy: true,
+          timeout: 10000
+        };
+        $cordovaGeolocation
+          .getCurrentPosition(posOptions)
+          .then(function (position) {
+
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
+
+            var latlng = {
+              latitude: parseFloat(lat),
+              longitude: parseFloat(lng)
+            };
+            console.log('Coordonnées GPS du position actuelle: ' + lat + " : " + lng);
+            return callBack(latlng)
+
+          }, function (err) {
+            console.log(err)
+            return callBack('error')
+          });
+      }
+   }, function(error){
+      console.error(error);
+      return callBack('error')
+    });
+  };
+
+  /**
+   *
+   */
+  var searchRescuer = function(act,latitude, longitude, callBack){
+
+    var request = {
+      method: 'POST',
+      url: 'https://www.buzcard.com/RegisterUserApp.aspx?request=alertsecouriste',
+      data : {
+        act : act,
+        latitude: latitude,
+        longitude: longitude
+      },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+
+      },
+      transformRequest: function (obj) {
+        var str = [];
+        for (var p in obj)
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        return str.join("&");
+      },
+      transformResponse: function (data) {
+        var x2js = new X2JS();
+        var json = x2js.xml_str2json(data);
+        return json;
+      },
 
 
+    };
+    // the HTTP request
+    return $http(request).success(function (data) {
+      return callBack(data)
+    }).error(function (err) {
+      return callBack(err)
+    });
+  }
+  var alertRelative = function (act, latitude, longitude, callBack) {
+    var request = {
+      method: 'POST',
+      url: 'https://www.buzcard.com/RegisterUserApp.aspx?request=alertproche',
+      data : {
+        act : act,
+        latitude: latitude,
+        longitude: longitude
+      },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+
+      },
+      transformRequest: function (obj) {
+        var str = [];
+        for (var p in obj)
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        return str.join("&");
+      },
+      transformResponse: function (data) {
+        var x2js = new X2JS();
+        var json = x2js.xml_str2json(data);
+        return json;
+      },
+
+
+    };
+    // the HTTP request
+    return $http(request).success(function (data) {
+      return callBack(data)
+    }).error(function (err) {
+      return callBack(err)
+    });
+  }
 
   return {
 	  getUrgency:getUrgency,
@@ -478,6 +589,9 @@ appContext.factory("UrgencyService", ['$http', '$cordovaSQLite','cameraService',
 	  uploadPhotoUrgency:uploadPhotoUrgency,
 	  getUrgencyEdited:getUrgencyEdited,
 	  DropUrgencyTable:DropUrgencyTable,
+    getPosition:getPosition,
+    searchRescuer:searchRescuer,
+    alertRelative:alertRelative
 
   }
 

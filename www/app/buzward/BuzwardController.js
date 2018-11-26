@@ -75,115 +75,88 @@ function($state, $scope, $ionicPlatform, $translate,ContactsService,$stateParams
         	  $rootScope.focusName = true;
               LoadingService.error($translate.instant('BuzcardSend.Msg2'), "BuzwardController");
           } else {
-        	  LoadingService.loading($translate.instant('BuzcardSend.LoadingSend'));
-        	  var domaine = email.substring(email.indexOf('@')+1, email.length);
-        	  autoCompleteDomaines.AddnewDomaine(db,domaine,function(){
-        		  ////////////////////
+          if (contact.email == '' && (checkbox2 == "on" || checkbox == "on")) {
+            $rootScope.focusName = true;
+            LoadingService.error($translate.instant('Buzward.MsgEmailEmpty', {name: $filter('capitalize')(contact.last_name) + ' ' + $filter('capitalize')(contact.first_name)}), "BuzwardController");
+          } else {
+            LoadingService.loading($translate.instant('BuzcardSend.LoadingSend'));
+            var domaine = email.substring(email.indexOf('@') + 1, email.length);
+            autoCompleteDomaines.AddnewDomaine(db, domaine, function () {
+              ////////////////////
 
-        		  if(window.cordova){
-          	    	if( /Android|BlackBerry Mini/i.test(navigator.userAgent) ) {
-          	    	   path = cordova.file.applicationStorageDirectory;
-          	    	 var isWindowsPhone = ionic.Platform.isWindowsPhone();
-          	    	} else if (isWindowsPhone) {
-          	           path = "/";
-          	        } else {
-          	          path = cordova.file.dataDirectory;
-          			}
-          	     // alert(path+" "+messagebuzward);
-              	 $cordovaFile.writeFile(path, "buzwardtext.txt",messagebuzward , true)
-                   .then(function (success) {
-                     // success
-                	   var object = {
-             	                email: email.toLowerCase(),
-             	                contactId: contact.id,
-             	                checkBox: checkbox,
-             	                checkBox2:checkbox2,
-             	              filebuzward: addSlashes(messagebuzward)
-             	            };
+              if (window.cordova) {
+                if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
+                  path = cordova.file.applicationStorageDirectory;
+                  var isWindowsPhone = ionic.Platform.isWindowsPhone();
+                } else if (isWindowsPhone) {
+                  path = "/";
+                } else {
+                  path = cordova.file.dataDirectory;
+                }
+                // alert(path+" "+messagebuzward);
+                $cordovaFile.writeFile(path, "buzwardtext.txt", messagebuzward, true)
+                  .then(function (success) {
+                    // success
+                    var Rid = parseInt(new Date().getTime() / 1000);
+                    var object = {
+                      email: email.toLowerCase(),
+                      contactId: contact.id,
+                      checkBox: checkbox,
+                      checkBox2: checkbox2,
+                      filebuzward: addSlashes(messagebuzward),
+                      RID: Rid
+                    };
 
-             	            SynchroServices.insertRequest(db, "BUZWARDSEND", object, function() {
-             	            	//LoadingService.dismiss();
-//             	            	 $rootScope.focusName = true;
-//             	                if (!$rootScope.isBackgroudRuning) {
-//             	                  //  $rootScope.isBackgroudRuning = true;
-             	            	//ConnectionService.isConnected(db, function(){
-             	            		//  LoadingService.dismiss();
-             	            		  if(checkbox2 =="on"){
-             	            			  $rootScope.focusName = true;
-                     	       			  //$rootScope.isBackgroudRuning = false;
-                     	       	 LoadingService.confirm($translate.instant('Buzward.checkbox2Msg', { email: email.toLowerCase(), lastnameContact: $filter('capitalize')(contact.last_name), firstnameContact: $filter('capitalize')(contact.first_name) }), contact.id, "BuzwardController");
-		  
-             	            		  }else{
-             	       			  if(checkbox == "off"){
-             	       				  $rootScope.focusName = true;
-             	       			 // $rootScope.isBackgroudRuning = false;
-             	       	 LoadingService.confirm($translate.instant('Buzward.MsgNotChecked', { email: email.toLowerCase(), lastnameContact: $filter('capitalize')(contact.last_name), firstnameContact: $filter('capitalize')(contact.first_name) }), contact.id, "BuzwardController");
+                    SynchroServices.insertRequest(db, "BUZWARDSEND", object, function () {
 
-             	       			  }else{
-             	       				  $rootScope.focusName = true;
-             	       			 // $rootScope.isBackgroudRuning = false;
-             	       	 LoadingService.confirm($translate.instant('Buzward.MsgChecked', { email: email.toLowerCase(), lastnameContact: $filter('capitalize')(contact.last_name), firstnameContact: $filter('capitalize')(contact.first_name) }), contact.id, "BuzwardController");
+                      if (checkbox2 == "on") {
+                        $rootScope.focusName = true;
+                        LoadingService.confirm($translate.instant('Buzward.checkbox2Msg', {
+                          email: email.toLowerCase(),
+                          lastnameContact: $filter('capitalize')(contact.last_name),
+                          firstnameContact: $filter('capitalize')(contact.first_name)
+                        }), contact.id, "BuzwardController");
 
-             	       			  }
-             	            	}
-//             	            	 }, function(){
-//             	          		  //offline
-//             	          		
-//             	            		 LoadingService.dismiss();
-//             	            		  $rootScope.isBackgroudRuning = false;
-//             	             // $state.go('app.contactShow', {id: contact.id });
-//             	            	LoadingService.confirm($translate.instant('Buzward.Msgoffline', { email: email.toLowerCase()}), contact.id, "BuzwardController");
-//             	            	 });
-             	           
-//             	            }else{
-//             	            	 var _count = 0;
-//                                 $rootScope.$watch("isBackgroudRuning", function(){
-//                                    if(!$rootScope.isBackgroudRuning && _count == 0){
-//                                      _count = 1 ;
-//                                     // $rootScope.isBackgroudRuning = true;
-//                                     // ConnectionService.isConnected(db,function(){
-//                                    	  LoadingService.dismiss();
-//                     	       			  if(checkbox == "off"){
-//                     	       				  $rootScope.focusName = true;
-//                     	       			//  $rootScope.isBackgroudRuning = false;
-//                     	       	 LoadingService.confirm($translate.instant('Buzward.MsgNotChecked', { email: email.toLowerCase(), lastnameContact: $filter('capitalize')(contact.last_name), firstnameContact: $filter('capitalize')(contact.first_name) }), contact.id, "BuzwardController");
+                      } else {
+                        if (checkbox == "off") {
+                          $rootScope.focusName = true;
+                          LoadingService.confirm($translate.instant('Buzward.MsgNotChecked', {
+                            email: email.toLowerCase(),
+                            lastnameContact: $filter('capitalize')(contact.last_name),
+                            firstnameContact: $filter('capitalize')(contact.first_name)
+                          }), contact.id, "BuzwardController");
+
+                        } else {
+                          $rootScope.focusName = true;
+                          LoadingService.confirm($translate.instant('Buzward.MsgChecked', {
+                            email: email.toLowerCase(),
+                            lastnameContact: $filter('capitalize')(contact.last_name),
+                            firstnameContact: $filter('capitalize')(contact.first_name)
+                          }), contact.id, "BuzwardController");
+
+                        }
+                      }
 //
-//                     	       			  }else{
-//                     	       				  $rootScope.focusName = true;
-//                     	       			//  $rootScope.isBackgroudRuning = false;
-//                     	       	 LoadingService.confirm($translate.instant('Buzward.MsgChecked', { email: email.toLowerCase(), lastnameContact: $filter('capitalize')(contact.last_name), firstnameContact: $filter('capitalize')(contact.first_name) }), contact.id, "BuzwardController");
-//
-//                     	       			  }
-////                                      },function(){
-////
-////                  	            		 LoadingService.dismiss();
-////                  	            		  $rootScope.isBackgroudRuning = false;
-////                  	             // $state.go('app.contactShow', {id: contact.id });
-////                  	            	LoadingService.confirm($translate.instant('Buzward.Msgoffline', { email: email.toLowerCase()}), contact.id, "BuzwardController");
-////                  	            	  
-////                                      });
-//                                    }else if($rootScope.isBackgroudRuning && _count == 0){
-//                                    	 console.warn("isBackgroudRuning :: true");
-//                                    }
-//                                 },true);
-             	       //     }
-             	           });
-    	  ////////////////////////
-                   }, function (error) {
-                       // error writefile
-                  	console.log(JSON.stringify(error));
-                     });
-        		  }
-        	  });
+                    });
+                    ////////////////////////
+                  }, function (error) {
+                    // error writefile
+                    console.log(JSON.stringify(error));
+                  });
+              }
+            });
 
           }
+        }
 
       };
 
       $scope.ok = function(id){
     	  LoadingService.dismiss();
     	  $rootScope.focusName = false;
-    	  $state.go('app.contactShow', {id: id });
+        $state.go('app.contactShow', {
+          id: id
+        });
       }
       $scope.dismiss = function() {
     

@@ -276,7 +276,6 @@ appContext.factory("BuzcardService", ['$http', '$cordovaSQLite','cameraService',
 	              } else {
                    path = cordova.file.dataDirectory;
                }
-    		   console.log("path :"+path)
        deleteAncienPhoto(db,id,function() {
     	var fileName = id+'_'+new Date().getTime()+'.jpg';
     //// alert("---"+photolocation+"---");
@@ -287,7 +286,6 @@ appContext.factory("BuzcardService", ['$http', '$cordovaSQLite','cameraService',
 
 	 var url = "https://www.buzcard.com/" + photolocation.substr(2);
      cameraService.downloadFile(path, fileName, url, function (urlImage) {
-    	 console.log("-------------------"+urlImage);
    	  updatePhotoFileLocation(db, urlImage, id, function(){
    		 callBack(urlImage);
    	  });
@@ -321,7 +319,6 @@ appContext.factory("BuzcardService", ['$http', '$cordovaSQLite','cameraService',
 
 		  }, function(reason) {
 			  //TODO FIXME
-			  // console.log("error " + reason);
 			  return 1;
 		  });
 	  };

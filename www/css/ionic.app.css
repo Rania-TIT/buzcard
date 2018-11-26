@@ -6605,7 +6605,6 @@ progress {
  * --------------------------------------------------
  */
 .button {
-  border-color: none;
   background-color: #f8f8f8;
   color: #444;
   position: relative;
@@ -6614,8 +6613,6 @@ progress {
   padding: 0 12px;
   min-width: 52px;
   min-height: 40px;
-  border-width: 1px;
-  border-style: solid;
   border-radius: 7px;
   vertical-align: top;
   text-align: center;

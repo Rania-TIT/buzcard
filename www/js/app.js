@@ -726,10 +726,10 @@ function decomposeEmail(email) {
         var org = "";
         if (domainArray.length > 2) {
             for (var i = 0; i < domainArray.length - 1; i++)
-                org = org + domainArray[i] + "."
+                org = org + domainArray[i].split('-').join(" ") + "."
             returnArray[2] = org.substring(0, org.length - 1);
         } else
-            returnArray[2] = domainArray[0];
+            returnArray[2] = domainArray[0].split('-').join(" ");
     }
     //person section
     personArray = emailArray[0].split('.');
@@ -739,6 +739,6 @@ function decomposeEmail(email) {
     } else {
         returnArray[1] = "";
     }
-
+      console.log(returnArray)
     return returnArray;
 };

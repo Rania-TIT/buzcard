@@ -91,37 +91,37 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
                 rendez_vous: data.rendez_vous,
                 comment: data.comment,
                 last_name : data.last_name,
-				first_name : data.first_name,
-				phone_1 : data.phone_1,
-				phone_2 : data.phone_2,
-				company : data.company,
+                first_name : data.first_name,
+                phone_1 : data.phone_1,
+                phone_2 : data.phone_2,
+                company : data.company,
                 list: data.list,
                 emailaddress2:data.emailaddress2,
                 actu:data.actu,
-				addressline1:data.addressline1,
-				addressline2:data.addressline2,
-				addressline3:data.addressline3,
-				postalcode:data.postalcode,
-				city:data.city,
-				workphonenumber:data.workphonenumber,
-				mobilephonenumber2:data.mobilephonenumber2,
-				source:data.source,
-				fonction:data.fonction,
-				Link_CardOnline:data.Link_CardOnline,
-				vcardprofil: 1,
-				Filleul: 0,
+                addressline1:data.addressline1,
+                addressline2:data.addressline2,
+                addressline3:data.addressline3,
+                postalcode:data.postalcode,
+                city:data.city,
+                workphonenumber:data.workphonenumber,
+                mobilephonenumber2:data.mobilephonenumber2,
+                source:data.source,
+                fonction:data.fonction,
+                Link_CardOnline:data.Link_CardOnline,
+                vcardprofil: 1,
+                Filleul: 0,
                 status : data.status,
                 firstsendemail:data.firstsendemail,
                 lastsendemail: data.lastsendemail,
-                lastsendemailtimeStmp:toTimeStampLast(data.lastsendemail),
+                lastsendemailtimeStmp:toTimeStampLast(data.lastsendemail,data.alerteemailcreationdate),
                 photofilelocation: data.photofilelocation,
                 LanguageText : data.LanguageText,
                 alerteemailcreationdate: data.alerteemailcreationdate,
                 meeting_point :  data.meeting_point,
                 latitude_meeting : data.latitude_meeting,
                 longitude_meeting : data.longitude_meeting,
-				domaine : domaine,
-				synchro:false
+                domaine : domaine,
+                synchro:false
 		};
 
 		return contact ;
@@ -170,7 +170,7 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 			  				"status ='"+contact.status+"', "+
 			  				"firstsendemail ='"+contact.firstsendemail+"', "+
 			  				"lastsendemail ='"+contact.lastsendemail+"', "+
-			  				"lastsendemailtimeStmp='"+toTimeStampLast(contact.lastsendemail)+"', "+
+			  				"lastsendemailtimeStmp='"+contact.lastsendemailtimeStmp+"', "+
 			  				"LanguageText ='"+contact.LanguageText+"', "+
 			  			  "list ='"+addSlashes(contact.list)+"', "+
 						  "LanguageText='"+contact.LanguageText+"', "+
@@ -230,7 +230,7 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 	      var parameters = [contact.id,toTimeStamp(contact.rendez_vous),contact.email,contact.date,addSlashes(contact.comment),
 	                        addSlashes(contact.last_name),addSlashes(contact.first_name),contact.phone_1,contact.phone_2,
 	                        addSlashes(contact.company),addSlashes(contact.list),contact.status,contact.lastsendemail,contact.LanguageText,contact.firstsendemail,
-	                        contact.photofilelocation,contact.alerteemailcreationdate,contact.modificationdate,addSlashes(contact.meeting_point),contact.latitude_meeting,contact.longitude_meeting,synchro,domaine.trim(),toTimeStampLast(contact.lastsendemail, contact.alerteemailcreationdate),addSlashes(contact.emailaddress2) , addSlashes(contact.actu), addSlashes(contact.addressline1), addSlashes(contact.addressline2), addSlashes(contact.addressline3), addSlashes(contact.postalcode), addSlashes(contact.city) , addSlashes(contact.workphonenumber) , addSlashes(contact.mobilephonenumber2) , addSlashes(contact.source) , addSlashes(contact.fonction) , contact.Link_CardOnline, contact.Filleul, contact.vcardprofil];
+	                        contact.photofilelocation,contact.alerteemailcreationdate,contact.modificationdate,addSlashes(contact.meeting_point),contact.latitude_meeting,contact.longitude_meeting,synchro,domaine.trim(),toTimeStampLast(contact.lastsendemail, contact.alerteemailcreationdate),addSlashes(contact.emailaddress2) , addSlashes(contact.actu), addSlashes(contact.addressline1), addSlashes(contact.addressline2), addSlashes(contact.addressline3), addSlashes(contact.postalcode), addSlashes(contact.city) , addSlashes(contact.workphonenumber) , addSlashes(contact.mobilephonenumber2) , addSlashes(contact.source) , addSlashes(contact.fonction) , addSlashes(contact.Link_CardOnline), contact.Filleul, contact.vcardprofil];
 	      // console.warn(parameters);
 	      $cordovaSQLite.execute(db, insertQuery,parameters).then(function(value) {
 	    	   console.log("callback ok+++");
@@ -269,7 +269,6 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 	                  var json = x2js.xml_str2json(data);
 	                  return json;
 	              },
-	              timeout: 4000,
 	              data: {
 
 	                  token: token,
@@ -654,19 +653,17 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 			          ContactsService.updateContactByField(db, "vcardprofil", "1", id, function() {
 			          ContactsService.updateContactByField(db, "Filleul", "0", id, function() {
 			          //  var first_name = ($translate.use() == "fr") ? 'Photo à traiter' : "Picture to be processed" ;
-			          ContactsService.updateContactByField(db, "first_name", $translate.instant('loading.data'), id, function() {
-                  ContactsService.updateContactByField(db, "last_name", $translate.instant('loading.data'), id, function() {
                       ContactsService.updateContactByField(db, "email", $translate.instant('loading.data'), id, function () {
                           ContactsService.updateContactByField(db, "date", moment().unix(), id, function () {
                             ContactsService.updateContactByField(db, "alerteemailcreationdate", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm:ss'), id, function () {
+                              ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime()/1000, id, function () {
 
-                              return callBack(id);
+                                return callBack(id);
+                              })
                             });
                           });
                     });
                   });
-			          });//
-			          });//
 			          });//
 			          });//
 			        });

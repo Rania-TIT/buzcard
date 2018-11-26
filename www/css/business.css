@@ -21,7 +21,7 @@
 .business-row {
   display: table;
   height: 70px;
-  background-color: rgba(0, 0, 0, 0.7);
+  /*background-color: rgba(0, 0, 0, 0.7); */
   margin-top: 20px;
   width: 100%;
 }
@@ -39,13 +39,27 @@
   padding-top: 22px;
 }
 .need-help {
-  font-size: 17px;
+  font-size: 19px;
   color: #FFF;
   text-decoration: none;
   display: block;
   margin: auto;
   width: 100%;
   text-align: center;
+}
+.btn-light_buz{
+  background: transparent !important;
+  color: #79A436 !important;
+  border: 1px solid #79A436 !important;
+}
+.business-attachement_opaque{
+  background-attachment: fixed;
+  background-image:url('../img/tour_Efffel_nouveau.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  background-position: 35% 30%;
+  height: 100% !important;
 }
 .business-attachement {
   background-attachment: fixed;
@@ -103,6 +117,6 @@
 
 }
 .need-help {
-    font-size: 21px !important;
+    font-size: 25px !important;
 }
 }

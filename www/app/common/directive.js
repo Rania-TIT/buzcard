@@ -15,6 +15,7 @@ appContext.directive('datepickerDirective', function($translate,LoadingService, 
 			  formatSubmit: 'dd/mm/yyyy',
 			  onOpen: function(){	  
 				  $rootScope.opened = true;
+          $rootScope.closedCalender = true
 				  $rootScope.displaydrowdown1={"z-index" :"9999999999999999"};
 				//alert(ee);
 				  $('.picker__holder').attr('style','display:none');
@@ -38,8 +39,12 @@ appContext.directive('datepickerDirective', function($translate,LoadingService, 
 				      		
 				      	});
 				  
-			  }
-			
+			  },onSet: function(context) {
+			    console.log(parseInt(context.select))
+			    if(parseInt(context.select)) $rootScope.closedCalender = true
+        console.log('Just set stuff:', context)
+        console.log($rootScope.closedCalender)
+      }
 			 
 			});
 		

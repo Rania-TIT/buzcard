@@ -44,12 +44,12 @@ appContext.factory("ContactsService", ['$http','$cordovaSQLite','LoadingService'
    * get contactModifier from serveur
    */
 
-  var getContactsEdited = function(page) {
+  var getContactsEdited = function(page, act) {
 	  var dateSynchronisation = MenuService.getLocalStorage("dateSynchronisation");
 	//  alert(dateSynchronisation);
 	  var url="";
 	  if(dateSynchronisation !=false){
-		url= 'https://www.buzcard.com/contacts_mobile.aspx?request=contacts&modificationdate='+dateSynchronisation ;
+		url= 'https://www.buzcard.com/contacts_mobile.aspx?request=contacts&act='+act+'&modificationdate='+dateSynchronisation ;
 	  }else{
 		url = 'https://www.buzcard.com/contacts_mobile.aspx?request=contacts';
 	  }
@@ -276,9 +276,7 @@ appContext.factory("ContactsService", ['$http','$cordovaSQLite','LoadingService'
   		var j=400;
   		var n=contactArray.length;
   	}
-//  	console.log('--------------------'+j);
-//  	console.log(contactArray);
-//  	console.log('+++++++++++++++++++'+n);
+
   	 var domaine = contactArray[j].email.substring(contactArray[j].email.indexOf('@')+1, contactArray[j].email.length);
   	var insertQuery = "INSERT INTO contact " + " SELECT '" + contactArray[j].id
   			+ "' AS 'id', '" + toTimeStamp(contactArray[j].rendez_vous)
@@ -581,6 +579,7 @@ appContext.factory("ContactsService", ['$http','$cordovaSQLite','LoadingService'
        if(length == i)   key = j;
        length++;
      }
+     if(length == 0 ) return callBack()
    // the send request parameters
     var request = {
       method: 'POST',
@@ -1387,7 +1386,6 @@ appContext.factory("ContactsService", ['$http','$cordovaSQLite','LoadingService'
  */
     var updateStatusEmailEmpty= function(db,callBack){
     	var queryUpdate ="update contact set status='cant_be_selected' where email=''";
-    	  console.warn(queryUpdate);
           $cordovaSQLite.execute(db, queryUpdate).then(function(result){
             return callBack();
           }, function (err) {
@@ -1397,7 +1395,6 @@ appContext.factory("ContactsService", ['$http','$cordovaSQLite','LoadingService'
     var updateContactIdById= function(db, idtmp, id, callBack){
     	 var updateQuery = "UPDATE contact SET id = "+id+" where id='"+idtmp+"'";
 
-         console.warn(updateQuery);
          $cordovaSQLite.execute(db, updateQuery).then(function(result){
            return callBack();
          }, function (err) {
@@ -1416,7 +1413,6 @@ appContext.factory("ContactsService", ['$http','$cordovaSQLite','LoadingService'
         updateQuery = "UPDATE contact SET status = 'cant_be_selected' where id="+id;
       }
 
-       console.warn(updateQuery);
       $cordovaSQLite.execute(db, updateQuery).then(function(result){
         return callBack();
       });
@@ -1426,7 +1422,7 @@ appContext.factory("ContactsService", ['$http','$cordovaSQLite','LoadingService'
      *
      */
     var updateContactLastSendAndLanguageRdv = function(db,id,language,rdvTimeStamp, callBack){
-    	var updateQuery ="UPDATE contact SET lastsendemail='"+toUsFormat(new Date())+"', lastsendemailtimeStmp='"+new Date()+"',  LanguageText='"+language +"' ,rendez_vous='"+rdvTimeStamp+"' where id ="+id;
+    	var updateQuery ="UPDATE contact SET lastsendemail='"+toUsFormat(new Date())+"', lastsendemailtimeStmp='"+toTimeStampLast(toUsFormat(new Date()))+"',  LanguageText='"+language +"' ,rendez_vous='"+rdvTimeStamp+"' where id ="+id;
 
 
     	// console.warn(updateQuery);
@@ -1568,11 +1564,6 @@ appContext.factory("ContactsService", ['$http','$cordovaSQLite','LoadingService'
               fd.append('photo', new Blob([image], {
                   type: 'image/jpeg'
               }), fileName);
-              console.info("******* upload contact photo ")
-              console.warn(idContact);
-            //  console.warn(RID);
-            //  console.warn("https://www.buzcard.com/contacts_mobile.aspx?request=update_photo&type=portrait&contact_id="+idContact+"&RID="+RID);
-              console.info("******* upload contact photo ")
               $http.post("https://www.buzcard.com/contacts_mobile.aspx?request=update_photo&type=portrait&contact_id="+idContact+"&RID="+RID+"&sendvcard="+sendvcard, fd, {
                   transformRequest: angular.identity,
                   headers: {
@@ -1618,14 +1609,13 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
 
         //ca ou il y a plusieurs contacts
         if (contacts instanceof Array) {
-          console.error(contacts[i])
             getContactbyId(db, contacts[i].id, function(result) {
               // cas ou le contact déja exist
                 if (result.rows.length > 0) {
                     var contactFromDB = result.rows.item(0);
                     //update
                     updateContactInfoDateModification(db, contacts[i], function() {
-
+                    if(contacts[i].rendez_vous !='')
                       createAgendaRDV(db, contacts[i], toTimeStamp(contacts[i].rendez_vous), function(result) {
                       });
                         if (contacts[i].email == '') {
@@ -1648,6 +1638,7 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
                   // cas d'un nouveau contact
                 } else {
                     insertIntoContactsTable(db, contacts[i], function() {
+                      if(contacts[i].rendez_vous !='')
                       createAgendaRDV(db, contacts[i], toTimeStamp(contacts[i].rendez_vous), function(result) {
                       });
                         if (contacts[i].email == '') {
@@ -1670,12 +1661,12 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
 
         //ca ou il y a un seul contact
         } else {
-          console.error(contacts)
             getContactbyId(db, contacts.id, function(result) {
                 // contact existe déja
                 if (result.rows.length > 0) {
                     var contactFromDB = result.rows.item(0);
                     //update
+                  if(contacts.rendez_vous !='')
                   createAgendaRDV(db, contacts, toTimeStamp(contacts.rendez_vous), function(result) {
                   });
                     updateContactInfoDateModification(db, contacts, function() {
@@ -1698,6 +1689,7 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
                 } else {
                     //insert
                     insertIntoContactsTable(db, contacts, function() {
+                      if(contacts.rendez_vous !='')
                       createAgendaRDV(db, contacts, toTimeStamp(contacts.rendez_vous), function(result) {
                       });
                         if (contacts.email == '') {
@@ -1959,46 +1951,13 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 	              }
 	           var   PathFile = path;
 	           var NameFile = id +'_'+new Date().getTime()+ '.jpg'
-//	              cameraService.checkExistFile('dir'+idProfil, id + '.jpg', function (url) {
-//	                  //file does not exist
-//	            	// console.log('checkExistFile.... '+url);
-//	                  if (url == "img/photo_top_title.jpg") {
-//	                	  // console.log("flag 00 if......");
-//	                      cameraService.createPath('dir'+idProfil, function (PathFile) {
-//	                          var fileLocation = $rootScope.fileLocaltion;
-//	                          var url = "http://buzcard.fr/" + fileLocation + "contacts/" + id + "/imgThumbnail.jpg";
-//
+
 	           var fileLocation = window.localStorage.getItem('idUser')// $rootScope.fileLocaltion;
                var url = "https://www.buzcard.com/upload/" + fileLocation + "/contacts/" + id + "/imgThumbnail.jpg";
 	                          // console.log("PathFile........... "+PathFile);
 	                          cameraService.downloadFile(PathFile,NameFile , url, function (urlImage) {
 	                        	  callBack(urlImage ,i);
-//	                        	  if(urlImage == "img/photo_top_title.jpg"){
-//	                        		  // console.log("flag 11......");
-//	                        		  callBack(urlImage,i);
-//	                        	  }else{
-//	                        		  // console.log("flag 22......");
-//	                        		  if(isWindowsPhone){
-//	                        			  callBack(urlImage,i);
-//	                        		  }else{
-//	                        			  callBack(urlImage ,i);
-//	                        		  }
-//
-//	                        	  }
-
 	                          });
-//	                      });
-//
-//	                  } else {
-//	                	  // console.log("flag x...... "+url);
-//	                      // file exist
-//	                	  if(isWindowsPhone){
-//                			  callBack(url,i);
-//                		  }else{
-//                			  callBack(url+ '?' + new Date().getTime() ,i);
-//                		  }
-//	                  }
-//	              });
 	          }else{
 
 	      		  return callBack("undeff",i);
@@ -2034,10 +1993,8 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 	    */
 	   var downloadPhotoContactsAtSynchro = function(db,contacts, callBack){
             var filtredContacts = [];
-           // console.log(contacts);
             for (var i = 0; i < contacts.length; i++) {
-              console.warn(contacts[i].photofilelocation)
-              console.warn(typeof(contacts[i].photofilelocation))
+
               if (contacts[i].photofilelocation != "") {
                 filtredContacts.push(contacts[i]) ;
               }else{
@@ -2048,8 +2005,7 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
               }
             }
   		   if (contacts instanceof Array){
-  			   // console.info("contacts instanceof Array");
-  			   // console.error(JSON.stringify(contacts));
+
   			   recurssiveImgForSynchro(db,0, filtredContacts,function(){
 
   				   return callBack();
@@ -2443,13 +2399,13 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 
 		cordova.plugins.diagnostic.requestCalendarAuthorization(function(status){
 			   if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED){
-			       console.log(contact);
 
         var comment = "";
 		   var libele_nom =  ""; //"Rappel Buzcard: recontacter "+contact.email+", rencontré le "+$filter('toFrFormat')(contact.alerteemailcreationdate) +"  "+ $filter('toTiret')(contact.meeting_point) +". "
 
-  		if(contact.last_name != '' || contact.first_name !='' || contact.company !='' || contact.phone_1 !='' || contact.phone_2 !='' || contact.email !=''){
-  			comment = contact.first_name + " " + contact.last_name+" - "+contact.company+" - "+contact.email+" - "+contact.phone_1+"Rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate) +" "+ $filter('toPlace')(contact.meeting_point) +". ";
+  		if( contact.first_name != '' || contact.last_name != '' || contact.company !='' || contact.phone_1 !='' || contact.phone_2 !='' || contact.email !=''){
+  			comment = contact.first_name + " " + contact.last_name+" - "+contact.company+" - "+contact.phone_2+" - "+contact.email+" - "+"Rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate)+". "+contact.comment;
+       // comment = contact.first_name + " " + contact.last_name+" - "+contact.company+" - "+contact.phone_2+" - "+contact.email+" Rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate) +" "+ $filter('toPlace')(contact.meeting_point) +". ";
 
   			 libele_nom = "Rappel Buzcard: recontacter "+$filter('capitalize')(contact.first_name) + " " + $filter('capitalize')(contact.last_name)+", rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate) +".";
   			 //"+ $filter('toPlace')(contact.meeting_point) +". "
@@ -2472,11 +2428,9 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
       		return callBack();
       		// cas de oldrdv = '' et new RDV !=''
       	}else if(oldRDV =="" && contact.rendez_vous !=''){
-
      		$cordovaCalendar.findEvent({
 			    title: libele_nom,
 			    location: libele_location,
-			    notes: comment,
 			    startDate: new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 12, 30, 0, 0, 0),
 			    endDate: new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 13, 30, 0, 0, 0)
 			}).then(function (result) {
@@ -2521,7 +2475,6 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
     		$cordovaCalendar.findEvent({
     	    title: libele_nom,
     	    location: libele_location,
-    	    notes: comment,
     	    startDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 12, 30, 0, 0, 0),
     	    endDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 13, 30, 0, 0, 0)
     	  }).then(function (results) {
@@ -2538,7 +2491,6 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
       	     	    endDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 13, 30, 0, 0, 0)
 
       	      	    }).then(function (res) {
-      	      	    	console.log('res    '+JSON.stringify(res));
       	      	    return callBack();
       	      	    	},function(err){
 
@@ -2548,14 +2500,13 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 
     		  });
       	}else{
+
       		$cordovaCalendar.findEvent({
         	    title: libele_nom,
         	    location: libele_location,
-        	    notes: comment,
         	    startDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 12, 30, 0, 0, 0),
         	    endDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 13, 30, 0, 0, 0)
         	  }).then(function (results) {
-        		  	// si l'ancien evenement n'existe pas
         		  if(results ==""){
         			  $cordovaCalendar.createEvent({
       	    			title: libele_nom,
@@ -2613,202 +2564,6 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 		    return callBack();
 		});
 	}
-	var createRDVAgenda = function(db, contact, oldRDV,callBack){
-		//alert(oldRDV);
-
-
-		cordova.plugins.diagnostic.requestCalendarAuthorization(function(status){
-			   if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED){
-			       console.log("Calendar use is authorized");
-
-		//preparation de parametres de rdv
-
-		   var comment = "";
-		   var libele_nom =  ""; //"Rappel Buzcard: recontacter "+contact.email+", rencontré le "+$filter('toFrFormat')(contact.alerteemailcreationdate) +"  "+ $filter('toTiret')(contact.meeting_point) +". "
-
-    		if(contact.last_name != '' || contact.first_name !='' || contact.company !='' || contact.phone_1 !='' || contact.phone_2 !='' || contact.email !=''){
-    			comment = contact.first_name + " " + contact.last_name+" - "+contact.company+" - "+contact.email+" - "+contact.phone_1+"Rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate) +" "+ $filter('toPlace')(contact.meeting_point) +". ";
-
-    			 libele_nom = "Rappel Buzcard: Recontacter "+$filter('capitalize')(contact.first_name) + " " + $filter('capitalize')(contact.last_name)+", rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate) +".";
-    			 //+ $filter('toPlace')(contact.meeting_point) +". "
-
-    		}else{
-    			//comment = contact.first_name + " " + contact.last_name+" "+contact.company+"  "+contact.email+" "+contact.phone_1;
-    			 var libele_nom = "Rappel Buzcard: Recontacter "+contact.email+", rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate) +".";
-    			 //+ $filter('toPlace')(contact.meeting_point) +". "
-
-    		}
-
-    	//	if(contact.meeting_point == "" || contact.meeting_point == $translate.instant('ContactEdit.SearchGPS') )
-    			libele_location = "";
-    		//else  libele_location = contact.meeting_point;
-
-    		contact.rendez_vous = toTimeStamp(contact.rendez_vous);
-    		//cherche l'ancien rendez_vous
-    		//alert('createRDVAgenda'+contact.meeting_point+'   '+oldRDV);
-    		if(oldRDV =="" || oldRDV  =="NaN") oldRDV = new Date().getTime();
-    		$cordovaCalendar.findEvent({
-    	    title: libele_nom,
-    	    location: libele_location,
-    	    notes: comment,
-    	    startDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 12, 30, 0, 0, 0),
-    	    endDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 13, 30, 0, 0, 0)
-    	  }).then(function (results) {
-    		  	// si l'ancien evenement n'existe pas
-    		  if(results ==""){
-    			  // si le rendez_vous est vide
-    	    if(contact.rendez_vous == ""){
-    			return callBack();
-    		}else{
-    			// s'il ya un rendez_vous
-
-    			//verifie l'existance de l'evenement dans le calendrier
-    			$cordovaCalendar.findEvent({
-				    title: libele_nom,
-				    location: libele_location,
-				    notes: comment,
-				    startDate: new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 12, 30, 0, 0, 0),
-				    endDate: new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 13, 30, 0, 0, 0)
-    			}).then(function (result) {
-    				// si l'event n'existe pas
-    			if(result ==""){
-    				//creation de l'evenement
-		      	    $cordovaCalendar.createEvent({
-		      	    title: libele_nom,
-		      	    location: libele_location,
-		      	    notes: comment,
-		      	    startDate:new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 12, 30, 0, 0, 0),
-		      	    endDate: new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 13, 30, 0, 0, 0)
-		      	  }).then(function (resultx) {
-		      		  		// success
-		      		 // 	UpdateSynchroStatusContact(db, contact.id, 'true', function(){
-		      		  	return callBack();
-
-		      		  //	});
-
-		      	  		}, function (err) {
-		      	  		return callBack();
-		      	  			// error
-		      	  			// console.log('erreur creation event'+JSON.stringify(err));
-		      	  		});
-
-    			}else{
-    				//si l'evenement existe, delete l'evenement existante
-
-    	    	$cordovaCalendar.deleteEvent({
-    	    		title: result[0].title,
-  		      	    location: result[0].location,
-  		      	    notes: result[0].message,
-    	    		 startDate:result[0].startDate,
- 		      	    endDate:result[0].endDate
-    	    	  }).then(function (result) {
-    	    		  // evenement deleted, création de l'evenement de nouveau
-
-    	    		  $cordovaCalendar.createEvent({
-    			      	    title: libele_nom,
-    			      	    location: libele_location,
-    			      	    notes: comment,
-    			      	    startDate:new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 12, 30, 0, 0, 0),
-    			      	    endDate: new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 13, 30, 0, 0, 0)
-    			      	  }).then(function (result1) {
-    			      		  		// evenement created, enregistrement dans la base de données local
-    			      		  //	UpdateSynchroStatusContact(db, contact.id, 'true', function(){
-    			      		  	return callBack();
-
-    			      		  //	});
-
-    			      	  		}, function (err) {
-    			      	  		return callBack();
-    			      	  			// error
-    			      	  			// console.log('erreur creation de nouveau evenet'+JSON.stringify(err));
-    			      	  		});
-    	    	  }, function (err) {
-    	    		  return callBack();
-    	    	    // errorreturn callBack();
-    	    		  // console.log('erreur delete evenet'+err)
-    	    	  });
-
-
-    			}
-    			}, function (err) {
-    				return callBack();
-    				// console.log('erreur de find event de rdv'+JSON.stringify(err));
-    			});
-    			}
-    		  	}else{
-    		  		//l'ancien evenement exist, tester si oldRDV = rendez_vous
-
-    			  if(oldRDV == contact.rendez_vous){
-    				 //meme date: update de base de données local;
-    					//UpdateSynchroStatusContact(db, contact.id, 'true', function(){
-    						return callBack();
-
-		      		  //	});
-    			  }else{
-    				  console.log('-----results-------'+JSON.stringify(results[0]));
-    				  //ne sont pas les memes, suppression de l'anciene et creation de nouveau
-
-    				$cordovaCalendar.deleteEvent({
-    	      	    newTitle: results[0].title,
-    	    		location: results[0].location,
-    	    		notes: results[0].message,
-    	    		 startDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 12, 30, 0, 0, 0),
-    	     	    endDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 13, 30, 0, 0, 0)
-
-    	      	    }).then(function (res) {
-    	      	    	
-    	      	    	//event deleted, creation a new event
-    	      	    	$cordovaCalendar.createEvent({
-    	    			title: libele_nom,
-    	    			location: libele_location,
-    	    			notes: comment,
-    	    			startDate:new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 12, 30, 0, 0, 0),
-    	    			endDate: new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 13, 30, 0, 0, 0)
-    	    			}).then(function (result) {
-    	    			     // success creation, update DB local
-    	    			  // UpdateSynchroStatusContact(db, contact.id, 'true', function(){
-    	    				   return callBack();
-    	    			  // });
-
-    	    			}, function (err) {
-    	    			   // error
-    	    				return callBack();
-    	    			  // console.log('erreur create event'+JSON.stringify(err));
-    	    			});
-    	      	    },function(err){
-    	      	    	console.log('err    '+JSON.stringify(err));
-    	      	    	$cordovaCalendar.createEvent({
-        	    			title: libele_nom,
-        	    			location: libele_location,
-        	    			notes: comment,
-        	    			startDate:new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 12, 30, 0, 0, 0),
-        	    			endDate: new Date(new Date(contact.rendez_vous * 1000).getFullYear(), new Date(contact.rendez_vous * 1000).getMonth(), new Date(contact.rendez_vous * 1000).getDate(), 13, 30, 0, 0, 0)
-        	    			}).then(function (result) {
-        	    			     // success creation, update DB local
-        	    			  // UpdateSynchroStatusContact(db, contact.id, 'true', function(){
-        	    				   return callBack();
-        	    			  // });
-
-        	    			}, function (err) {
-        	    			   // error
-        	    				return callBack();
-        	    			  // console.log('erreur create event'+JSON.stringify(err));
-        	    			});
-    	      	    });
-    			  }
-    		  }
-    	  },function(err){
-    		  return callBack();
-    			// console.log('erreur find old evenet'+JSON.stringify(err));
-    	  });
-			   }else{
-	    			  return callBack();
-	    		  }
-		}, function(error){
-		    console.error(error);
-		});
-
-	};
 
 	/**
 	 * update params adresse in contact where idcontact
@@ -2841,7 +2596,6 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
         }, function(reason){
           // console.log(reason);
         }, function(value){
-        	alert();
         });
       };
 	/**
@@ -2915,9 +2669,7 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
        * get address with gps position
        */
       var geolocalicationAdress = function (db, contact, callBack){
-
-        cordova.plugins.diagnostic.requestRuntimePermission(function(status){
-       		console.log(status);
+        cordova.plugins.diagnostic.getLocationAuthorizationStatus(function(status){
       	    //if(status ==cordova.plugins.diagnostic.permissionStatus.GRANTED){
           	var lat  = 0;
           	var lng = 0;
@@ -2943,20 +2695,14 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
           		        	console.log('Adresse recupérée: '+address);
               		        	if("" != address && "undefined" != address){
 
-              		        		updateAddress(db, contact.id, address, function(){
-
       									updateAllCoord(db,contact.id, lat, lng, address, function(){
-
-      										callBack(address);
+                            callBack(address);
       									});
-      								});
       						}else{
 
       									updateAllCoord(db,contact.id, lat, lng, '', function(){
-      										// console.log(arguments[0]);
-      										$rootScope.gpsNok = false;
-      										callBack('');
 
+                            callBack('');
       									});
       								//}
               		        	}
@@ -2964,8 +2710,7 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
           		        }else{
 
       							updateAllCoord(db,contact.id, lat, lng,'' , function(){
-
-      								callBack('');
+                        callBack('');
       							});
       						//}
           		        }
@@ -2990,7 +2735,7 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
      	  // }
    	}, function(error){
        	  console.error(error);
-      	}, cordova.plugins.diagnostic.permission.ACCESS_FINE_LOCATION);
+      	});
       };
 
       var searchContactInDevice = function(email, phone1, callBack, errorCallBack) {
@@ -3167,12 +2912,8 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 
     		}
     		var note ="";
-    		if(contact.firstsendemail.trim() =="" && contact.meeting_point.trim()==""){
-    			note="";
-    		}else {
-    			note = "Contact rencontré le "+$filter('toFrFormat')(contact.firstsendemail)+" "+$filter('grpFormat')(contact.list)+" \n"+$filter('MeetingFilter')(contact.meeting_point.capitalize())+"\n "+removeSlashes(contact.actu)+" \n"+contact.comment;
-
-    		}
+    	//	if(contact.firstsendemail.trim() !=""){
+          note = "Contact rencontré le "+$filter('toFrFormat')(contact.alerteemailcreationdate)+" "+$filter('grpFormat')(contact.list)+" \n"+$filter('MeetingFilter')(contact.meeting_point.capitalize())+"\n "+removeSlashes(contact.actu)+" \n"+contact.comment;
 
     			var contactDE = {     // We will use it to save a contact
 
@@ -3384,12 +3125,12 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
           if(contactDevice.note =="" || contactDevice.note ==null){
 
 
-             contactDevice.note = "Contact rencontré le "+$filter('toFrFormat')(contact.firstsendemail)+""+$filter('MeetingFilter')(contact.meeting_point.capitalize())+" \n"+removeSlashes(contact.actu)+"\n"+contact.comment;
+             contactDevice.note = "Contact rencontré le "+$filter('toFrFormat')(contact.alerteemailcreationdate)+""+$filter('MeetingFilter')(contact.meeting_point.capitalize())+" \n"+removeSlashes(contact.actu)+"\n"+contact.comment;
           }else if(contactDevice.note.indexOf("Contact rencontré le ") != -1 ){
-        	  contactDevice.note= "Contact rencontré le "+$filter('toFrFormat')(contact.firstsendemail)+""+$filter('MeetingFilter')(contact.meeting_point.capitalize())+" \n"+removeSlashes(contact.actu)+" \n"+contact.comment;
+        	  contactDevice.note= "Contact rencontré le "+$filter('toFrFormat')(contact.alerteemailcreationdate)+""+$filter('MeetingFilter')(contact.meeting_point.capitalize())+" \n"+removeSlashes(contact.actu)+" \n"+contact.comment;
 
           }else{
-              contactDevice.note = "Contact rencontré le "+$filter('toFrFormat')(contact.firstsendemail)+""+$filter('MeetingFilter')(contact.meeting_point.capitalize())+" \n"+removeSlashes(contact.actu)+"\n"+contact.comment;
+              contactDevice.note = "Contact rencontré le "+$filter('toFrFormat')(contact.alerteemailcreationdate)+""+$filter('MeetingFilter')(contact.meeting_point.capitalize())+" \n"+removeSlashes(contact.actu)+"\n"+contact.comment;
 
           }
 
@@ -3524,7 +3265,6 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
         	  $.ajax({
     	          type : "GET",
     	          url : "https://www.buzcard.com/send.aspx",
-    	          timeout : 2000,
     	          success : function(a, status, xhr) {
     	        	  // console.log(a);
     	            var action = $($.parseHTML(a)).filter("#form1").attr("action");
@@ -3616,9 +3356,9 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 
       }
 
-      var createContactServer = function(id, RID){
+      var createContactServer = function(id, sms,  RID){
         var request = {
-          url : "https://www.buzcard.com/contacts_mobile.aspx?request=Contact_new&ID="+id+"&RID="+RID,
+          url : "https://www.buzcard.com/contacts_mobile.aspx?request=Contact_new&ID="+id+"&RID="+RID+"&SMS="+sms,
           method : "GET",
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -3727,7 +3467,7 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
       };
 
       var selectContactByPhone = function(db, phoneNumber, callBack){
-        var query = "SELECT * FROM contact WHERE phone_1 ='"+phoneNumber+"' OR phone_2 ='"+phoneNumber+"'";
+        var query = "SELECT * FROM contact WHERE  phone_2 ='"+phoneNumber+"' OR phone_1 ='"+phoneNumber+"'";
         $cordovaSQLite.execute(db, query).then(function(res) {
 
           return callBack(res);
@@ -3768,9 +3508,7 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 
 
     	  searchContactInDevice(emailToSearchFor, phone_1ToSearchFor, function(resu) {
-		console.log('------------------search contact device ----------');
-		console.log(resu);
-		console.log('------------------End search contact device ----------');
+
 		    		  if(resu==""){
 
     			  saveContactInTel(contact, function() {
@@ -4059,10 +3797,14 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
     	 }
      }
 
+   /**
+    * save rendez_vous en local && set request
+    */
 
 
 
-  /**
+
+   /**
    * the factory returns
    */
   return {
@@ -4125,7 +3867,6 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
     DropContactTable:DropContactTable,
     SelectDomaineName:SelectDomaineName,
     searchDomaineName:searchDomaineName,
-    createRDVAgenda:createRDVAgenda,
     searchEmail:searchEmail,
     geolocalicationAdress:geolocalicationAdress,
     updateContactLocal:updateContactLocal,

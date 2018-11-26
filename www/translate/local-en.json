@@ -37,7 +37,7 @@
 "Buzcard.News1":"News n°1",
 "Buzcard.News2":"News n°2",
 "Buzcard.News3":"News n°3",
-"BuzcardSend.Email":"Email address",
+"BuzcardSend.Email":"Email or Cell phone number",
 "BuzcardSend.Photo":"Take a picture:",
 "BuzcardSend.Lang":"Send email in",
 "BuzcardSend.Follower":"add to my followers",
@@ -146,7 +146,7 @@
 "ContactEdit.Groupe":"Group",
 "ContactEdit.Comments":"Comments",
 "ContactEdit.LangueEmail":"Language",
-"ContactEdit.sendvcardWithPhoto":"The contact details on this picture will be automatically checked then manually verified within 24h.<br><br>Once you reopen the app, they will be directly saved in your PHONEBOOK.",
+"ContactEdit.sendvcardWithPhoto":"The contact details on this picture will be acknowledged then manually verified within 24h.<br><br>Once you reopen the app, they will be directly saved in your PHONEBOOK.",
 "ContactEdit.delete":"Delete this contact",
 "Parrainage.P1":"Each of your contacts can make you earn $ 10 credit on Buzcard ...",
 "Parrainage.P2":"with no question asked !",
@@ -170,7 +170,7 @@
 "FAQ.R2_1":"Your 'forever' QR code refers to your confidential webpage which can contain your contact details, a photo, links and ALL your social networks.",
 "FAQ.Q3":"Should my interlocutor also have a buzcard if we want to exchange our contact details?",
 "FAQ.R3_1":"Unlike with a social network, whether your interlocutor uses a Buzcard or a QR reader does not really matter.",
-"FAQ.R3_2":"From your smartphone, you will send him your on-line buzcard by email and thus turn him into a 'follower' of your future updates.",
+"FAQ.R3_2":"From your smartphone, you will send him your contact info via SMS or attached to an email and thus, turn him into a 'follower' of your future updates.",
 "FAQ.Q4":"As I may have to send my buzcard, should I know how to scan a QR code?",
 "FAQ.R4_1":"NO, neither your interlocutor nor YOURSELF need to scan your QR code.<br>Rather than scanning, the simplest way to access to your on-line buzcard is to have the APP on your smartphone.",
 "FAQ.R4_2":"You can thus access it in ONE CLICK, then send it to your interlocutor who gave you his email address (orally or via his paper business card).",
@@ -500,7 +500,7 @@
 "ContactEdit.Address":"Address",
 "ContactEdit.Actus":"News",
 "ContactEdit.linkBuzcard":"Buzcard <br> on-line",
-"SMS.Msg":"Here is my \"buzcard on-line\": https://www.buzcard.com/VcardInformations.aspx?act={{buzcardOnline}}\n \n You can receive email update if you wish.\n \n {{first_name}}",
+"SMS.Msg":"Hello,\n\nPlease click on the link below  so you can save my updatable contact info:\n\n https://www.buzcard.com/VcardInformations.aspx?act={{buzcardOnline}} \n\nCheers,\n \n{{first_name}}\n\n(If my link is not clickable, please reply to this SMS.)",
 "SMS.emailNonValid":"Invalid e-mail address",
 "SMS.phoneNonValid":"Invalid mobile number",
 "ContactEdit.SendSMS":"The link to your buzcard online has been sent to <a>{{phone}}</a>. <br> (at the current rate of your mobile operator)",
@@ -593,10 +593,10 @@
 "MsgSynchroDelta1":"<p>New information about :</p><p><a>{{nameContact1}}</a></p><br><p>Save it in the app ?</p>",
 "ContactEdit.EmailIncorrect":"Please enter an email address",
 "login.confidentiel":"Highest level of data privacy. Servers hosted by Sewan, certified for medical data storage and protection.",
-"firstOpenedBusiness":"<p>Your Business buzcard</p><br><p>To get started, complete your profile by adding your contact info and links to social media accounts in the Profile tab.</p><br><p>From now on, when you meet someone you can <a>SEND</a> his/her your ‘live’ virtual card (vCard) by email, and <a>TAKE A PICTURE</a> of her business card...</p><br><p>...in the order you find most convenient.</p>",
+"firstOpenedBusiness":"<p>Your Business buzcard</p><br><p>To get started, complete your profile by adding your contact info and links to social media accounts in the Profile tab.</p><br><p>From now on, when you meet someone you can <a>SEND</a> his/her your ‘live’ virtual card (vCard) by email or SMS, and <a>TAKE A PICTURE</a> of her business card...</p><br><p>...in the order you find most convenient.</p>",
 "firstOpenedUrgency":"<p>Your Emergency QR code</p><br><p>This code reveals <a>TWO</a> different webpages, depending on who is scanning it :</p><br><p>- firemen bound by medical confidentiality can access critical information (only in France for now)</p><br><p>- samaritans can alert your relatives and click on [Is there a rescuer half mile around?</p><br><p>We call it <a>CROWDRESCUING</a>.</p>",
-"busines.SendInfo":"By sending your ‘live’ vCard by email to a new contact :<br>1- you make him/her your ‘follower’<br>2- an entry is created in your address book, that includes the date and location of the meeting",
-"busines.SendPhoto":"By taking a picture of a business card, the numbers and email that can be extracted will be sent back to the app within 6 hours (with a copy in your address book).",
+"busines.SendInfo":"By sending your ‘live’ vCard by email or SMS to a new contact :<br>1- you make him/her your ‘follower’<br>2- an entry is created in your address book, that includes the date and location of the meeting",
+"busines.SendPhoto":"By taking a picture of a business card, the numbers and email that can be extracted will be sent back to the app within 24 hours (with a copy in your address book).",
 "busines.SendFlash":"By scanning another “buzer’s” Business QR code, his/her ‘live’ contact info will be automatically saved a in your address book.",
 "contactList.ContactInfo":"Create a new contact without having to send yours.",
 "urgence.UrgencyInfo":"In Case of Emergencey,<br>Samaritans can access level 1 information.<br>Only firemen bound by medical confidentiality in France, can access level 2 information.",
@@ -626,11 +626,32 @@
   "SendQRcode":"Your new contact will receive your \"updatable vCard\" in a few seconds.",
   "OfflineQRcodeNoContact":"This contact info will be recorded in the app <br> (Go to your Phone Settings to have it also copied in your address book).",
   "OfflineQRcodeContact":"This contact info will be recorded in the app AND in your address book.",
-  "business.waiting":"A server synchronization has been started.<br><br>Please wait ...",
+  "business.waiting":"Automatic synchronisation in progress.<br><br>Please wait...",
   "popupBuz.ButtonSend":"Send my contact info",
   "loading.data": "Process pending...",
-  "ContactEdit.Enregistrer2": "Save this card"
- 
+  "ContactEdit.Enregistrer2": "Save this card",
+  "BuzwardSend.Email": "Email",
+  "popupClickLuiEnvoyerMaFiche.Email": "By email",
+  "popupClickLuiEnvoyerMaFiche.SMS": "By SMS",
+  "email.phone.empty":"Email and/or phone number invalid",
+  "Buzward.MsgEmailEmpty": "Without the {{name}}’s email address, this option can’t be selected.",
+  "urgence.searchSecouriste":"Find a rescuer",
+  "searchUrgency.emptyMobile": "Please fill your mobile phone number in the Profil tab.",
+  "searchUrency.success": "the system is looking for CPR certified volunteers around.<br>The first available one will call you.",
+  "urgency.cancel": "Cancel",
+  "QuestionAutoriserLocation":"The app does not have access to your location.<br><br>Would you like to allow this access in the settings and then reopen the application?",
+  "urgence.alertProche": "Send alert to my relatives",
+  "alert.emptyFamilyNumbers": "You haven’t keyed any information of who to contact in case of emergency.",
+  "alertProche.success": "We inform your contacts by giving them you position.",
+  "alert.confirm": "Confirm",
+  "urgence.SearchInfo": "If you agreed to be localized, you can yell for help thanks to this digital megaphone.",
+  "urgence.AlertInfo": "If you agreed to be localized, you can send alert to your ICE contacts.",
+  "ContactEdit.sendvcardWithPhotoNew":"Your contact details will be sent by email to the address on this picture, once it’s acknowledged (within 24h)."
+
+
+
+
+
 
 
 

@@ -142,242 +142,6 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
             return notConnectedCallBack();
         };
 
-
-        function exeBuzcardSend(db, callBack) {
-            SynchroServices.selectBuzcardSend(db, function (result) {
-                if (result.rows.length > 0) {
-                    $rootScope.isBackgroudRuning = true;
-                    MenuService.setLocalStorage('ReloadContactList', 1);
-                    switch (result.rows.item(0).name) {
-                        case "BUZCARDSEND":
-
-                            BuzcardService.sendBuzcardToServer(JSON.parse(result.rows.item(0).object).email,
-                                JSON.parse(result.rows.item(0).object).selectLang,
-                                JSON.parse(result.rows.item(0).object).checkFollower,
-                                JSON.parse(result.rows.item(0).object).sendMobile,
-                                JSON.parse(result.rows.item(0).object).dateRDV,
-                                JSON.parse(result.rows.item(0).object).tradEmailContent,
-                                JSON.parse(result.rows.item(0).object).Rid,
-                                function (contactServer) {
-                                    console.log(" ***** send ok  ******");
-                                    //it s a new contact
-                                    ContactsService.getContactbyId(db, JSON.parse(result.rows.item(0).object).idTmp, function (resultx) {
-
-                                        if (resultx.rows.length > 0) {
-                                            if (contactServer.id != resultx.rows.item(0).id) {
-                                                //changement de id
-                                                if (resultx.rows.item(0).id.toString().length == 10) {
-                                                    ContactsService.updateContactIdById(db, JSON.parse(result.rows.item(0).object).idTmp, contactServer.id, function () {
-
-
-                                                        /*******************************\
-                                                         préparation de l'objet serveur
-                                                         \*******************************/
-                                                        var contactObj = {};
-                                                        var localContact = resultx.rows.item(0);
-                                                        var remoteContact = contactServer;
-                                                        if (localContact.meeting_point == $translate.instant('ContactEdit.SearchGPS')) {
-                                                            localContact.meeting_point = "";
-                                                        }
-
-                                                        for (var key in localContact)
-                                                            if (remoteContact[key] != localContact[key])
-                                                                contactObj[key] = localContact[key];
-
-                                                        delete contactObj.id;
-                                                        delete contactObj.date;
-                                                        delete contactObj.photofilelocation;
-                                                        delete contactObj.LanguageText;
-                                                        delete contactObj.domaine;
-                                                        delete contactObj.synchro;
-                                                        delete contactObj.modificationdate;
-                                                        delete contactObj.alerteemailcreationdate;
-                                                        delete contactObj.firstsendemail;
-                                                        delete contactObj.lastsendemail;
-                                                        delete contactObj.lastsendemailtimeStmp;
-                                                        /** end **/
-
-                                                        console.warn(JSON.stringify(contactObj));
-                                                        if (!isEmpty(contactObj)) {
-                                                            //add contact edit request
-                                                            SynchroServices.insertRequest(db, "CONTACTEDIT", {
-                                                                id: remoteContact.id,
-                                                                contact: contactObj
-                                                            }, function () {
-                                                                //check if existe photo depuis buzcard send et le renomer et le synchroniser vers le serveur
-                                                                //--------check if existe photo depuis buzcard send et le renomer et le synchroniser vers le serveur
-                                                                if (localContact.photofilelocation != 'img/photo_top_title.jpg') {
-                                                                    var RID = parseInt(new Date().getTime() / 1000);
-                                                                    SynchroServices.insertRequest(db, "CONTACTPHOTO", {
-                                                                        id: remoteContact.id,
-                                                                        path: localContact.photofilelocation,
-                                                                        RID: RID
-                                                                    }, function () {
-                                                                        SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                            $rootScope.buzcardSend = 0;
-                                                                            exeBuzcardSend(db, callBack);
-                                                                        });
-                                                                    });
-                                                                } else {
-                                                                    SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                        $rootScope.buzcardSend = 0;
-                                                                        exeBuzcardSend(db, callBack);
-                                                                    });
-                                                                }
-                                                                //--------------
-                                                            });
-                                                        } else {
-                                                            //--------check if existe photo depuis buzcard send et le renomer et le synchroniser vers le serveur
-                                                            if (localContact.photofilelocation != 'img/photo_top_title.jpg') {
-                                                                var RID = parseInt(new Date().getTime() / 1000);
-                                                                SynchroServices.insertRequest(db, "CONTACTPHOTO", {
-                                                                    id: remoteContact.id,
-                                                                    path: localContact.photofilelocation,
-                                                                    RID: RID
-                                                                }, function () {
-                                                                    SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                        $rootScope.buzcardSend = 0;
-                                                                        exeBuzcardSend(db, callBack);
-                                                                    });
-                                                                });
-                                                            } else {
-                                                                SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                    $rootScope.buzcardSend = 0;
-                                                                    exeBuzcardSend(db, callBack);
-                                                                });
-                                                            }
-                                                            //--------------
-                                                        }
-                                                    });
-                                                } else {
-                                                    //id contact different que celle en local: update de contact par l'id en local
-                                                    //(cas particuliere  de contact existant)
-                                                    /*******************************\
-                                                     préparation de l'objet serveur
-                                                     \*******************************/
-                                                    var contactObj = {};
-                                                    var localContact = resultx.rows.item(0);
-                                                    var remoteContact = contactServer;
-                                                    if (localContact.meeting_point == $translate.instant('ContactEdit.SearchGPS')) {
-                                                        localContact.meeting_point = "";
-                                                    }
-
-                                                    for (var key in localContact)
-                                                        if (remoteContact[key] != localContact[key])
-                                                            contactObj[key] = localContact[key];
-
-                                                    delete contactObj.id;
-                                                    delete contactObj.date;
-                                                    delete contactObj.photofilelocation;
-                                                    delete contactObj.LanguageText;
-                                                    delete contactObj.domaine;
-                                                    delete contactObj.synchro;
-                                                    delete contactObj.modificationdate;
-                                                    delete contactObj.alerteemailcreationdate;
-                                                    delete contactObj.firstsendemail;
-                                                    delete contactObj.lastsendemail;
-                                                    delete contactObj.lastsendemailtimeStmp;
-                                                    /** end **/
-                                                    console.warn(JSON.stringify(contactObj));
-                                                    if (!isEmpty(contactObj)) {
-                                                        //add contact edit request
-                                                        SynchroServices.insertRequest(db, "CONTACTEDIT", {
-                                                            id: localContact.id,
-                                                            contact: contactObj
-                                                        }, function () {
-                                                            //check if existe photo depuis buzcard send et le renomer et le synchroniser vers le serveur
-                                                            if (localContact.photofilelocation != 'img/photo_top_title.jpg') {
-                                                                var RID = parseInt(new Date().getTime() / 1000);
-                                                                SynchroServices.insertRequest(db, "CONTACTPHOTO", {
-                                                                    id: remoteContact.id,
-                                                                    path: localContact.photofilelocation,
-                                                                    RID: RID
-                                                                }, function () {
-                                                                    SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                        $rootScope.buzcardSend = 0;
-                                                                        exeBuzcardSend(db, callBack);
-                                                                    });
-                                                                });
-                                                            } else {
-                                                                SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                    $rootScope.buzcardSend = 0;
-                                                                    exeBuzcardSend(db, callBack);
-                                                                });
-                                                            }
-                                                            //--------------
-                                                        });
-                                                    } else {
-                                                        //-check if existe photo depuis buzcard send et le renomer et le synchroniser vers le serveur
-                                                        if (localContact.photofilelocation != 'img/photo_top_title.jpg') {
-                                                            var RID = parseInt(new Date().getTime() / 1000);
-                                                            SynchroServices.insertRequest(db, "CONTACTPHOTO", {
-                                                                id: remoteContact.id,
-                                                                path: localContact.photofilelocation,
-                                                                RID: RID
-                                                            }, function () {
-                                                                SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                    $rootScope.buzcardSend = 0;
-                                                                    exeBuzcardSend(db, callBack);
-                                                                });
-                                                            });
-                                                        } else {
-                                                            SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                $rootScope.buzcardSend = 0;
-                                                                exeBuzcardSend(db, callBack);
-                                                            });
-                                                        }
-                                                        //--------------
-                                                        //--------------
-                                                    }
-                                                }
-                                                //contact existant
-                                            } else {
-                                                /**
-                                                 * upload photo si il a
-                                                 * update contact if there modification in local
-                                                 */
-                                                SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                    exeBuzcardSend(db, callBack);
-                                                });
-                                            }
-                                        } else {
-
-                                            SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                exeBuzcardSend(db, callBack);
-                                            });
-
-                                        }
-                                    });
-
-                                },
-                                function () {
-                                    LoadingService.dismiss();
-                                    if ($rootScope.buzcardSend > 2) {
-                                        $rootScope.buzcardSend = 0;
-                                        $timeout(function () {
-                                            SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-
-                                                exeBuzcardSend(db, callBack);
-                                            });
-                                        }, 2000);
-                                    } else {
-                                        $rootScope.buzcardSend = $rootScope.buzcardSend + 1;
-                                        $timeout(function () {
-                                            execReq(db, callBack);
-                                        }, 2000);
-                                    }
-                                });
-                            break;
-                    }
-                } else {
-                    $rootScope.isBackgroudRuning = false;
-                    $rootScope.sychroEncours = false;
-                    return callBack();
-                }
-            });
-        }
-
-
         function execReq(db, callBack) {
 
 
@@ -437,6 +201,9 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             delete contactAfterClean.modificationdate;
                             delete contactAfterClean.photofilelocation;
                             delete contactAfterClean.alerteemailcreationdate;
+                            delete contactAfterClean.LanguageText
+                            delete contactAfterClean.longitude_meeting
+                            delete contactAfterClean.latitude_meeting
                             if(contactAfterClean.rendez_vous)
                             contactAfterClean.rendez_vous = $filter('toEnFormat')(contactAfterClean.rendez_vous);
 
@@ -451,7 +218,8 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                     execReq(db, callBack);
                                 });
-                            }, function () {
+                            }, function (error) {
+                              console.log(error)
                                 LoadingService.dismiss();
                                 $timeout(function () {
                                     if ($rootScope.contactEdit > 2) {
@@ -550,7 +318,8 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                                 delete contactObj.vcardprofil;
                                                                 delete contactObj.Filleul;
                                                                 delete contactObj.Link_CardOnline;
-
+                                                                delete contactObj.latitude_meeting;
+                                                                delete contactObj.longitude_meeting;
                                                               if(contactObj.rendez_vous)
                                                                 contactObj.rendez_vous = $filter('date')(new Date(contactObj.rendez_vous * 1000), 'dd/MM/yyyy');
 
@@ -653,6 +422,10 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                             }
                                             //cas de contact existant avec meme id
                                             else {
+                                              ContactsService.updateContactByField(db, 'firstsendemail', contactServer.firstsendemail, contactServer.id, function() {
+                                                ContactsService.updateContactByField(db, 'lastsendemail', contactServer.lastsendemail, contactServer.id, function() {
+                                                  ContactsService.updateContactByField(db, 'comment', contactServer.comment, contactServer.id, function() {
+
                                                 console.info("BEFORE DELETE")
 
 
@@ -661,6 +434,9 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                     $rootScope.buzcardSend = 0;
                                                     execReq(db, callBack);
                                                 });
+                                              });
+                                              });
+                                              });
                                             }
 
                                         }
@@ -791,14 +567,11 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
                                     if ("VCARD" == data.QRCode.TypeQR || "4EV" == data.QRCode.TypeQR) {
 
-
                                         QrCodeServices.getCardInfoFromQrCode(JSON.parse(result.rows.item(0).object).act).then(function (response) {
                                             console.log(response)
                                             $rootScope.qrCode = 0;
 
                                             if (response.data.answer.contact_id != "") {
-
-
                                                 var contact = QrCodeServices.createContactFromQrCode(response.data.answer.contact_id.contact);
                                                 ContactsService.selectContactbyEmail(db, contact.email, function (resultset) {
 
@@ -867,7 +640,9 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                         });
                                     }
                                 }, function (err) {
+                                  SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                     execReq(db, callBack);
+                                  });
                                 });
                             });
                             break;
@@ -885,8 +660,9 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                 $cordovaFile.writeFile(path, "buzwardtext.txt", removeSlashes(JSON.parse(result.rows.item(0).object).filebuzward), true)
                                     .then(function (success) {
 
-                                        BuzwardService.SendBuzwardServerWithtext(JSON.parse(result.rows.item(0).object).contactId, JSON.parse(result.rows.item(0).object).email, success.target.localURL, JSON.parse(result.rows.item(0).object).checkBox, JSON.parse(result.rows.item(0).object).checkBox2, function (contactserver) {
-
+                                        BuzwardService.SendBuzwardServerWithtext(JSON.parse(result.rows.item(0).object).contactId, JSON.parse(result.rows.item(0).object).email, success.target.localURL, JSON.parse(result.rows.item(0).object).checkBox, JSON.parse(result.rows.item(0).object).checkBox2,JSON.parse(result.rows.item(0).object).RID, function (response) {
+                                              var contactserver = response.contact_id[0].contact
+                                              var contactserver2 = response.contact_id[1].contact
                                             console.log(contactserver);
 
                                             ContactsService.getContactbyId(db, contactserver.id, function (contactLocalResultSet) {
@@ -896,25 +672,83 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                     //cas de contact existant a
 
                                                     console.log('contact existant');
-                                                    $rootScope.buzwardSend = 0;
-                                                    SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                        execReq(db, callBack);
-                                                    });
+                                                    var commentValue= contactLocalResultSet.comment+' \n'+ contactserver.comment
+                                                    ContactsService.updateContactByField(db,'comment', commentValue, contactserver.id, function() {
+                                                      QrCodeServices.saveContactDeviceFlash(contactserver.id, function () {
+                                                        ContactsService.getContactbyId(db, contactserver2.id, function (contactLocal) {
+                                                          if (contactLocal.rows.length > 0) {
+                                                            var commentValue = contactserver2.comment
+                                                            ContactsService.updateContactByField(db, 'comment', commentValue, contactserver2.id, function () {
+                                                              QrCodeServices.saveContactDeviceFlash(contactserver2.id, function () {
+                                                                $rootScope.buzwardSend = 0;
+                                                                MenuService.setLocalStorage('ReloadContactList', 1);
+                                                                SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                                                  execReq(db, callBack);
+                                                                });
+                                                              });
+                                                            })
+                                                          } else {
+                                                            ContactsService.insertIntoContactsTable(db, contactserver2, function (data) {
 
-
-                                                } else {
-                                                    ContactsService.insertIntoContactsTable(db, contactserver, function (data) {
-
-                                                        ContactsService.downloadPhotoContact(contactserver.id, function (url) {
-                                                            ContactsService.updateContactPhoto(db, contactserver.id, url, function () {
-                                                                QrCodeServices.saveContactDeviceFlash(contactserver.id, function () {
+                                                              ContactsService.downloadPhotoContact(contactserver2.id, function (url) {
+                                                                ContactsService.updateContactPhoto(db, contactserver2.id, url, function () {
+                                                                  QrCodeServices.saveContactDeviceFlash(contactserver2.id, function () {
 
                                                                     MenuService.setLocalStorage('ReloadContactList', 1);
                                                                     console.log('contact inserted');
                                                                     $rootScope.buzwardSend = 0;
                                                                     SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                        execReq(db, callBack);
+                                                                      execReq(db, callBack);
                                                                     });
+                                                                  });
+                                                                });
+                                                              });
+                                                            });
+                                                          }
+                                                        })
+
+                                                      })
+                                                    })
+
+                                                } else {
+                                                  console.log('insertContact', contactserver)
+                                                    ContactsService.insertIntoContactsTable(db, contactserver, function (data) {
+
+                                                        ContactsService.downloadPhotoContact(contactserver.id, function (url) {
+                                                            ContactsService.updateContactPhoto(db, contactserver.id, url, function () {
+                                                                QrCodeServices.saveContactDeviceFlash(contactserver.id, function () {
+                                                                  MenuService.setLocalStorage('ReloadContactList', 1);
+                                                                  ContactsService.getContactbyId(db, contactserver2.id, function (contactLocal) {
+                                                                    if (contactLocal.rows.length > 0) {
+                                                                      var commentValue=contactserver2.comment
+                                                                      ContactsService.updateContactByField(db,'comment', commentValue, contactserver2.id, function() {
+                                                                        QrCodeServices.saveContactDeviceFlash(contactserver2.id, function () {
+                                                                          $rootScope.buzwardSend = 0;
+                                                                          SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                                                            execReq(db, callBack);
+                                                                          });
+                                                                        })
+                                                                      })
+                                                                    }else{
+                                                                      ContactsService.insertIntoContactsTable(db, contactserver2, function (data) {
+
+                                                                        ContactsService.downloadPhotoContact(contactserver2.id, function (url) {
+                                                                          ContactsService.updateContactPhoto(db, contactserver2.id, url, function () {
+                                                                            QrCodeServices.saveContactDeviceFlash(contactserver2.id, function () {
+
+                                                                              MenuService.setLocalStorage('ReloadContactList', 1);
+                                                                              console.log('contact inserted');
+                                                                              $rootScope.buzwardSend = 0;
+                                                                              SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                                                                execReq(db, callBack);
+                                                                              });
+                                                                            });
+                                                                          });
+                                                                        });
+                                                                      });
+                                                                    }
+                                                                  })
+
                                                                 });
                                                             });
                                                         });
@@ -924,11 +758,23 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
                                             });
                                         }, function () {
+                                          SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                             execReq(db, callBack);
+                                          });
                                         });
                                     }, function (error) {
                                         // error writefile
                                         console.log(JSON.stringify(error));
+                                      if ($rootScope.buzwardSend > 2) {
+                                        $rootScope.buzwardSend = 0;
+                                        SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                          execReq(db, callBack);
+                                        });
+
+                                      } else {
+                                        $rootScope.buzwardSend = $rootScope.buzwardSend + 1;
+                                        execReq(db, callBack);
+                                      }
                                     });
                             }
 
@@ -937,7 +783,8 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             //creation d'un contact
                             LoginService.selectCredentials(db, function (credentialResultSet) {
                                 var ridCreateContact = parseInt(new Date().getTime() / 1000);
-                                ContactsService.createContactServer(credentialResultSet.rows.item(0).userId, ridCreateContact).success(function (response, status, headers, config) {
+                                var sms= JSON.parse(result.rows.item(0).object).SMS ? JSON.parse(result.rows.item(0).object).SMS : "NON"
+                                ContactsService.createContactServer(credentialResultSet.rows.item(0).userId, sms, ridCreateContact).success(function (response, status, headers, config) {
                                     if (response.answer && response.answer.status == 0) {
                                         var sendvcard = JSON.parse(result.rows.item(0).object).sendvcard ? JSON.parse(result.rows.item(0).object).sendvcard : "NON"
                                         console.log("!! sendVcard !! " + sendvcard)
@@ -985,12 +832,14 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                         delete contactObj.LinkCardOnline;
                                                         delete contactObj.vcardprofil;
                                                         delete contactObj.Filleul;
+                                                        delete contactObj.latitude_meeting;
+                                                        delete contactObj.longitude_meeting;
                                                         /** end **/
                                                         if(contactObj.rendez_vous)
                                                         contactObj.rendez_vous = $filter('date')(new Date(contactObj.rendez_vous * 1000), 'MM/dd/yyyy');
 
                                                         if (!isEmpty(contactObj)) {
-                                                            ContactsService.updateContactServer(0, contactServer.id, contactObj, function () {
+                                                          ContactsService.updateContactServer(0, contactServer.id, contactObj, function () {
 
                                                                 /**
                                                                  * upload photo si elle existe
@@ -1178,7 +1027,39 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
             return $http(request);
         }
 
-        /**
+      /***
+       *
+       * test if secouriste ou nn
+       */
+      var checkForSecouriste = function(act) {
+        var request = {
+          method: 'POST',
+          url: 'https://www.buzcard.com/RegisterUserApp.aspx?request=issecouriste',
+          data : {
+            act : act
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+
+          },
+          transformRequest: function (obj) {
+            var str = [];
+            for (var p in obj)
+              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            return str.join("&");
+          },
+          transformResponse: function (data) {
+            var x2js = new X2JS();
+            var json = x2js.xml_str2json(data);
+            return json;
+          },
+
+
+        };
+        // the HTTP request
+         return $http(request);
+      }
+      /**
          * test if object is empty
          */
         function isEmpty(value) {
@@ -1190,6 +1071,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
             testConnected: testConnected,
             isConnectedSYc: isConnectedSYc,
             testConexion: testConexion,
-            checkFroNotification : checkFroNotification
+            checkFroNotification : checkFroNotification,
+            checkForSecouriste:checkForSecouriste
         };
     }]);

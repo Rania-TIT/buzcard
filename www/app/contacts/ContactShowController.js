@@ -135,21 +135,6 @@ appContext.controller("ContactShowController", [
 	     else return false;
   	    
       }
-      
-
-      $scope.yesAutorisationCamera = function(){
-        	 LoadingService.dismiss();
-        	 cordova.plugins.diagnostic.switchToSettings(function(){
- 	    		    console.log("Successfully switched to Settings app");
-
- 	    		}, function(error){
- 	    		  console.log("The following error occurred: "+error);
- 	    		});
-        };
-        $scope.noAutorisationCamera = function(){
-        	 LoadingService.dismiss();
-
-        }
 
       $scope.nextSlide = function() {
     	    $ionicSlideBoxDelegate.next();
@@ -201,95 +186,8 @@ appContext.controller("ContactShowController", [
 
 
         $scope.updateAndShowContact =function(id,email){
-//        	/**€€€€€€€
-//             *  begin synchronisation
-//             €€€€€€€*/
-//        		LoadingService.loading("Synchronisation...");
-//                ConnectionService.isConnectedWithoutSync(db, function() {
-//                	// console.log(id.toString().length)
-//                	if (id.toString().length != 10) {
-//                	ContactsService.getContactFromServerByEmail(email,function(contact){
-//                		// console.log("there is contact")
-//                		ContactsService.getContactbyId(db,contact.id,function(result){
-//	                			if(result.rows.length >0){
-//	                				if(ContactsService.isUpToDate(result.rows.item(0).modificationdate,contact.modificationdate )){
-//	                					//le contact est à jour
         								$rootScope.fromState = "app.contactShow";
 	                					$state.go('app.contactEdit', {id: id });
-//	                				}else{
-//	                					//le contact sera mit à jour
-//	                					// console.log(contact);
-//	                            		// console.log("++++++++");
-//	                            		ContactsService.updateContactModificationDate(db,id,contact.modificationdate, function(){
-//	                            		ContactsService.updateContactInfo(db,contact,function(){
-//	                            			 // empty group table
-//	                                        ContactsService.emptyGroupTable(db, function() {
-//	                                            // get data from server
-//	                                            ContactsService.getGroup().success(function(data, status, headers, config) {
-//	                                            	ContactsService.downloadAndOverride($stateParams.id,function(urlImage,i){
-//	                                            		ContactsService.updateContactPhoto(db,$stateParams.id,urlImage,function(){
-//	                                            			//rafraichir la page contact list
-//	                                            			// console.log("+++++=======++++++++++++++");
-//	                                            			MenuService.setLocalStorage('ReloadContactList',1);
-//	                                            		if (data.lists.list instanceof Array) {
-//	                                                        for (var int = 0; int < data.lists.list.length; int++)
-//	                                                        // insert into group table
-//	                                                            ContactsService.insertIntoGroupTable(db, data.lists.list[int], function() {
-//	                                                            	//go to contact Edit without update
-//	                                                            	LoadingService.dismiss();
-//	                                                            	$state.go('app.contactEdit', {id: Number(contact.id) });
-//
-//	                                                            });
-//	                                                        // LoadingService.loading("Chargement des groupes...");
-//	                                                    } else ContactsService.insertIntoGroupTable(db, data.lists.list, function() {
-//	                                                    	//go to contact Edit without update
-//	                                                    	LoadingService.dismiss();
-//	                                                    	$state.go('app.contactEdit', {id: Number(contact.id) });
-//	                                                    });
-//	                                            	});
-//	                                            	});
-//	                                            }).error(function(data, status, headers, config) {
-//	                                                // console.log("error " + status);
-//	                                                // TODO FIXME
-//	                                            });
-//
-//	                                        });
-//	                            		});//========
-//	                				});//========
-//	                				}
-//	                			}else{
-//                				LoadingService.error("La connexion est insuffisante ou saturée. <br> Veuillez réessayer ultérieurement.","ContactShowController");
-//
-//                			}
-//                		});
-//
-//                	},function(status){
-//                		if("NOCONTACT" == status){
-//                			// console
-//                			// console.log("there is no contact");
-//                			LoadingService.errorWithTreatment("ce contact n'existe plus dans le serveur","ContactShowController",id);
-//                		}else{
-//                			//go to contact Edit without update
-//                    		LoadingService.dismiss();
-//                    		$state.go('app.contactEdit', {id: id });
-//                		}
-//
-//
-//                	});
-//                }
-//                	LoadingService.dismiss();
-//                	//go to contact Edit (there is no connection)
-//                	$state.go('app.contactEdit', {id: id })
-//                }, function() {
-//                	// no connection
-//                	LoadingService.dismiss();
-//                	//go to contact Edit (there is no connection)
-//                	$state.go('app.contactEdit', {id: id })
-//                });
-//            /**€€€€€€€
-//             *  end synchronisation
-//             €€€€€€€*/
-
         };
 
         $scope.dismiss = function(){
@@ -316,19 +214,18 @@ appContext.controller("ContactShowController", [
         $scope.clickTel =function (tel){
         //	alert(tel);
         //	alert(tel.replace(/ /g,""));
+          $rootScope.focused = false;
         	LoadingService.popUpClickTel(tel.replace(/ /g,""),"ContactShowController");
 
         }
         $scope.clicksendSMS = function(tel){
-        	
-        	
+
+          $rootScope.focused = false;
         	 LoadingService.loading($translate.instant('ContactEdit.loadingSend'), "ContactShowController");
 
       		   if (validatePhone(tel) && tel.toString().length >5) {
       	         	  $rootScope.fromState = "app.buzcardSend";
       	           LoadingService.loading($translate.instant("Loading4"));
-      	           BuzcardService.selectProfile(db,function(rs){
-
       	           var phoneNumber = $rootScope.contact.phone_2.toString().replace(/ /g,"");
       	           var buzcardOnline = localStorage.getItem("act");
       	           var link = " ";
@@ -338,276 +235,180 @@ appContext.controller("ContactShowController", [
       	               }
       	         };
       	         console.log(phoneNumber);
-      	        	   //$translate.instant("SMS.Msg",{ buzcardOnline: buzcardOnline, first_name: rs.rows.item(0).first_name });
       	           $cordovaSms.send(phoneNumber, link, options)
       	                .then(function() {
       	                  LoadingService.dismiss();
-      	             	// LoadingService.confirm($translate.instant('ContactEdit.SendSMS',{phone: phoneNumber}), $rootScope.contact.id, "ContactEditController");
       	                  /***********************\
       	                         SMS envoyé
       	                  \***********************/
 
       	                }, function(error) {
       	                   LoadingService.dismiss();
-      	               // LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "BuzcardSendController");
-      	                 //   ionicToast.show("Votre SMS n'est pas envoyé", 'middle', true, 2000);
       	                });
-
-
-      	              });
       	         }
-
         }
-        /**
-         *
+
+
+
+      /**
+       *
          * button lui envoi ma buzcard
          */
-        $scope.sendBuz= function(contact){
-        	$rootScope.contact = contact;
-        	$rootScope.emailSend = contact.email;
-        	$state.go('app.buzcardSend');
-
-//        	if((contact.phone_1 !="" && contact.email !="") || (contact.phone_2 !="" && contact.email !="")){
-//        		LoadingService.popUpLuiRenvoyer("ContactShowController");
-//        	}else if(contact.phone_1 !="" || contact.phone_2 !=""){
-//        		sendBuzcardSMS();
-//        	}else if(contact.email !=""){
-//        		sendBuzcardEmail();
-//        	}
-
+      $scope.LuiEnvoyerMaBuz = function(contact){
+        console.log('lui envoyer ma buz')
+        console.log(contact)
+        if(contact.email === '' && contact.phone_2 ==='' && contact.phone_1 === ''){
+          console.log('remlpir email ou phoneNumber ')
+          LoadingService.error($translate.instant("email.phone.empty"), "ContactShowController");
         }
-       $scope.sendSMS = function(){
-    	   LoadingService.loading($translate.instant('ContactEdit.loadingSend'), "ContactShowController");
-    	   if($rootScope.contact.phone_1 !=""){
-    		   if (validatePhone($rootScope.contact.phone_1) && $rootScope.contact.phone_1.length>5) {
-    	         	  $rootScope.fromState = "app.buzcardSend";
-    	           LoadingService.loading($translate.instant("Loading4"));
-    	           BuzcardService.selectProfile(db,function(rs){
 
-    	           var phoneNumber = $rootScope.contact.phone_1;
-    	           var buzcardOnline = localStorage.getItem("act");
-    	           var link = $translate.instant("SMS.Msg",{ buzcardOnline: buzcardOnline, first_name: rs.rows.item(0).first_name });
-    	           $cordovaSms.send(phoneNumber, link, {})
-    	                .then(function() {
-    	                  LoadingService.dismiss();
-    	             	 LoadingService.confirm($translate.instant('ContactEdit.SendSMS',{phone: phoneNumber}), $rootScope.contact.id, "ContactEditController");
-    	                  /***********************\
-    	                         SMS envoyé
-    	                  \***********************/
+        else if(contact.email !=='' && contact.phone_2 ==='' && contact.phone_1 === ''){
+          console.log('existe email seulement')
+          $scope.sendCardViaEmail(contact.email)
+        }
 
-    	                }, function(error) {
-    	                   LoadingService.dismiss();
-    	                   LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "BuzcardSendController");
-    	                  //  ionicToast.show("Votre SMS n'est pas envoyé", 'middle', true, 2000);
-    	                });
+        else if(contact.email === '' && (contact.phone_2 !== '' || contact.phone_1 !=='')){
+          console.log('existe phone seulement')
+          LoadingService.popupClickLuiEnvoyerMaFiche(contact.email, contact.phone_1, contact.phone_2, 'ContactShowController')
+        }
 
 
-    	              });
-    	         }
-    	   }else if($rootScope.contact.phone_2 !=""){
-    		   if (validatePhone($rootScope.contact.phone_2) && $rootScope.contact.phone_2.length>5) {
-    	         	  $rootScope.fromState = "app.buzcardSend";
-    	           LoadingService.loading($translate.instant("Loading4"));
-    	           BuzcardService.selectProfile(db,function(rs){
+        else {
+          console.log('existe email and phone')
+          LoadingService.popupClickLuiEnvoyerMaFiche(contact.email, contact.phone_1, contact.phone_2, 'ContactShowController')
+        }
+      }
+      /***
+       * send par email
+       */
+      $scope.sendCardViaEmail = function(email){
+        if(email == '' || validateEmail(email)){
+          $rootScope.emailSend = email;
+          LoadingService.dismiss();
+          $state.go('app.buzcardSend');
+        }else{
+          LoadingService.error($translate.instant('ContactEdit.EmailIncorrect'), "ContactShowController");
+        }
 
-    	           var phoneNumber = $rootScope.contact.phone_2;
-    	           var buzcardOnline = localStorage.getItem("act");
-    	           var link = $translate.instant("SMS.Msg",{ buzcardOnline: buzcardOnline, first_name: rs.rows.item(0).first_name });
-    	           $cordovaSms.send(phoneNumber, link, {})
-    	                .then(function() {
-    	                  LoadingService.dismiss();
-    	             	 LoadingService.confirm($translate.instant('ContactEdit.SendSMS',{phone: phoneNumber}), $rootScope.contact.id, "ContactShowController");
-    	                  /***********************\
-    	                         SMS envoyé
-    	                  \***********************/
+      }
+      /****
+       *
+       */
+      /****** click sur par SMS *****/
+      $scope.sendCardViaSMS = function(phone_1, phone_2) {
+        LoadingService.loading($translate.instant('ContactEdit.loadingSend'), "ContactShowController");
+        if (phone_2 != "") {
+          if (validatePhone(phone_2) && phone_2.length > 5) {
+            $rootScope.fromState = "app.buzcardSend";
+            LoadingService.loading($translate.instant("Loading4"));
+            BuzcardService.selectProfile(db, function(rs) {
 
-    	                }, function(error) {
-    	                   LoadingService.dismiss();
-    	                   LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "BuzcardSendController");
-    	                  //  ionicToast.show("Votre SMS n'est pas envoyé", 'middle', true, 2000);
-    	                });
+              var phoneNumber =phone_2;
+              var buzcardOnline = localStorage.getItem("act");
+              var link = $translate.instant("SMS.Msg", {
+                buzcardOnline: buzcardOnline,
+                first_name: rs.rows.item(0).first_name
+              });
+              $cordovaSms.send(phoneNumber, link, {})
+                .then(function() {
+                  if($scope.contact.firstsendemail !='')
+                    ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
+                      ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($scope.contact.id), function () {
+
+                        LoadingService.dismiss();
+
+                        LoadingService.confirm2($translate.instant('ContactEdit.SendSMS', {
+                          phone: phoneNumber
+                        }), $scope.contact.id, "ContactShowController");
+                      })
+                    })
+                  else
+                    ContactsService.updateContactByField(db, "firstsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
+                      ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
+                        ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($scope.contact.id), function () {
+
+                          LoadingService.dismiss();
+
+                          LoadingService.confirm2($translate.instant('ContactEdit.SendSMS', {
+                            phone: phoneNumber
+                          }), $scope.contact.id, "ContactShowController");
+                        })
+                      })
+                    })
+                  /***********************\
+                   SMS envoyé
+                   \***********************/
+
+                }, function(error) {
+                  LoadingService.dismiss();
+                  //  ionicToast.show("Votre SMS n'est pas envoyé", 'middle', true, 2000);
+                  LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "ContactShowController");
+                });
 
 
-    	              });
-    	         }
-    	   }else{
-    		   LoadingService.error("Veuillez introduire Numéro de mobile ", "ContactShowController");
-    	   }
+            });
+          }
+        }else if (phone_1 != "") {
+          if (validatePhone(phone_1) && phone_1.length > 5) {
+            $rootScope.fromState = "app.buzcardSend";
+            LoadingService.loading($translate.instant("Loading4"));
+            BuzcardService.selectProfile(db, function(rs) {
 
-       }
+              var phoneNumber = phone_1;
+              var buzcardOnline = localStorage.getItem("act");
+              var link = $translate.instant("SMS.Msg", {
+                buzcardOnline: buzcardOnline,
+                first_name: rs.rows.item(0).first_name
+              });
+              $cordovaSms.send(phoneNumber, link, {})
+                .then(function() {
+                  LoadingService.dismiss();
+                  ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
+                    ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($scope.contact.id), function () {
+
+                      LoadingService.confirm2($translate.instant('ContactEdit.SendSMS', {
+                        phone: phoneNumber
+                      }), $scope.contact.id, "ContactShowController");
+                    })
+                  })
+                  /***********************\
+                   SMS envoyé
+                   \***********************/
+
+                }, function(error) {
+                  LoadingService.dismiss();
+                  //  ionicToast.show("Votre SMS n'est pas envoyé", 'middle', true, 2000);
+                  LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "ContactShowController");
+                });
+
+
+            });
+          }
+        } else {
+          LoadingService.error("Veuillez introduire Numéro de mobile ", "ContactEditController");
+        }
+
+      }
+
        $scope.dismiss = function(){
     	   LoadingService.dismiss();
        }
-       $scope.ok = function(id) {
+       $scope.ok2 = function(id) {
            LoadingService.dismiss();
-
-           $state.go('app.contactShow', {
+           console.log('confirm2')
+           $state.go('app.contactEdit', {
                id: id
-           }, {
-               reload: true
            });
 
        };
 
-        $scope.sendEMAIL = function(){
-
-
-      	  LoadingService.loading($translate.instant('ContactEdit.loadingSend'), "ContactShowController");
-      	  var rdv="";
-      	  var langue = navigator.language.substring(0,2);
-      	  if($rootScope.contact.rendez_vous !=""){
-      		  console.warn($rootScope.contact.rendez_vous)
-      		  //var dateTmp = new Date(contact.rendez_vous.substr(6, 4), Number(contact.rendez_vous.substr(3, 2)) - 1, contact.rendez_vous.substr(0, 2));
-      		  rdv= $filter('date')(new Date($rootScope.contact.rendez_vous), 'MM/dd/yyyy')
-      	  }else{
-      		  rdv= $filter('date')(new Date(), 'MM/dd/yyyy')
-      	  }
-      	  window.localStorage.setItem('contactUpdate', JSON.stringify($rootScope.contact));
-//      	  $rootScope.emailSend = contact.email;
-//      	  $rootScope.langueSend = langue;
-//      	  LoadingService.dismiss();
-//      	  console.log($rootScope.emailSend+"    "+$rootScope.langueSend);
-//      	  $state.go('app.buzcardSend');
-  		 var object = {
-  	                email: $rootScope.contact.email.toLowerCase(),
-  	                selectLang: langue,
-  	                checkFollower: "on",
-  	                dateRDV: rdv,
-  	                idTmp:$rootScope.contact.id
-  	            };
-  	            SynchroServices.insertRequest(db, "BUZCARDSEND", object, function() {
-  	            ///	LoadingService.loading($translate.instant('Buzcard.Msg'));
-  	            	LoadingService.loading($translate.instant('BuzcardSend.LoadingSend'));
-  	            	ConnectionService.isConnectedSYc(db,function() {
-
-  	            		LoadingService.dismiss();
-  	            		LoadingService.confirm2($translate.instant('ContactShow.MsgSend'), $rootScope.contact.id, "ContactShowController");
-  	            		 MenuService.setLocalStorage('ReloadContactList',1);
-  	                    /// $state.go('app.contactList');
-  	            	},function(){
-  	            		LoadingService.dismiss();
-  	            		LoadingService.confirm2($translate.instant('ContactShow.MsgSendOFF',{ email: $rootScope.contact.email}), $rootScope.contact.id, "ContactShowController");
-  	            		 MenuService.setLocalStorage('ReloadContactList',1);
-  	                     ///$state.go('app.contactList');
-  	            	});
-
-  	            });
-
-        };
-        function sendBuzcardEmail(){
-        	  LoadingService.loading($translate.instant('ContactEdit.loadingSend'), "ContactShowController");
-          	  var rdv="";
-          	  var langue = navigator.language.substring(0,2);
-          	  if($rootScope.contact.rendez_vous !=""){
-          		  console.warn($rootScope.contact.rendez_vous)
-          		  //var dateTmp = new Date(contact.rendez_vous.substr(6, 4), Number(contact.rendez_vous.substr(3, 2)) - 1, contact.rendez_vous.substr(0, 2));
-          		  rdv= $filter('date')(new Date($rootScope.contact.rendez_vous), 'MM/dd/yyyy')
-          	  }else{
-          		  rdv= $filter('date')(new Date(), 'MM/dd/yyyy')
-          	  }
-          	  window.localStorage.setItem('contactUpdate', JSON.stringify($rootScope.contact));
-//          	  $rootScope.emailSend = contact.email;
-//          	  $rootScope.langueSend = langue;
-//          	  LoadingService.dismiss();
-//          	  console.log($rootScope.emailSend+"    "+$rootScope.langueSend);
-//          	  $state.go('app.buzcardSend');
-      		 var object = {
-      	                email: $rootScope.contact.email.toLowerCase(),
-      	                selectLang: langue,
-      	                checkFollower: "on",
-      	                dateRDV: rdv,
-      	                idTmp:$rootScope.contact.id
-      	            };
-      	            SynchroServices.insertRequest(db, "BUZCARDSEND", object, function() {
-      	            ///	LoadingService.loading($translate.instant('Buzcard.Msg'));
-      	            	LoadingService.loading($translate.instant('BuzcardSend.LoadingSend'));
-      	            	ConnectionService.isConnectedSYc(db,function() {
-
-      	            		LoadingService.dismiss();
-      	            		LoadingService.confirm2($translate.instant('ContactShow.MsgSend'), $rootScope.contact.id, "ContactShowController");
-      	            		 MenuService.setLocalStorage('ReloadContactList',1);
-      	                    /// $state.go('app.contactList');
-      	            	},function(){
-      	            		LoadingService.dismiss();
-      	            		LoadingService.confirm2($translate.instant('ContactShow.MsgSendOFF',{ email: $rootScope.contact.email}), $rootScope.contact.id, "ContactShowController");
-      	            		 MenuService.setLocalStorage('ReloadContactList',1);
-      	                     ///$state.go('app.contactList');
-      	            	});
-
-      	            });
-        }
-
-        function sendBuzcardSMS(){
-        	LoadingService.loading($translate.instant('ContactEdit.loadingSend'), "ContactShowController");
-     	   if($rootScope.contact.phone_1 !=""){
-     		   if (validatePhone($rootScope.contact.phone_1) && $rootScope.contact.phone_1.length>5) {
-     	         	  $rootScope.fromState = "app.buzcardSend";
-     	           LoadingService.loading($translate.instant("Loading4"));
-     	           BuzcardService.selectProfile(db,function(rs){
-
-     	           var phoneNumber = $rootScope.contact.phone_1;
-     	           var buzcardOnline = localStorage.getItem("act");
-     	           var link = $translate.instant("SMS.Msg",{ buzcardOnline: buzcardOnline, first_name: rs.rows.item(0).first_name });
-     	           $cordovaSms.send(phoneNumber, link, {})
-     	                .then(function() {
-     	                  LoadingService.dismiss();
-     	             	 LoadingService.confirm($translate.instant('ContactEdit.SendSMS',{phone: phoneNumber}), $rootScope.contact.id, "ContactEditController");
-     	                  /***********************\
-     	                         SMS envoyé
-     	                  \***********************/
-
-     	                }, function(error) {
-     	                   LoadingService.dismiss();
-     	                   LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "BuzcardSendController");
-     	                  //  ionicToast.show("Votre SMS n'est pas envoyé", 'middle', true, 2000);
-     	                });
-
-
-     	              });
-     	         }
-     	   }else if($rootScope.contact.phone_2 !=""){
-     		   if (validatePhone($rootScope.contact.phone_2) && $rootScope.contact.phone_2.length>5) {
-     	         	  $rootScope.fromState = "app.buzcardSend";
-     	           LoadingService.loading($translate.instant("Loading4"));
-     	           BuzcardService.selectProfile(db,function(rs){
-
-     	           var phoneNumber = $rootScope.contact.phone_2;
-     	           var buzcardOnline = localStorage.getItem("act");
-     	           var link = $translate.instant("SMS.Msg",{ buzcardOnline: buzcardOnline, first_name: rs.rows.item(0).first_name });
-     	           $cordovaSms.send(phoneNumber, link, {})
-     	                .then(function() {
-     	                  LoadingService.dismiss();
-     	             	 LoadingService.confirm($translate.instant('ContactEdit.SendSMS',{phone: phoneNumber}), $rootScope.contact.id, "ContactShowController");
-     	                  /***********************\
-     	                         SMS envoyé
-     	                  \***********************/
-
-     	                }, function(error) {
-     	                   LoadingService.dismiss();
-     	                   LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "BuzcardSendController");
-     	                  //  ionicToast.show("Votre SMS n'est pas envoyé", 'middle', true, 2000);
-     	                });
-
-
-     	              });
-     	         }
-     	   }
-
-        }
 
         /**
-         *
+         * buzward (partager la fiche)
          */
         $scope.buzwardContact = function(contact){
         	$rootScope.emailSend="";
         	$state.go('app.buzward', {id: contact.id });
-        };
-
-        $scope.ok2 = function(id) {
-
-      		LoadingService.dismiss();
-
-
         };
 
         /**
@@ -641,48 +442,14 @@ appContext.controller("ContactShowController", [
             });
           	}
           });
-
-          //test de connection
-         // LoadingService.loading($translate.instant('Buzcard.Msg'));
-          ConnectionService.isConnectedWithoutSync(db,function() {
-            // cas connecté
-            // TODO FIXME il faut traiter le cas ou la session est expiré
-            LoadingService.loading($translate.instant('ContactEdit.Msg8'));
-
-            ContactsService.deleteContactServer(params,function(data){
-
-              if (data.update.status =="done") {
-                LoadingService.dismiss();
-                //only for test
-                MenuService.setLocalStorage('ReloadContactList',1);
-                $state.go('app.contactList');
-                //LoadingService.confirmDelete($translate.instant('ContactEdit.deleteContact'), "ContactListController");
-              } else {
-                LoadingService.error($translate.instant('Msg3'),"ContactShowController");
-              }
-
-            },function(status){
-              // console.error(status);
-              LoadingService.error($translate.instant('Msg3'),"ContactShowController");
-            });
-
-          }, function() {
-            //cas non connecté
             SynchroServices.insertRequest(db,"CONTACTDELETE",{id:$stateParams.id},function(){
 
               LoadingService.dismiss();
               MenuService.setLocalStorage('ReloadContactList',1);
               $state.go('app.contactList');
-            //  LoadingService.confirmDelete($translate.instant('ContactEdit.deleteContact'), "ContactListController");
             });
-
-          });
         };
 
-        $scope.okDelete = function(){
-        	LoadingService.dismiss();
-        	$state.go('app.contactList');
-        }
         /*******  Cut Link  ********/
         $scope.cutLink = function(contact){
           LoadingService.questionCutLink($translate.instant('ContactEdit.questionCutLink'),$stateParams.id, "ContactShowController");
@@ -707,7 +474,12 @@ appContext.controller("ContactShowController", [
         /*******  Cut Link  ********/
 
 
+        function validateEmail(email) {
+          // var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+          var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+          return re.test(email);
+        }
         function validatePhone(phone){
             var re = /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/ ;
             return re.test(phone);

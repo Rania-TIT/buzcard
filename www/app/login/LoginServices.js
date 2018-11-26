@@ -10,7 +10,6 @@ appContext.factory("LoginService", [
         var logoutRequest = {
           url : "https://www.buzcard.com/identification.aspx?request=leave",
           method :"GET",
-          timeout : 3000
         }
         return     $http(logoutRequest);
       };
@@ -37,7 +36,7 @@ appContext.factory("LoginService", [
                     var json = x2js.xml_str2json(data);
                     return json;
                 },
-                timeout: 6000,
+               // timeout: 8000,
                 data: {
                     email: email,
                     hash: password

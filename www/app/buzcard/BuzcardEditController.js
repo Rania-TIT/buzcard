@@ -116,21 +116,9 @@ appContext.controller('BuzcardEditController', [
         $scope.getPhoto = function() {
         	if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
        		
-                cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
-                	var ArrayPermission=[];
-                	var i=0
-                	 for (var permission in statuses){
-                		 console.log(statuses[permission]);
-                		 if(statuses[permission] == cordova.plugins.diagnostic.permissionStatus.GRANTED){
-                			 ArrayPermission[i]=true;
-                			 i++;
-                		 }else{
-                			 ArrayPermission[i]=false;
-                			 i++; 
-                		 }
-       
-                  }
-                if(ArrayPermission[0]  && ArrayPermission[1]){
+                cordova.plugins.diagnostic.requestRuntimePermission(function(status){
+
+                if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED){
 
             var options = {
                 quality: 50,
@@ -190,7 +178,7 @@ appContext.controller('BuzcardEditController', [
                 }, function(error){
                     console.error("The following error occurred: "+error);
                     $rootScope.isBackgroudRuning = false;
-                }, [cordova.plugins.diagnostic.permission.CAMERA,cordova.plugins.diagnostic.permission.READ_EXTERNAL_STORAGE]);
+                },cordova.plugins.diagnostic.permission.CAMERA);
                   
     	 }else{
 
@@ -268,21 +256,9 @@ appContext.controller('BuzcardEditController', [
         	if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
 
 
-                cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
-                	var ArrayPermission=[];
-                	var i=0
-                	 for (var permission in statuses){
-                		 console.log(statuses[permission]);
-                		 if(statuses[permission] == cordova.plugins.diagnostic.permissionStatus.GRANTED){
-                			 ArrayPermission[i]=true;
-                			 i++;
-                		 }else{
-                			 ArrayPermission[i]=false;
-                			 i++; 
-                		 }
-       
-                  }
-                if(ArrayPermission[0]  && ArrayPermission[1]){
+                cordova.plugins.diagnostic.requestRuntimePermission(function(status){
+
+                if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED){
 
         	  var options = {
                       quality: 100,
@@ -319,22 +295,6 @@ appContext.controller('BuzcardEditController', [
                     	 SynchroServices.insertRequest(db, "BUZCARDPHOTO", {path:url}, function() {
                     		 // console.log('Request inserted BUZCARDPHOTO');
                       		 LoadingService.dismiss();
-//           						console.log("get request");
-//           						SynchroServices.selectAllRequest(db,function(rs){
-//           							console.log("Nb request dans la File: "+ rs.rows.length);
-//           							if (rs.rows.length > 0 && !$rootScope.isBackgroudRuning) {
-//                          $rootScope.isBackgroudRuning  = true;
-//           								ConnectionService.isConnected(db, function(){
-//           									console.log("synchro auto terminé");
-//                            $rootScope.isBackgroudRuning = false;
-//           									//LoadingService.dismiss();
-//           								},function(){
-//                            $rootScope.isBackgroudRuning = false;
-//           									console.log("pas de conexion");
-//           									LoadingService.dismiss();
-//           								});
-//           							}
-//           						});
                     });
 
                //  });
@@ -346,7 +306,7 @@ appContext.controller('BuzcardEditController', [
             }, function(error){
                 console.error("The following error occurred: "+error);
                 $rootScope.isBackgroudRuning = false;
-            }, [cordova.plugins.diagnostic.permission.CAMERA,cordova.plugins.diagnostic.permission.READ_EXTERNAL_STORAGE]);
+            },cordova.plugins.diagnostic.permission.READ_EXTERNAL_STORAGE);
    	 }else{
 
 

@@ -20,7 +20,6 @@ appContext.factory("MultiService", ['$http','$q','$cordovaSQLite', function($htt
                 var json = x2js.xml_str2json(data);
                 return json;
             },
-            timeout: 1500,
 
         }
         return $http(getEventRequest)

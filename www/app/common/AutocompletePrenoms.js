@@ -111,7 +111,6 @@ appContext.factory('AutoCompleteService',['$http', '$cordovaSQLite','ContactsSer
 		  var query ="select Distinct LOWER(name) As Domaine from prenoms where Domaine like '"+str+"%@%' ORDER BY  Domaine ASC LIMIT 50";
           $cordovaSQLite.execute(db, query).then(function(result) {
 					//	if(result.rows.length > 0){
-        	  console.log(result.rows.length);
 								var domaines =[];
 								for (var int = 0; int < result.rows.length; int++) {
 

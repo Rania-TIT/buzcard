@@ -57,9 +57,7 @@ appContext.factory("SynchroServices", [
 
         }
         var insertQuery = "INSERT INTO request (name,object) VALUES ('"+name+"' ,'"+JSON.stringify(object)+"')";
-        console.log("********+++++**********");
-        console.warn(insertQuery);
-        console.log("********----***********");
+
         try {
           // console.warn(insertQuery);
           $cordovaSQLite.execute(db, insertQuery).then(function(value) {
@@ -110,7 +108,6 @@ appContext.factory("SynchroServices", [
       var selectBuzcardSend = function(db, callBack){
     	  try {
     	  var query = 'SELECT * FROM request where name="BUZCARDSEND"';
-          console.warn(query);
           $cordovaSQLite.execute(db, query).then(function(result) {
 
               return callBack(result);
@@ -165,10 +162,10 @@ appContext.factory("SynchroServices", [
     	  //*************
     	  var getAddressRequest = {
     		      method: 'GET',
-    		      url: "https://maps.googleapis.com/maps/api/geocode/json?Key=AIzaSyBTkpUYgvc9A8FftkVNc8Avade1BY_VR3o&latlng="+lat+","+long+"&sensor=true/false",
+              url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long+"&key=AIzaSyCHFkX3l7S5HH_GhSte_fHN6t_HQJVUqME"
+    		    // url: "https://maps.googleapis.com/maps/api/geocode/json?Key=AIzaSyCHFkX3l7S5HH_GhSte_fHN6t_HQJVUqME&latlng="+lat+","+long+"&sensor=true/false",
     		    };
     		    $http(getAddressRequest).success(function(response, status, headers, config) {
-    		    	 console.log(response);
     		    	 if ("OK" == response.status ) {
 
     		            	return callBack(response.results[0].formatted_address, id);
@@ -233,7 +230,6 @@ appContext.factory("SynchroServices", [
           var updateRequest = function(db,requestName,idTmp,idServeur,callBack){
             var searchQuery = "SELECT * FROM request where name='"+requestName+"'";
             $cordovaSQLite.execute(db, searchQuery).then(function(resultset){
-              console.info(resultset);
               var found = false;
               if (resultset.rows.length > 0) {
                 for (var i = 0; i < resultset.rows.length; i++) {
@@ -242,7 +238,6 @@ appContext.factory("SynchroServices", [
                     var found = true;
                     content.idTmp = idServeur;
                     var updateQuery = "UPDATE request set object ='"+JSON.stringify(content)+"' WHERE id ="+resultset.rows.item(i).id ;
-                    console.info(updateQuery);
                     $cordovaSQLite.execute(db, updateQuery).then(function(rs){
                            return callBack(0);
                     },function(err){
@@ -268,7 +263,6 @@ appContext.factory("SynchroServices", [
 
         var updateRequestById = function(db,requestId, content, callBack){
             var updateQuery = "UPDATE request set object ='"+JSON.stringify(content)+"' WHERE id ="+requestId ;
-            console.info(updateQuery);
             $cordovaSQLite.execute(db, updateQuery).then(function(rs){
                 return callBack(0);
             },function(err){

@@ -109,6 +109,15 @@ appContext.factory("LoadingService", ['$ionicLoading','$translate','$rootScope',
 
 			  };
 
+  var QuestionAUtorisationLocation = function(msg, controller) {
+
+    $ionicLoading.show({
+      template: '<div class="window" ng-controller="'+controller+'"><p class="activated_KDO_text">'+msg+'</p><div class="container-button"><button class="no_text" ng-click="noAutorisation()">'+$translate.instant('Loading.NO')+'</button><button class="yes_text" ng-click="yesAutorisation()">'+$translate.instant('Loading.YES')+'</button></div></div>',
+      animation: 'fade-in',
+      showBackdrop: true,
+    });
+
+  };
 		var	  QuestionAUtorisationContact= function(msg, controller) {
 
 		    $ionicLoading.show({
@@ -339,6 +348,51 @@ appContext.factory("LoadingService", ['$ionicLoading','$translate','$rootScope',
  		    });
 
  	}
+  var popupClickLuiEnvoyerMaFiche = function(email, phone_1, phone_2,controller){
+    $ionicLoading.show({
+      template:
+        '<div class="window " ng-controller="'+controller+'">'+
+        '<div>'+
+        '<div style="margin: 5px auto; display: block; position: relative; width: 110px"><a class="no_text" style="text-decoration:none; display: block;margin-right: 0" ng-click="sendCardViaEmail(\''+email+'\')">'+$translate.instant('popupClickLuiEnvoyerMaFiche.Email')+
+        '</a></div>'+
+        '<div  style="margin: 5px auto; display: block; position: relative; width: 110px;margin-top:28px;"><a class="yes_text" style="display: block" ng-click="sendCardViaSMS(\''+phone_1+'\',\''+phone_2+'\')">'+$translate.instant('popupClickLuiEnvoyerMaFiche.SMS')+
+        '</a></div>'+
+        '<a class="no_link" ng-click="no()">'+$translate.instant('QRep.NO')+'</a>'+
+        '</div>'+
+        '</div>',
+      animation: 'fade-in',
+      showBackdrop: true,
+    });
+
+  }
+  var confirmSearch = function(msg, act, latitude, longitude, controller) {
+
+    $ionicLoading.show({
+      template: '<div class="window" ng-controller="'+controller+'">' +
+        '<p class="activated_KDO_text">'+msg+'</p>' +
+        '<div class="container-button">' +
+        '<button style="font-size:14px" class="yes_text" ng-click="confirmSearchYes(\''+act+'\', \''+latitude+'\', \''+longitude+'\')">'+$translate.instant('alert.confirm')+'</button>' +
+        '</div>' +
+        '<a class="no_link" ng-click="dismiss()">'+$translate.instant('urgency.cancel')+'</a></div></div>',
+      animation: 'fade-in',
+      showBackdrop: true,
+    });
+
+  };
+  var confirmAlert = function(msg, act, latitude, longitude, controller) {
+
+    $ionicLoading.show({
+      template: '<div class="window" ng-controller="'+controller+'">' +
+        '<p class="activated_KDO_text">'+msg+'</p>' +
+        '<div class="container-button">' +
+        '<button style="font-size:14px" class="yes_text" ng-click="confirmAlertYes(\''+act+'\', \''+latitude+'\', \''+longitude+'\')">'+$translate.instant('alert.confirm')+'</button>' +
+        '</div>' +
+        '<a class="no_link" ng-click="dismiss()">'+$translate.instant('urgency.cancel')+'</a></div></div>',
+      animation: 'fade-in',
+      showBackdrop: true,
+    });
+
+  };
 
   return {
     error : error,
@@ -373,6 +427,10 @@ appContext.factory("LoadingService", ['$ionicLoading','$translate','$rootScope',
     questionCutLink : questionCutLink,
     questionSynchroDelta:questionSynchroDelta,
     infoFirstopen:infoFirstopen,
-    popupBuz:popupBuz
+    popupBuz:popupBuz,
+    popupClickLuiEnvoyerMaFiche:popupClickLuiEnvoyerMaFiche,
+    confirmSearch:confirmSearch,
+    QuestionAUtorisationLocation:QuestionAUtorisationLocation,
+    confirmAlert:confirmAlert
   };
 }]);

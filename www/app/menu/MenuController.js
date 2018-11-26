@@ -179,7 +179,7 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
         };
 
         $scope.changeLangue = function(langue){
-        	//alert(langue);
+        	console.log(langue);
         	$translate.use(langue);
         	//alert($state.current.name);
         	//$state.go($state.current.name,{}, {reload : true});
@@ -216,19 +216,18 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
         };
 
          $scope.yesDec = function() {
-             $interval.cancel($rootScope.backgroundMode);
+             $interval.cancel($rootScope.backgroundModeTimer);
              $interval.cancel($rootScope.timer);
              $interval.cancel($rootScope.forgroundMode);
-             $rootScope.backgroundMode =undefined;
+             $rootScope.backgroundModeTimer =undefined;
              $rootScope.forgroundMode =undefined;
+             $rootScope.timer = undefined
 
            SynchroServices.emptyRequestTable(db, function(result) {
                LoginService.deleteCredentials(db, function(result) {
                    MultiService.emptyMultiTable(db).then(function() {
                        BuzcardService.emptyEmailTradTable(db).then(function() {
 
-
-                           if (result.rowsAffected != 0) {
                                $timeout(function() {
                                    $ionicHistory.clearCache();
                                    $ionicHistory.clearHistory();
@@ -244,18 +243,16 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
                                $rootScope.emptyQueue = true;
                               // $interval.cancel($rootScope.timer);
                                $rootScope.timer = undefined;
-                               $interval.cancel($rootScope.backgroundMode);
+                               $interval.cancel($rootScope.backgroundModeTimer);
                                $interval.cancel($rootScope.timer);
                                $interval.cancel($rootScope.forgroundMode);
-                               $rootScope.backgroundMode =undefined;
+                               $rootScope.backgroundModeTimer =undefined;
                                $rootScope.forgroundMode =undefined;
                                $state.go("app.login", {}, {
                                    reload: true
                                });
                                LoadingService.dismiss();
-                           } else {
-                               LoadingService.error($translate.instant('DeconMsg'), "MenuController");
-                           }
+
                        }, function() {
                            console.warn("error");
                            LoadingService.error($translate.instant('DeconMsg'), "MenuController");

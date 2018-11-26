@@ -74,7 +74,7 @@ appContext.controller("UpdateController", [
                             				UrgencyService.downloadPhotoUrgency(db, card.photofilelocation, card.id, function(url) {
 
                                 //get from server and persist
-                                ContactsService.getContactsEdited().success(function(data, status, headers, config) {
+                                ContactsService.getContactsEdited(1, profil.act).success(function(data, status, headers, config) {
 
                                     var nbContacts = 0;
 

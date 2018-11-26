@@ -113,6 +113,10 @@ appContext.controller("LoginController", [
             }
 
         };
+      $scope.tutorials = function () {
+        console.log('https://www.buzcard.com//tutos.aspx?fr=' + $translate.use() + '&Type=BS');
+        window.open('https://www.buzcard.com//tutos.aspx?fr=' + $translate.use() + '&Type=BS', '_system', 'location=yes');
+      }
 
         // deconnection
         $scope.deconnexion = function(){
