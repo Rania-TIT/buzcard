@@ -116,6 +116,7 @@ function($state, $scope, $ionicPlatform, $translate,ContactsService,$stateParams
                           lastnameContact: $filter('capitalize')(contact.last_name),
                           firstnameContact: $filter('capitalize')(contact.first_name)
                         }), contact.id, "BuzwardController");
+                        $state.go('app.qrcode')
 
                       } else {
                         if (checkbox == "off") {
@@ -125,6 +126,7 @@ function($state, $scope, $ionicPlatform, $translate,ContactsService,$stateParams
                             lastnameContact: $filter('capitalize')(contact.last_name),
                             firstnameContact: $filter('capitalize')(contact.first_name)
                           }), contact.id, "BuzwardController");
+                          $state.go('app.qrcode')
 
                         } else {
                           $rootScope.focusName = true;
@@ -133,6 +135,7 @@ function($state, $scope, $ionicPlatform, $translate,ContactsService,$stateParams
                             lastnameContact: $filter('capitalize')(contact.last_name),
                             firstnameContact: $filter('capitalize')(contact.first_name)
                           }), contact.id, "BuzwardController");
+                            $state.go('app.qrcode')
 
                         }
                       }
@@ -154,9 +157,7 @@ function($state, $scope, $ionicPlatform, $translate,ContactsService,$stateParams
       $scope.ok = function(id){
     	  LoadingService.dismiss();
     	  $rootScope.focusName = false;
-        $state.go('app.contactShow', {
-          id: id
-        });
+        $state.go('app.qrcode')
       }
       $scope.dismiss = function() {
     

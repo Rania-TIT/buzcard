@@ -585,7 +585,7 @@
 "ContactEdit.questionCutLink":"<p>The vCard sent to THIS contact contains a unique link to your Buzcard profile. </p><p> </p><p>Would you like to turn this link off ?</p>",
 "ContactEdit.UseCameraOnline":"<p>Click on OK to transfer this picture to the server in order to get the names and numbers recognized.</p><br><p>You could then load them in the App AND in your smartphone all at once.</p>",
 "ContactEdit.UseCameraOffline":"<p>This picture must be transferred to the server to have the names and numbers recognized.</p><br><p>This will be the case as soon as  the app will be used with a better connexion.</p>",
-"Send.options":"Options",
+"Send.options":"Options for Email",
 "Send.Hide":"Hide",
 "MsgSynchroDelta4":"<p>New information about :</p><p><a>{{nameContact1}}</a><br><a>{{nameContact2}}</a><br><a>{{nameContact3}}</a><br><a>...</a><p>({{nbcontact}} contacts in total)</p></p> <br><p>Save it in the app ?</p>",
 "MsgSynchroDelta3":"<p>New information about :</p><p><a>{{nameContact1}}</a><br><a>{{nameContact2}}</a><br><a>{{nameContact3}}</a><br><a>...</a></p> <br><p>Save it in the app ?</p>",

@@ -125,8 +125,10 @@ appContext.controller("ContactEditController", [
                 $scope.contact.meeting_point = removeSlashes(result.rows.item(0).meeting_point);
             }
           } else if ($rootScope.fromState == "app.buzcardSend" ) {
-            if (removeSlashes(result.rows.item(0).meeting_point) == $translate.instant('ContactEdit.SearchGPS') || removeSlashes(result.rows.item(0).meeting_point) == "undefined" || removeSlashes(result.rows.item(0).meeting_point) == $translate.instant('No-place') || removeSlashes(result.rows.item(0).meeting_point) == $translate.instant('No-place-GPS')) {
-
+            console.log('-----sms------')
+            console.log(result.rows.item(0).meeting_point)
+            if (result.rows.item(0).meeting_point == "" || removeSlashes(result.rows.item(0).meeting_point) == $translate.instant('ContactEdit.SearchGPS') || removeSlashes(result.rows.item(0).meeting_point) == "undefined" || removeSlashes(result.rows.item(0).meeting_point) == $translate.instant('No-place') || removeSlashes(result.rows.item(0).meeting_point) == $translate.instant('No-place-GPS')) {
+            console.log('*********')
               $scope.contact.meeting_point = '';
                 tmpContact.meeting_point = '';
                 ConnectionService.testConexion(db, function(){
@@ -135,7 +137,7 @@ appContext.controller("ContactEditController", [
                             $scope.contact.meeting_point = removeSlashes(adress);
 
                           if ($scope.contact.meeting_point != $translate.instant('No-place') && $scope.contact.meeting_point != $translate.instant('No-place-GPS')) {
-                        	  ContactsService.updateContactByField(db, "meeting_point", removeSlashes(adress), $scope.contact.id, function() {
+                        	  ContactsService.updateContactByField(db, "meeting_point", adress, $scope.contact.id, function() {
                               });
                           }
 
@@ -1510,19 +1512,26 @@ appContext.controller("ContactEditController", [
 
       else if(contact.email === '' && (contact.phone_2 !== '' || contact.phone_1 !=='')){
         console.log('existe phone seulement')
+        $rootScope.contact = contact
         LoadingService.popupClickLuiEnvoyerMaFiche(contact.email, contact.phone_1, contact.phone_2, 'ContactEditController')
       }
       else {
         console.log('existe email and phone')
+        $rootScope.contact = contact
         LoadingService.popupClickLuiEnvoyerMaFiche(contact.email, contact.phone_1, contact.phone_2, 'ContactEditController')
+
       }
     }
 
 
     $scope.sendCardViaSMS = function(phone_1, phone_2) {
+      console.log(phone_1, phone_2)
       LoadingService.loading($translate.instant('ContactEdit.loadingSend'), "ContactEditController");
       if (phone_2 != "") {
+        if(phone_2.indexOf('"') != -1)
+          phone_2= phone_2.substr(1, phone_2.length -1)
         if (validatePhone(phone_2) && phone_2.length > 5) {
+          console.log(phone_2)
           $rootScope.fromState = "app.buzcardSend";
           LoadingService.loading($translate.instant("Loading4"));
           BuzcardService.selectProfile(db, function(rs) {
@@ -1533,29 +1542,59 @@ appContext.controller("ContactEditController", [
               buzcardOnline: buzcardOnline,
               first_name: rs.rows.item(0).first_name
             });
+            console.log(phoneNumber)
+            console.log(link)
             $cordovaSms.send(phoneNumber, link, {})
               .then(function() {
                 if($rootScope.contact.firstsendemail != '')
-                ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($rootScope.contact.id), function () {
-                  ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($rootScope.contact.id), function () {
 
-                    LoadingService.dismiss();
-
-                    LoadingService.confirm($translate.instant('ContactEdit.SendSMS', {
-                      phone: phoneNumber
-                    }), $rootScope.contact.id, "ContactEditController");
-                  })
-                })
-                else
-                  ContactsService.updateContactByField(db, "firstsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($rootScope.contact.id), function () {
                     ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($rootScope.contact.id), function () {
                       ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($rootScope.contact.id), function () {
 
                         LoadingService.dismiss();
+                        if($rootScope.fromState == 'app.qrcode')
+                        ContactsService.geolocalicationAdress(db, $rootScope.contact, function(adress) {
+                        SynchroServices.insertRequest(db, "CONTACTEDIT", {
+                          id: $stateParams.id,
+                          contact: {
+                            meeting_point: adress,
+                            lastsendemail: $filter('date')(new Date(), 'MM/dd/yyyy HH:mm')
+                          }
+                        }, function (result) {
+                          LoadingService.confirm($translate.instant('ContactEdit.SendSMS', {
+                            phone: phoneNumber
+                          }), $rootScope.contact.id, "ContactEditController");
+                        })
+                      })
+                        else
+                          LoadingService.confirm($translate.instant('ContactEdit.SendSMS', {
+                            phone: phoneNumber
+                          }), $rootScope.contact.id, "ContactEditController");
+                    })
+                  })
+                else
 
-                        LoadingService.confirm($translate.instant('ContactEdit.SendSMS', {
-                          phone: phoneNumber
-                        }), $rootScope.contact.id, "ContactEditController");
+                    ContactsService.updateContactByField(db, "firstsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($rootScope.contact.id), function () {
+                      ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($rootScope.contact.id), function () {
+                        ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($rootScope.contact.id), function () {
+
+                          LoadingService.dismiss();
+                          if($rootScope.fromState == 'app.qrcode')
+                          ContactsService.geolocalicationAdress(db, $rootScope.contact, function(adress) {
+                          SynchroServices.insertRequest(db, "CONTACTEDIT", {
+                            id: $stateParams.id,
+                            contact: { meeting_point: adress, lastsendemail: $filter('date')(new Date(), 'MM/dd/yyyy HH:mm')}
+                          }, function (result) {
+                            LoadingService.confirm($translate.instant('ContactEdit.SendSMS', {
+                              phone: phoneNumber
+                            }), $rootScope.contact.id, "ContactEditController");
+                          })
+                        })
+                          else
+                            LoadingService.confirm($translate.instant('ContactEdit.SendSMS', {
+                              phone: phoneNumber
+                            }), $rootScope.contact.id, "ContactEditController");
+
                       })
                     })
                   })
@@ -1573,6 +1612,8 @@ appContext.controller("ContactEditController", [
           });
         }
       }else if (phone_1 != "") {
+        if(phone_1.indexOf('"') != -1)
+          phone_1= phone_1.substr(1, phone_1.length -1)
         if (validatePhone(phone_1) && phone_1.length > 5) {
           $rootScope.fromState = "app.buzcardSend";
           LoadingService.loading($translate.instant("Loading4"));
@@ -1587,12 +1628,19 @@ appContext.controller("ContactEditController", [
             $cordovaSms.send(phoneNumber, link, {})
               .then(function() {
                 LoadingService.dismiss();
-                ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($rootScope.contact.id), function () {
-                  ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($rootScope.contact.id), function () {
+                ContactsService.geolocalicationAdress(db, $rootScope.contact, function(adress) {
+                  ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($rootScope.contact.id), function () {
+                    ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($rootScope.contact.id), function () {
 
-                    LoadingService.confirm($translate.instant('ContactEdit.SendSMS', {
-                      phone: phoneNumber
-                    }), $rootScope.contact.id, "ContactEditController");
+                      SynchroServices.insertRequest(db, "CONTACTEDIT", {
+                        id: $stateParams.id,
+                        contact: { meeting_point: adress, lastsendemail: $filter('date')(new Date(), 'MM/dd/yyyy HH:mm')}
+                      }, function (result) {
+                        LoadingService.confirm($translate.instant('ContactEdit.SendSMS', {
+                          phone: phoneNumber
+                        }), $rootScope.contact.id, "ContactEditController");
+                      })
+                    })
                   })
                 })
                 /***********************\
@@ -1621,7 +1669,7 @@ appContext.controller("ContactEditController", [
      * button lui envoi ma buzcard
      */
 
-    $scope.sendEMAIL = function() {
+   /* $scope.sendEMAIL = function() {
       if (!$rootScope.contact) {
         LoadingService.error($translate.instant("SMS.emailNonValid"), "ContactEditController");
       } else if (!validateEmail($rootScope.contact.email)) {
@@ -1677,7 +1725,7 @@ appContext.controller("ContactEditController", [
         });
 
       }
-    };
+    };*/
 
 
     $scope.ok2 = function(id) {
@@ -1706,10 +1754,9 @@ appContext.controller("ContactEditController", [
     }
 
     function validatePhone(phone) {
-      var re = /^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/;
+      var re = /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/;
       return re.test(phone);
     }
-
     function hasFields(obj) {
       var has = false;
       if (obj) {

@@ -567,7 +567,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
                                     if ("VCARD" == data.QRCode.TypeQR || "4EV" == data.QRCode.TypeQR) {
 
-                                        QrCodeServices.getCardInfoFromQrCode(JSON.parse(result.rows.item(0).object).act).then(function (response) {
+                                        QrCodeServices.getCardInfoFromQrCode(JSON.parse(result.rows.item(0).object).act, JSON.parse(result.rows.item(0).object).RID).then(function (response) {
                                             console.log(response)
                                             $rootScope.qrCode = 0;
 
@@ -631,7 +631,9 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                             }
 
                                         }, function (data, status, headers, config) {
+                                          SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                             execReq(db, callBack);
+                                          });
 
                                         });
                                     } else {
@@ -640,9 +642,16 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                         });
                                     }
                                 }, function (err) {
-                                  SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                  if ($rootScope.qrCode > 2) {
+                                    $rootScope.$rootScope.qrCode = 0;
+                                    SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                      execReq(db, callBack);
+                                    });
+
+                                  } else {
+                                    $rootScope.qrCode = $rootScope.qrCode + 1;
                                     execReq(db, callBack);
-                                  });
+                                  }
                                 });
                             });
                             break;
@@ -981,7 +990,9 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
 
                             }, function () {
+                              SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                 execReq(db, callBack);
+                              });
                             });
 
                     }

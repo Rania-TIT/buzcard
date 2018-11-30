@@ -1,11 +1,10 @@
 appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginService','$rootScope','cameraService','ContactsService','SynchroServices','$translate','BuzcardService', function($http, $cordovaSQLite, $filter, LoginService,$rootScope,cameraService, ContactsService,SynchroServices,$translate,BuzcardService) {
 
-	var getCardInfoFromQrCode = function (act){
+	var getCardInfoFromQrCode = function (act, Rid){
 		var idUser = $rootScope.userId;
 
 		req = {
-				url : "https://www.buzcard.com/contacts_mobile.aspx?request=ContactBuz_add&ID="+idUser+"&act="+act,
-				//url :"http://buzcard.fr/isbuzcard.aspx?request=virtual_card&act="+act,
+				url : "https://www.buzcard.com/contacts_mobile.aspx?request=ContactBuz_add&ID="+idUser+"&act="+act+"&RID="+Rid,
 				headers: {
 			        'Content-Type': 'application/x-www-form-urlencoded'
 

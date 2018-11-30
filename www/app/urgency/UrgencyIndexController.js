@@ -257,6 +257,7 @@ appContext.controller('UrgencyIndexController', ['$scope','$rootScope', 'Loading
     $scope.tutorials = function(){
     	console.log('https://www.buzcard.com//tutos.aspx?fr='+$translate.use()+'&Type=UR')
   	  window.open('https://www.buzcard.com//tutos.aspx?fr='+$translate.use()+'&Type=UR', '_system', 'location=yes');
+      localStorage.setItem('isCameraOpened', 'false')
     }
     
     $scope.Info = function(){

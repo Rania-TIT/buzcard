@@ -485,19 +485,11 @@ appContext.controller('BuzcardSendController', [
           $rootScope.focusName = true;
           LoadingService.error($translate.instant("SMS.phoneNonValid"), "BuzcardSendController");
         } else if (validateEmail(email.toLowerCase())) {
-          if (status == "not_determined") {
-            cordova.plugins.diagnostic.requestLocationAuthorization(function (status) {
-              //	alert('Location premission '+status);
-              sendB(email.toLowerCase(), selectLang, checkFollower, sendMobile, dateRDV, $translate.instant('ContactEdit.SearchGPS'), "", "");
+            cordova.plugins.diagnostic.getLocationAuthorizationStatus(function (status) {
+                sendB(email.toLowerCase(), selectLang, checkFollower, sendMobile, dateRDV, $translate.instant('ContactEdit.SearchGPS'), "", "");
             }, function (error) {
               sendB(email.toLowerCase(), selectLang, checkFollower, sendMobile, dateRDV, $translate.instant('ContactEdit.SearchGPS'), "", "");
-
             });
-
-
-          } else {
-            sendB(email.toLowerCase(), selectLang, checkFollower, sendMobile, dateRDV, $translate.instant('ContactEdit.SearchGPS'), "", "");
-          }
         }
 
         else if (validatePhone(email) && email.length > 5) {

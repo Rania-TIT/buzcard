@@ -80,7 +80,7 @@ appContext.controller('QrCodeController', [
               } else {
                 cordova.plugins.backgroundMode.setDefaults({text: ''});
               }
-             //if(!isEditionAndSend()) $state.go('app.qrcode');
+             if(!isEditionAndSend()) $state.go('app.qrcode');
 
                 $interval.cancel($rootScope.timer);
                 $rootScope.timer = undefined
@@ -95,7 +95,7 @@ appContext.controller('QrCodeController', [
                               console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', "Sync Auto: Queue Full");
                               console.log($rootScope.isBackgroudRuning)
                               console.log(isNotContactPage())
-                              if(!$rootScope.isBackgroudRuning && isNotContactPage()){
+                              if($rootScope.isBackgroudRuning ==false && isNotContactPage()){
                                 $rootScope.isBackgroudRuning = true;
                                 $rootScope.emptyQueue = false;
                                 ConnectionService.isConnected(db, function () {
@@ -151,7 +151,7 @@ appContext.controller('QrCodeController', [
                         console.log("%cFirst run", 'background: #222; color: #bada55', "Sync Auto: start...");
                         SynchroServices.selectAllRequest(db, function (rs) {
                           console.log(rs.rows.length, $rootScope.isBackgroudRuning)
-                            if (rs.rows.length > 0 && (!$rootScope.isBackgroudRuning && isNotContactPage())) {
+                            if (rs.rows.length > 0 && ($rootScope.isBackgroudRuning==false && isNotContactPage())) {
                                 $rootScope.isBackgroudRuning = true;
                                 $rootScope.emptyQueue = false;
                                 ConnectionService.isConnected(db, function () {
@@ -180,19 +180,16 @@ appContext.controller('QrCodeController', [
               } else {
                 cordova.plugins.backgroundMode.setDefaults({text: ''});
               }
-             ConnectionService.testConexion(db, function () {
-                onlyDelta()
-             }, function () {
-               // $rootScope.isBackgroudRuning = false;
-              });
-             /*  if (!isNotEditionPage())
-                    $state.go('app.qrcode')
-*/
-
-                $interval.cancel($rootScope.backgroundMode);
-                $rootScope.backgroundMode = undefined;
+                $interval.cancel($rootScope.backgroundModeTimer);
+                $rootScope.backgroundModeTimer = undefined;
 
                 if (!angular.isDefined($rootScope.timer)) {
+                  if($state.current.name != 'app.login'){
+                  ConnectionService.testConexion(db, function () {
+                    onlyDelta()
+                  }, function () {
+                  });
+                }
                     $rootScope.timer = $interval(function () {
                         sychroWithoutDelta();
 
@@ -266,7 +263,7 @@ appContext.controller('QrCodeController', [
             function sychroWithoutDelta() {
                 console.log("%cSync without Delta", 'background: #fff; color: #222FFF', "Sync Auto: start...");
                 SynchroServices.selectAllRequest(db, function (rs) {
-                    if (rs.rows.length > 0 && (!$rootScope.isBackgroudRuning && isNotContactPage())) {
+                    if (rs.rows.length > 0 && ($rootScope.isBackgroudRuning== false && isNotContactPage())) {
                         console.log("%cSync without Delta", 'background: #fff; color: #222FFF', " Sync Auto: Queue Full");
                         $rootScope.isBackgroudRuning = true;
                         $rootScope.emptyQueue = false;
@@ -312,6 +309,7 @@ appContext.controller('QrCodeController', [
 
             $scope.tutorials = function () {
                 console.log('https://www.buzcard.com//tutos.aspx?fr=' + $translate.use() + '&Type=BS');
+              localStorage.setItem('isCameraOpened', 'false')
                 window.open('https://www.buzcard.com//tutos.aspx?fr=' + $translate.use() + '&Type=BS', '_system', 'location=yes');
             }
 
@@ -347,18 +345,21 @@ appContext.controller('QrCodeController', [
                                 if (QrCodeServices.isBuzcardUrl(barcodeData.text)) {
 
                                     act = QrCodeServices.extractAct(barcodeData.text);
+                                    var Rid = parseInt(new Date().getTime() / 1000);
                                         cordova.plugins.diagnostic.isContactsAuthorized(function (authorized) {
 
                                             if (authorized) {
                                                 LoadingService.popupBuz($translate.instant('OfflineQRcodeContact'), act, "QrCodeController");
                                                 SynchroServices.insertRequest(db, "QRCODE", {
-                                                    act: act
+                                                    act: act,
+                                                    RID: Rid
                                                 }, function () {
                                                 });
                                             } else {
                                                 LoadingService.popupBuz($translate.instant('OfflineQRcodeNoContact'), act, "QrCodeController");
                                                 SynchroServices.insertRequest(db, "QRCODE", {
-                                                    act: act
+                                                    act: act,
+                                                    RID: Rid
                                                 }, function () {
                                                 });
                                             }
@@ -366,7 +367,8 @@ appContext.controller('QrCodeController', [
                                             console.error("The following error occurred: " + error);
                                             LoadingService.popupBuz($translate.instant('OfflineQRcodeNoContact'), act, "QrCodeController");
                                             SynchroServices.insertRequest(db, "QRCODE", {
-                                                act: act
+                                                act: act,
+                                                RID: Rid
                                             }, function () {
                                             });
                                         });
@@ -417,19 +419,22 @@ appContext.controller('QrCodeController', [
                                 if (QrCodeServices.isBuzcardUrl(barcodeData.text)) {
 
                                     act = QrCodeServices.extractAct(barcodeData.text);
+                                  var Rid = parseInt(new Date().getTime() / 1000);
                                     console.warn(act);
                                       cordova.plugins.diagnostic.isContactsAuthorized(function (authorized) {
 
                                             if (authorized) {
                                                 LoadingService.popupBuz($translate.instant('OfflineQRcodeContact'), act, "QrCodeController");
                                                 SynchroServices.insertRequest(db, "QRCODE", {
-                                                    act: act
+                                                    act: act,
+                                                  RID: Rid
                                                 }, function () {
                                                 });
                                             } else {
                                                 LoadingService.popupBuz($translate.instant('OfflineQRcodeNoContact'), act, "QrCodeController");
                                                 SynchroServices.insertRequest(db, "QRCODE", {
-                                                    act: act
+                                                    act: act,
+                                                  RID: Rid
                                                 }, function () {
                                                  });
                                             }
@@ -437,7 +442,8 @@ appContext.controller('QrCodeController', [
                                             console.error("The following error occurred: " + error);
                                             LoadingService.popupBuz($translate.instant('OfflineQRcodeNoContact'), act, "QrCodeController");
                                             SynchroServices.insertRequest(db, "QRCODE", {
-                                                act: act
+                                                act: act,
+                                              RID: Rid
                                             }, function () {
                                             });
                                         });

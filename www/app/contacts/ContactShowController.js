@@ -312,26 +312,41 @@ appContext.controller("ContactShowController", [
               $cordovaSms.send(phoneNumber, link, {})
                 .then(function() {
                   if($scope.contact.firstsendemail !='')
-                    ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
-                      ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($scope.contact.id), function () {
-
-                        LoadingService.dismiss();
-
-                        LoadingService.confirm2($translate.instant('ContactEdit.SendSMS', {
-                          phone: phoneNumber
-                        }), $scope.contact.id, "ContactShowController");
-                      })
-                    })
-                  else
-                    ContactsService.updateContactByField(db, "firstsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
+                    ContactsService.geolocalicationAdress(db, $scope.contact, function(adress) {
                       ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
                         ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($scope.contact.id), function () {
 
                           LoadingService.dismiss();
+                          SynchroServices.insertRequest(db, "CONTACTEDIT", {
+                            id: $stateParams.id,
+                            contact: {
+                              meeting_point: adress,
+                              lastsendemail: $filter('date')(new Date(), 'MM/dd/yyyy HH:mm')
+                            }
+                          }, function (result) {
+                            LoadingService.confirm2($translate.instant('ContactEdit.SendSMS', {
+                              phone: phoneNumber
+                            }), $scope.contact.id, "ContactShowController");
+                          })
+                        })
+                      })
+                    })
+                  else
+                    ContactsService.geolocalicationAdress(db, $scope.contact, function(adress) {
+                      ContactsService.updateContactByField(db, "firstsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
+                        ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
+                          ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($scope.contact.id), function () {
+                            SynchroServices.insertRequest(db, "CONTACTEDIT", {
+                              id: $stateParams.id,
+                              contact: { meeting_point: adress, lastsendemail: $filter('date')(new Date(), 'MM/dd/yyyy HH:mm')}
+                            }, function (result) {
+                              LoadingService.dismiss();
 
-                          LoadingService.confirm2($translate.instant('ContactEdit.SendSMS', {
-                            phone: phoneNumber
-                          }), $scope.contact.id, "ContactShowController");
+                              LoadingService.confirm2($translate.instant('ContactEdit.SendSMS', {
+                                phone: phoneNumber
+                              }), $scope.contact.id, "ContactShowController");
+                            })
+                          })
                         })
                       })
                     })
@@ -363,13 +378,19 @@ appContext.controller("ContactShowController", [
               $cordovaSms.send(phoneNumber, link, {})
                 .then(function() {
                   LoadingService.dismiss();
+                  ContactsService.geolocalicationAdress(db, $scope.contact, function(adress) {
                   ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
                     ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt($scope.contact.id), function () {
-
-                      LoadingService.confirm2($translate.instant('ContactEdit.SendSMS', {
-                        phone: phoneNumber
-                      }), $scope.contact.id, "ContactShowController");
+                      SynchroServices.insertRequest(db, "CONTACTEDIT", {
+                        id: $stateParams.id,
+                        contact: {meeting_point: adress, lastsendemail: $filter('date')(new Date(), 'MM/dd/yyyy HH:mm')}
+                      }, function (result) {
+                        LoadingService.confirm2($translate.instant('ContactEdit.SendSMS', {
+                          phone: phoneNumber
+                        }), $scope.contact.id, "ContactShowController");
+                      })
                     })
+                  })
                   })
                   /***********************\
                    SMS envoyé

@@ -587,7 +587,7 @@
   "ContactEdit.questionCutLink":"<p>La vCard envoyée à CE contact contient un lien unique vers votre profil Buzcard.</p><p> </p><p>Souhaitez-vous rendre ce lien inactif ?</p>",
   "ContactEdit.UseCameraOnline":"<p>En cliquant sur OK, cette photo sera transmise au serveur pour que les noms et numéros soient reconnus.</p><br><p>Vous pourrez ensuite les charger à la fois dans l’app ET votre répertoire mobile.</p>",
   "ContactEdit.UseCameraOffline":"<p>Cette photo doit être transmise au serveur pour que les noms et numéros soient reconnus.</p><br><p>Ce sera le cas si vous réutilisez l’app avec une connexion suffisante.</p>",
-  "Send.options":"Options",
+  "Send.options":"Options par Email",
   "Send.Hide":"Masquer",
   "MsgSynchroDelta4":"<p>De nouvelles informations sur:<br><a>{{nameContact1}}</a><br><a>{{nameContact2}}</a><br><a>{{nameContact3}}</a><br><a>...</a><p>({{nbcontact}} contacts au total) </p></p><p>Souhaitez-vous les enregistrer ?</p>",
   "MsgSynchroDelta3":"<p>De nouvelles informations sur:<br><a>{{nameContact1}}</a><br><a>{{nameContact2}}</a><br><a>{{nameContact3}}</a><br><a>...</a> </p><p>Souhaitez-vous les enregistrer ?</p>",

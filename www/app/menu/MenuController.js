@@ -221,7 +221,7 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
              $interval.cancel($rootScope.forgroundMode);
              $rootScope.backgroundModeTimer =undefined;
              $rootScope.forgroundMode =undefined;
-             $rootScope.timer = undefined
+             //$rootScope.timer = undefined
 
            SynchroServices.emptyRequestTable(db, function(result) {
                LoginService.deleteCredentials(db, function(result) {
@@ -242,7 +242,7 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
                                $rootScope.countSynchroDelta = 0;
                                $rootScope.emptyQueue = true;
                               // $interval.cancel($rootScope.timer);
-                               $rootScope.timer = undefined;
+                              // $rootScope.timer = undefined;
                                $interval.cancel($rootScope.backgroundModeTimer);
                                $interval.cancel($rootScope.timer);
                                $interval.cancel($rootScope.forgroundMode);

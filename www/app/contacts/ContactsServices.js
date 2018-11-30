@@ -1616,7 +1616,7 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
                     //update
                     updateContactInfoDateModification(db, contacts[i], function() {
                     if(contacts[i].rendez_vous !='')
-                      createAgendaRDV(db, contacts[i], toTimeStamp(contacts[i].rendez_vous), function(result) {
+                      createAgendaRDV(db, contacts[i], toTimeStamp(contactFromDB.rendez_vous * 1000), function(result) {
                       });
                         if (contacts[i].email == '') {
                             updateContactByField(db, "status", "cant_be_selected", contacts[i].id, function() {
@@ -1667,7 +1667,7 @@ var insertOrUpdateContacts = function(db, i, total, contacts, callBack) {
                     var contactFromDB = result.rows.item(0);
                     //update
                   if(contacts.rendez_vous !='')
-                  createAgendaRDV(db, contacts, toTimeStamp(contacts.rendez_vous), function(result) {
+                  createAgendaRDV(db, contacts, toTimeStamp(contactFromDB.rendez_vous *1000), function(result) {
                   });
                     updateContactInfoDateModification(db, contacts, function() {
                         if (contacts.email == '') {
@@ -2506,7 +2506,11 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
         	    location: libele_location,
         	    startDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 12, 30, 0, 0, 0),
         	    endDate: new Date(new Date(oldRDV * 1000).getFullYear(), new Date(oldRDV * 1000).getMonth(), new Date(oldRDV * 1000).getDate(), 13, 30, 0, 0, 0)
-        	  }).then(function (results) {
+        	  }).then(function (results){
+        	    console.log("--------------------------RDV-----------")
+            console.log(oldRDV)
+            console.log(contact.rendez_vous)
+            console.log(results)
         		  if(results ==""){
         			  $cordovaCalendar.createEvent({
       	    			title: libele_nom,
