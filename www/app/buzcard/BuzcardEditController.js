@@ -472,7 +472,7 @@ appContext.controller('BuzcardEditController', [
 
        		  if (keyEvent.keyCode == 13) {
 
-              cordova.plugins.Keyboard.close();
+              cordova.plugins.Keyboard.hide();
        		  }
 
         };

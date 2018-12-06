@@ -2573,12 +2573,14 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 	 * update params adresse in contact where idcontact
 	 */
 	var updateAllCoord = function(db,contactId, lat, lng, address, callBack){
+	  console.log(address)
   	  var updateQuery = " UPDATE contact SET  "+
-				"latitude_meeting ='"+lat+"' ,  " +
-				"longitude_meeting ='"+lng+"' ,  " +
+				"latitude_meeting ="+lat+" ,  " +
+				"longitude_meeting ="+lng+" ,  " +
 				"meeting_point ='"+addSlashes(address)+"' " +
 				"where id="+contactId+"";
-  	  // console.warn(updateQuery);
+
+  	   console.warn(updateQuery);
 
         $cordovaSQLite.execute(db, updateQuery).then(function(result) {
 

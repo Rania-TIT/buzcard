@@ -1,7 +1,7 @@
 appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServices', 'BuzcardService', 'ContactsService', 'LoadingService', '$rootScope',
-    'cameraService', 'MenuService', '$timeout', '$translate', 'UrgencyService', '$translate', 'QrCodeServices', 'BuzwardService', '$cordovaFile', '$state', '$filter',
+    'cameraService', 'MenuService', '$timeout', '$translate', 'UrgencyService', '$translate', 'QrCodeServices', 'BuzwardService', '$cordovaFile', '$state', '$filter','LogService',
     function (LoginService, $http, SynchroServices, BuzcardService, ContactsService, LoadingService, $rootScope, cameraService, MenuService, $timeout, $translate,
-              UrgencyService, $translate, QrCodeServices, BuzwardService, $cordovaFile, $state, $filter) {
+              UrgencyService, $translate, QrCodeServices, BuzwardService, $cordovaFile, $state, $filter, LogService) {
 
 
         /**
@@ -9,6 +9,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
          */
         var isConnected = function (db, connectedCallBack, notConnectedCallBack) {
             console.log("%cTest CNX + depilement",  'background: #000; color: #FF8000')
+          //LogService.saveLog("Test CNX + depilement", "ConnectionService")
             LoginService.selectCredentials(db, function (result) {
                 LoginService.doLogin(result.rows.item(0).email,
                     result.rows.item(0).password).success(
@@ -163,12 +164,14 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
                     switch (result.rows.item(0).name) {
                         case "BUZCARDEDIT":
+                      //   LogService.saveLog("BUZCARDEDIT", "ConnectionService")
                             BuzcardService.updateProfilServer(0, JSON.parse(result.rows.item(0).object).profile, function () {
                                 $rootScope.buzcardEdit = 0;
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                     execReq(db, callBack);
                                 });
                             }, function () {
+                             // LogService.saveLog("Error BUZCARDEDIT", "ConnectionService")
                                 LoadingService.dismiss();
                                 $timeout(function () {
                                     if ($rootScope.buzcardEdit > 2) {
@@ -190,6 +193,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                         case "CONTACTEDIT":
                             /***************/
                             // remove unsed fields
+                        // LogService.saveLog("CONTACTEDIT", "ConnectionService")
                             contactAfterClean = JSON.parse(result.rows.item(0).object).contact;
                             console.warn(JSON.parse(result.rows.item(0).object).id);
                             delete contactAfterClean.domaine;
@@ -220,6 +224,8 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                 });
                             }, function (error) {
                               console.log(error)
+                         //    LogService.saveLog("Error CONTACTEDIT", "ConnectionService")
+                           //   LogService.saveLog(error, "ConnectionService")
                                 LoadingService.dismiss();
                                 $timeout(function () {
                                     if ($rootScope.contactEdit > 2) {
@@ -238,12 +244,14 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             break;
 
                         case "RENAMEGROUP":
+                         // LogService.saveLog("RENAMEGROUP", "ConnectionService")
                             ContactsService.updateGroupServer(JSON.parse(result.rows.item(0).object).oldName, JSON.parse(result.rows.item(0).object).newName, function () {
                                 $rootScope.renameGroup = 0;
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                     execReq(db, callBack);
                                 });
                             }, function () {
+                            //  LogService.saveLog("Error RENAMEGROUP", "ConnectionService")
                                 LoadingService.dismiss();
                                 $timeout(function () {
                                     if ($rootScope.renameGroup > 2) {
@@ -262,7 +270,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             break;
 
                         case "BUZCARDSEND":
-
+                        //  LogService.saveLog("BUZCARDSEND", "ConnectionService")
                             BuzcardService.sendBuzcardToServer(JSON.parse(result.rows.item(0).object).email,
                                 JSON.parse(result.rows.item(0).object).selectLang,
                                 JSON.parse(result.rows.item(0).object).checkFollower,
@@ -272,6 +280,8 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                 JSON.parse(result.rows.item(0).object).Rid,
                                 function (contactServer) {
                                     console.log("buzcardSend : OK");
+                                    console.log('contact serveur')
+                                  console.log(contactServer)
                                     ContactsService.getContactbyId(db, JSON.parse(result.rows.item(0).object).idTmp, function (contactLocalResultSet) {
                                         // contact Local Existe
                                         if (contactLocalResultSet.rows.length > 0) {
@@ -334,6 +344,8 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                                         contact: contactObj
                                                                     }, function () {
                                                                         // verification s'il a une photo pour creer CONTACTPHOTO
+                                                                      console.warn('photo local'+ contactLocal.photofilelocation)
+                                                                      console.warn('photo serveur'+ contactServer.photofilelocation)
                                                                         if (contactLocal.photofilelocation != 'img/photo_top_title.jpg') {
                                                                             var RID = parseInt(new Date().getTime() / 1000);
                                                                             SynchroServices.insertRequest(db, "CONTACTPHOTO", {
@@ -352,7 +364,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                                             //});
                                                                         } else {
                                                                             //contact has no photo && delete buzcardSend Request
-                                                                            if (contactServer.photoflelocation != '') {
+                                                                            if (contactServer.photofilelocation != '') {
                                                                                 ContactsService.downloadAndOverride(contactServer.id, function (urlImg) {
                                                                                     ContactsService.updateContactPhoto(db, contactServer.id, urlImg, function () {
                                                                                         SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
@@ -392,7 +404,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                                     } else {
                                                                         //contact has no photo && delete buzcardSend Request
                                                                         //////////
-                                                                        if (contactServer.photoflelocation != '') {
+                                                                        if (contactServer.photofilelocation != '') {
                                                                             ContactsService.downloadAndOverride(contactServer.id, function (urlImg) {
                                                                                 ContactsService.updateContactPhoto(db, contactServer.id, urlImg, function () {
                                                                                     SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
@@ -461,6 +473,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                     });
 
                                 }, function () {
+                           //     LogService.saveLog("Error BUZCARDSEND", "ConnectionService")
                                     console.log("une erreur réseau est survenue lors de la Envoi BuzcardCard");
                                     // test sur le nombre de fois d'envoi de buzcardSend
                                     if ($rootScope.buzcardSend > 2) {
@@ -476,6 +489,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             break;
 
                         case "BUZCARDPHOTO":
+                         // LogService.saveLog("BUZCARDPHOTO", "ConnectionService")
                             BuzcardService.uploadPhotoProfil(JSON.parse(result.rows.item(0).object).path, function () {
                                 $rootScope.buzcardPhoto = 0;
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
@@ -483,6 +497,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                 });
                             }, function () {
                                 //LoadingService.dismiss();
+                            //  LogService.saveLog("Error BUZCARDPHOTO", "ConnectionService")
                                 $timeout(function () {
                                     // console.log("une erreur réseau est survenue lors de la synchronisation \nVeuillez réessayer plus tard  \n code : 0x0008");
                                     if ($rootScope.buzcardPhoto > 2) {
@@ -500,12 +515,14 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             break;
 
                         case "CONTACTPHOTO":
+                         // LogService.saveLog("CONTACTPHOTO", "ConnectionService")
                             ContactsService.uploadPhotoContact(JSON.parse(result.rows.item(0).object).path, JSON.parse(result.rows.item(0).object).id, JSON.parse(result.rows.item(0).object).RID, JSON.parse(result.rows.item(0).object).sendvcard, function () {
                                 $rootScope.contactPhoto = 0;
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                     execReq(db, callBack);
                                 });
                             }, function () {
+                           //   LogService.saveLog("Error CONTACTPHOTO", "ConnectionService")
                               if ($rootScope.contactPhoto > 2) {
                                 $rootScope.contactPhoto = 0;
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
@@ -519,12 +536,14 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             break;
 
                         case "CONTACTDELETE":
+                        //  LogService.saveLog("CONTACTDELETE", "ConnectionService")
                             ContactsService.deleteContactServer(JSON.parse(result.rows.item(0).object).id, function (data) {
                                 $rootScope.contactDelete = 0;
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                     execReq(db, callBack);
                                 });
                             }, function () {
+                           //   LogService.saveLog("Error CONTACTDELETE", "ConnectionService")
                               if ($rootScope.contactDelete > 2) {
                                 $rootScope.contactDelete = 0;
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
@@ -538,28 +557,36 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
                             break;
                         case "URGENCYEDIT":
+                        //  LogService.saveLog("URGENCYEDIT", "ConnectionService")
                             UrgencyService.updateUrgencyServer(0, JSON.parse(result.rows.item(0).object).vcard, function () {
                                 $rootScope.urgencyEdit = 0;
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                     execReq(db, callBack);
                                 });
                             }, function () {
+                         //     LogService.saveLog("Error URGENCYEDIT", "ConnectionService")
+                              SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                 execReq(db, callBack);
+                              });
                             });
                             break;
                         case "URGENCYPHOTO":
+                       //   LogService.saveLog("URGENCYPHOTO", "ConnectionService")
                             UrgencyService.uploadPhotoUrgency(JSON.parse(result.rows.item(0).object).path, function () {
                                 $rootScope.urgencyPhoto = 0;
                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                     execReq(db, callBack);
                                 });
                             }, function () {
+                         //     LogService.saveLog("Error URGENCYPHOTO", "ConnectionService")
+                              SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                 execReq(db, callBack);
+                              });
                             });
                             break;
 
                         case "QRCODE":
-
+                       //   LogService.saveLog("QRCODE", "ConnectionService")
                             LoginService.selectCredentials(db, function (resultx) {
                                 $rootScope.userId = resultx.rows.item(0).userId;
 
@@ -631,6 +658,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                             }
 
                                         }, function (data, status, headers, config) {
+                                     //     LogService.saveLog("Error QRCODE", "ConnectionService")
                                           SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                             execReq(db, callBack);
                                           });
@@ -642,6 +670,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                         });
                                     }
                                 }, function (err) {
+                               //   LogService.saveLog("Error QRCODE", "ConnectionService")
                                   if ($rootScope.qrCode > 2) {
                                     $rootScope.$rootScope.qrCode = 0;
                                     SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
@@ -656,6 +685,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             });
                             break;
                         case "BUZWARDSEND" :
+                        //  LogService.saveLog("BUZWARDSEND", "ConnectionService")
                             if (window.cordova) {
                                 var path = "";
                                 if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
@@ -767,6 +797,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
                                             });
                                         }, function () {
+                                        //  LogService.saveLog("Error BUZWARDSEND", "ConnectionService")
                                           SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
                                             execReq(db, callBack);
                                           });
@@ -790,6 +821,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                             break;
                         case "CONTACTCREATE" :
                             //creation d'un contact
+                         // LogService.saveLog("CONTACTCREATE", "ConnectionService")
                             LoginService.selectCredentials(db, function (credentialResultSet) {
                                 var ridCreateContact = parseInt(new Date().getTime() / 1000);
                                 var sms= JSON.parse(result.rows.item(0).object).SMS ? JSON.parse(result.rows.item(0).object).SMS : "NON"
@@ -973,6 +1005,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                     }
 
                                 }).error(function (response, status, headers, config) {
+                          //        LogService.saveLog("error CONTACTCREATE", "ConnectionService")
                                     // erreur requete createContact
                                     console.error("erreur requete createContact");
                                     execReq(db, callBack);

@@ -7,8 +7,8 @@ appContext.controller("LoginController", [
     'LoadingService',
     '$ionicHistory',
     '$rootScope',
-    '$translate',
-    function($scope, $state, LoginService, $ionicPlatform, $cordovaSQLite, LoadingService,$ionicHistory,$rootScope,$translate) {
+    '$translate','LogService',
+    function($scope, $state, LoginService, $ionicPlatform, $cordovaSQLite, LoadingService,$ionicHistory,$rootScope,$translate,LogService) {
 
     	var db = null;
         $ionicPlatform.ready(function() {
@@ -35,6 +35,7 @@ appContext.controller("LoginController", [
         };
 
         $scope.signIn = function(email, password) {
+      //    LogService.saveLog("Login ", "MenuController")
             if ( !email || !password ) {
                 LoadingService.error($translate.instant('LoginMsg1'), "LoginController");
             } else {

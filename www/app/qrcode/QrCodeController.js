@@ -13,9 +13,9 @@ appContext.controller('QrCodeController', [
     'SynchroServices',
     'MenuService',
     'LoginService',
-    'ConnectionService', '$interval', 'cameraService', '$window', 'BuzcardService', '$cordovaNativeAudio',
+    'ConnectionService', '$interval', 'cameraService', '$window', 'BuzcardService', '$cordovaNativeAudio', 'LogService',
     function ($state, $scope, $ionicPlatform, LoadingService, $cordovaBarcodeScanner, $ionicHistory, $translate, QrCodeServices,
-              ContactsService, $rootScope, $filter, SynchroServices, MenuService, LoginService, ConnectionService, $interval, cameraService, $window, BuzcardService, $cordovaNativeAudio) {
+              ContactsService, $rootScope, $filter, SynchroServices, MenuService, LoginService, ConnectionService, $interval, cameraService, $window, BuzcardService, $cordovaNativeAudio, LogService) {
 
 
         var db = null;
@@ -75,6 +75,8 @@ appContext.controller('QrCodeController', [
             cordova.plugins.backgroundMode.on('activate', function () {
 
                 console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', 'Activated')
+            //  LogService.saveLog("Background Mode Activated" , 'QrCodeController')
+
               if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
                 cordova.plugins.backgroundMode.setDefaults({text: ''});
               } else {
@@ -92,7 +94,11 @@ appContext.controller('QrCodeController', [
                           SynchroServices.selectAllRequest(db, function (res) {
 
                             if (res.rows.length > 0 ) {
+
                               console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', "Sync Auto: Queue Full");
+                           //   LogService.saveLog("isBackgroundRuning "+$rootScope.isBackgroudRuning , 'QrCodeController')
+                            //  LogService.saveLog("isNotContactPage "+isNotContactPage() , 'QrCodeController')
+
                               console.log($rootScope.isBackgroudRuning)
                               console.log(isNotContactPage())
                               if($rootScope.isBackgroudRuning ==false && isNotContactPage()){
@@ -130,6 +136,7 @@ appContext.controller('QrCodeController', [
 
             function endcheck() {
                 console.log('end depilement');
+              //LogService.saveLog("End Depilement " , 'QrCodeController')
                 $interval.cancel($rootScope.backgroundModeTimer);
                 $rootScope.backgroundModeTimer = undefined;
             }
@@ -148,9 +155,12 @@ appContext.controller('QrCodeController', [
 
                 if (!angular.isDefined($rootScope.timer)) {
                     $rootScope.timer = $interval(function () {
-                        console.log("%cFirst run", 'background: #222; color: #bada55', "Sync Auto: start...");
+                        console.log("%cFirst run ", 'background: #222; color: #bada55', "Sync Auto: start...");
+                   //   LogService.saveLog("First run Sync Auto: start..." , 'QrCodeController')
                         SynchroServices.selectAllRequest(db, function (rs) {
                           console.log(rs.rows.length, $rootScope.isBackgroudRuning)
+                       //   LogService.saveLog("Pile length "+ rs.rows.length, 'QrCodeController')
+                        //  LogService.saveLog("isBackgroundRuning "+ $rootScope.isBackgroudRuning, 'QrCodeController')
                             if (rs.rows.length > 0 && ($rootScope.isBackgroudRuning==false && isNotContactPage())) {
                                 $rootScope.isBackgroudRuning = true;
                                 $rootScope.emptyQueue = false;
@@ -167,6 +177,9 @@ appContext.controller('QrCodeController', [
                             }
                         });
                     }, 15000);
+                }else{
+                  console.log('first run timer defined')
+
                 }
 
             }
@@ -174,6 +187,7 @@ appContext.controller('QrCodeController', [
 
             /**  putting back app in foreground */
             cordova.plugins.backgroundMode.on('deactivate', function () {
+            //  LogService.saveLog("putting back app in foreground" , 'QrCodeController')
                 console.log("%c putting back app in foreground", 'background: #00FF00; color: #000')
               if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
                 cordova.plugins.backgroundMode.setDefaults({silent: true});
@@ -184,8 +198,9 @@ appContext.controller('QrCodeController', [
                 $rootScope.backgroundModeTimer = undefined;
 
                 if (!angular.isDefined($rootScope.timer)) {
-                  if($state.current.name != 'app.login'){
-                  ConnectionService.testConexion(db, function () {
+                  if($state.current.name != 'app.login' && $state.current.name != 'app.synchro' && $state.current.name != 'app.loading'){
+                  ConnectionService.testConnected(db, function () {
+               //     LogService.saveLog("OnlyDelta" , 'QrCodeController')
                     onlyDelta()
                   }, function () {
                   });
@@ -202,50 +217,53 @@ appContext.controller('QrCodeController', [
                 BuzcardService.getACT(function (act) {
                     ContactsService.getContactsEdited(1, act).then(function (response) {
                         if (response.data && response.data.contacts.pages > 0) {
+                          if($state.current.name != 'app.login' && $state.current.name != 'app.synchro' && $state.current.name != 'app.loading') {
+
                             $rootScope.isDelta = true;
                             console.log("%cOnly Delta", 'background: #FFF222; color: #333', "there is Delta");
                             $rootScope.countSynchroDelta++;
                             if ($rootScope.countSynchroDelta == 1) {
-                                if (document.querySelector(".modal-open") != null) {
-                                    document.querySelector(".modal-open").classList.remove('modal-open');
+                              if (document.querySelector(".modal-open") != null) {
+                                document.querySelector(".modal-open").classList.remove('modal-open');
+                              } else {
+                                // console.info("OPEN MODAL IS NULL")
+                              }
+                              ContactsService.getContactUpdate(response.data.contacts.contact, function (contactsName) {
+                                if (contactsName.nbcontact == 1) {
+                                  LoadingService.questionSynchroDelta($translate.instant('MsgSynchroDelta1', {
+                                      nameContact1: contactsName.contact1
+                                    }),
+                                    "UpdateController");
+                                } else if (contactsName.nbcontact == 2) {
+                                  LoadingService.questionSynchroDelta($translate.instant('MsgSynchroDelta2', {
+                                      nameContact1: contactsName.contact1,
+                                      nameContact2: contactsName.contact2
+                                    }),
+                                    "UpdateController");
                                 } else {
-                                    // console.info("OPEN MODAL IS NULL")
+                                  if (contactsName.nbcontact > 10) {
+                                    LoadingService.questionSynchroDelta($translate.instant('MsgSynchroDelta4', {
+                                        nameContact1: contactsName.contact1,
+                                        nameContact2: contactsName.contact2,
+                                        nameContact3: contactsName.contact3,
+                                        nbcontact: contactsName.nbcontact
+                                      }),
+                                      "UpdateController");
+                                  } else {
+                                    LoadingService.questionSynchroDelta($translate.instant('MsgSynchroDelta3', {
+                                        nameContact1: contactsName.contact1,
+                                        nameContact2: contactsName.contact2,
+                                        nameContact3: contactsName.contact3
+                                      }),
+                                      "UpdateController");
+                                  }
+
                                 }
-                                ContactsService.getContactUpdate(response.data.contacts.contact, function (contactsName) {
-                                    if (contactsName.nbcontact == 1) {
-                                        LoadingService.questionSynchroDelta($translate.instant('MsgSynchroDelta1', {
-                                                nameContact1: contactsName.contact1
-                                            }),
-                                            "UpdateController");
-                                    } else if (contactsName.nbcontact == 2) {
-                                        LoadingService.questionSynchroDelta($translate.instant('MsgSynchroDelta2', {
-                                                nameContact1: contactsName.contact1,
-                                                nameContact2: contactsName.contact2
-                                            }),
-                                            "UpdateController");
-                                    } else {
-                                        if (contactsName.nbcontact > 10) {
-                                            LoadingService.questionSynchroDelta($translate.instant('MsgSynchroDelta4', {
-                                                    nameContact1: contactsName.contact1,
-                                                    nameContact2: contactsName.contact2,
-                                                    nameContact3: contactsName.contact3,
-                                                    nbcontact: contactsName.nbcontact
-                                                }),
-                                                "UpdateController");
-                                        } else {
-                                            LoadingService.questionSynchroDelta($translate.instant('MsgSynchroDelta3', {
-                                                    nameContact1: contactsName.contact1,
-                                                    nameContact2: contactsName.contact2,
-                                                    nameContact3: contactsName.contact3
-                                                }),
-                                                "UpdateController");
-                                        }
 
-                                    }
-
-                                });
+                              });
 
                             }
+                          }
                         } else {
                             console.log("%cOnly Delta", 'background: #FFF222; color: #333', 'Nothing new in server')
                             $rootScope.isDelta = false;
@@ -262,6 +280,7 @@ appContext.controller('QrCodeController', [
 
             function sychroWithoutDelta() {
                 console.log("%cSync without Delta", 'background: #fff; color: #222FFF', "Sync Auto: start...");
+            //  LogService.saveLog("Sync without Delta" , 'QrCodeController')
                 SynchroServices.selectAllRequest(db, function (rs) {
                     if (rs.rows.length > 0 && ($rootScope.isBackgroudRuning== false && isNotContactPage())) {
                         console.log("%cSync without Delta", 'background: #fff; color: #222FFF', " Sync Auto: Queue Full");
@@ -712,7 +731,7 @@ appContext.controller('QrCodeController', [
         }
 
         function isEditionAndSend() {
-          return $state.current.name == 'app.buzcardEdit' || $state.current.name == 'app.buzcardSend' || $state.current.name == 'app.urgencyEdit' || $state.current.name == 'app.buzward' || $state.current.name == 'app.login'
+          return $state.current.name == 'app.buzcardEdit' || $state.current.name == 'app.buzcardSend' || $state.current.name == 'app.urgencyEdit' || $state.current.name == 'app.buzward' || $state.current.name == 'app.login' || $state.current.name != 'app.synchro' || $state.current.name != 'app.loading'
         }
 
     }

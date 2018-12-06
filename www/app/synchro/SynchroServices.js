@@ -59,7 +59,7 @@ appContext.factory("SynchroServices", [
         var insertQuery = "INSERT INTO request (name,object) VALUES ('"+name+"' ,'"+JSON.stringify(object)+"')";
 
         try {
-          // console.warn(insertQuery);
+           console.warn(insertQuery);
           $cordovaSQLite.execute(db, insertQuery).then(function(value) {
             $rootScope.emptyQueue = false;
 

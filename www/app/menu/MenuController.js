@@ -2,11 +2,11 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
 '$ionicSideMenuDelegate','$scope', '$state', '$ionicHistory', 'LoginService', 'LoadingService',
 'MenuService', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'ConnectionService', 'BuzcardService',
  'ContactsService','$compile','$translate','$cordovaContacts','$cordovaFile','$cordovaCalendar'
- ,'MultiService','SynchroServices','$interval',
+ ,'MultiService','SynchroServices','$interval', 'LogService',
     function($timeout,$ionicViewSwitcher,$cordovaStatusbar,$ionicSideMenuDelegate,$scope, $state,
       $ionicHistory, LoginService, LoadingService, MenuService, $rootScope, $cordovaSQLite,
       $ionicPlatform, ConnectionService, BuzcardService, ContactsService,$compile,
-      $translate,$cordovaContacts,$cordovaFile,$cordovaCalendar,MultiService,SynchroServices,$interval) {
+      $translate,$cordovaContacts,$cordovaFile,$cordovaCalendar,MultiService,SynchroServices,$interval, LogService) {
 	$rootScope.isCusto = false;
 	$rootScope.focused = false;
   $rootScope.emptyQueue = true;
@@ -214,14 +214,32 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
           }
 
         };
+        $scope.sendLog = function(){
+          var path = "";
+          if( /Android|BlackBerry Mini/i.test(navigator.userAgent) ) {
+            path = cordova.file.applicationStorageDirectory;
+          }  else {
+            path = cordova.file.dataDirectory;
+          }
+          $cordovaFile.readAsText(path, "log3.txt")
+            .then(function (success) {
+             console.log(success)
+              location.href = "mailto:alibenali.ing@gmail.com?subject=Log&body="+success
+
+            }, function (error) {
+              console.log(error)
+            });
+
+        }
 
          $scope.yesDec = function() {
+          // LogService.saveLog("Logout ", "MenuController")
              $interval.cancel($rootScope.backgroundModeTimer);
              $interval.cancel($rootScope.timer);
              $interval.cancel($rootScope.forgroundMode);
              $rootScope.backgroundModeTimer =undefined;
              $rootScope.forgroundMode =undefined;
-             //$rootScope.timer = undefined
+             $rootScope.timer = undefined
 
            SynchroServices.emptyRequestTable(db, function(result) {
                LoginService.deleteCredentials(db, function(result) {
@@ -241,13 +259,12 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
                                $rootScope.isDelta = false;
                                $rootScope.countSynchroDelta = 0;
                                $rootScope.emptyQueue = true;
-                              // $interval.cancel($rootScope.timer);
-                              // $rootScope.timer = undefined;
                                $interval.cancel($rootScope.backgroundModeTimer);
                                $interval.cancel($rootScope.timer);
                                $interval.cancel($rootScope.forgroundMode);
                                $rootScope.backgroundModeTimer =undefined;
                                $rootScope.forgroundMode =undefined;
+                               $rootScope.timer = undefined;
                                $state.go("app.login", {}, {
                                    reload: true
                                });
