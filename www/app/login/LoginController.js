@@ -35,7 +35,7 @@ appContext.controller("LoginController", [
         };
 
         $scope.signIn = function(email, password) {
-      //    LogService.saveLog("Login ", "MenuController")
+          LogService.saveLog("Login :: "+email , "LoginController")
             if ( !email || !password ) {
                 LoadingService.error($translate.instant('LoginMsg1'), "LoginController");
             } else {

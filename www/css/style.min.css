@@ -1880,4 +1880,7 @@ span.firstLastBuz {
 }
 .formActivate{
 	margin-top:20px;
-}
+}.log:focus, .log :hover{
+   background: #000;
+  color: #000000;
+ }

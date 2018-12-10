@@ -221,7 +221,7 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
           }  else {
             path = cordova.file.dataDirectory;
           }
-          $cordovaFile.readAsText(path, "log3.txt")
+          $cordovaFile.readAsText(path, "log4.txt")
             .then(function (success) {
              console.log(success)
               location.href = "mailto:alibenali.ing@gmail.com?subject=Log&body="+success
@@ -233,7 +233,6 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
         }
 
          $scope.yesDec = function() {
-          // LogService.saveLog("Logout ", "MenuController")
              $interval.cancel($rootScope.backgroundModeTimer);
              $interval.cancel($rootScope.timer);
              $interval.cancel($rootScope.forgroundMode);
@@ -268,6 +267,7 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
                                $state.go("app.login", {}, {
                                    reload: true
                                });
+                              LogService.saveLog("Logout ", "MenuController")
                                LoadingService.dismiss();
 
                        }, function() {

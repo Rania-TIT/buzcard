@@ -8,9 +8,9 @@ appContext.factory("LogService", ['$cordovaFile',
       } else {
         path = cordova.file.dataDirectory;
       }
-      $cordovaFile.checkFile(path, "log3.txt").then(function (res) {
+      $cordovaFile.checkFile(path, "log4.txt").then(function (res) {
         var message =" > "+ new Date().toISOString() + ' | ' + msg + ' | ' + controller + "\n "
-        $cordovaFile.writeExistingFile(path, "log3.txt", message)
+        $cordovaFile.writeExistingFile(path, "log4.txt", message)
           .then(function (success) {
             console.log(success)
           }, function (error) {
@@ -19,7 +19,7 @@ appContext.factory("LogService", ['$cordovaFile',
       }, function (err) {
         console.log(err)
         var message =" > "+ new Date().toISOString() + ' | ' + msg + ' | ' + controller + "\n "
-        $cordovaFile.writeFile(path, "log3.txt", message)
+        $cordovaFile.writeFile(path, "log4.txt", message)
           .then(function (success) {
             console.log(success)
           }, function (error) {
