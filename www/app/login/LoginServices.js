@@ -10,6 +10,7 @@ appContext.factory("LoginService", [
         var logoutRequest = {
           url : "https://www.buzcard.com/identification.aspx?request=leave",
           method :"GET",
+          timeout: 10000
         }
         return     $http(logoutRequest);
       };
@@ -36,7 +37,7 @@ appContext.factory("LoginService", [
                     var json = x2js.xml_str2json(data);
                     return json;
                 },
-               // timeout: 8000,
+                timeout: 10000,
                 data: {
                     email: email,
                     hash: password
@@ -172,7 +173,7 @@ appContext.factory("LoginService", [
          */
         var selectCredentials = function(db, callBack) {
             try {
-                $cordovaSQLite.execute(db, "SELECT name FROM sqlite_master WHERE type='table' AND name='identifiant';").then(function(results) {
+                $cordovaSQLite.execute(db, "SELECT name FROM sqlite_master WHERE type='table' AND name='identifiant'").then(function(results) {
                     if (results.rows.length > 0) {
                         $cordovaSQLite.execute(db, "SELECT * FROM identifiant WHERE id=1").then(function(res) {
 

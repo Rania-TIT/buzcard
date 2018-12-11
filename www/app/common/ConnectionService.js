@@ -289,16 +289,18 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                             //cas de contact existant avec id temporaire
                                             if (contactLocalResultSet.rows.item(0).id != contactServer.id) {
                                                 // changement d'id temporaire par id serveur dans la DB
+                                              console.log(contactLocalResultSet.rows.item(0))
                                                 ContactsService.updateContactIdById(db, JSON.parse(result.rows.item(0).object).idTmp, contactServer.id, function () {
                                                     var contactLocal = contactLocalResultSet.rows.item(0);
+                                                    console.log(contactLocal)
                                                     //  ContactsService.getContactServeurAfterSend(db,contactServer,contactLocal,  function(contactLocalAfter){
-                                                    ContactsService.checkinfoserver(db, contactServer.first_name, contactLocal.first_name, 'first_name', contactServer.id, function () {
+                                                /*    ContactsService.checkinfoserver(db, contactServer.first_name, contactLocal.first_name, 'first_name', contactServer.id, function () {
                                                         contactLocal.first_name = contactServer.first_name;
                                                         ContactsService.checkinfoserver(db, contactServer.last_name, contactLocal.last_name, 'last_name', contactServer.id, function () {
                                                             contactLocal.last_name = contactServer.last_name;
                                                             ContactsService.checkinfoserver(db, contactServer.company, contactLocal.company, 'company', contactServer.id, function () {
                                                                 contactLocal.company = contactServer.company;
-
+                                                  */
                                                                 console.log(contactLocal);
                                                                 /**********************************************\
                                                                  préparation de l'objet à envoyer au serveur
@@ -423,10 +425,10 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                                                     }
                                                                 }
                                                                 //////
-                                                            });
+                                                    /*        });
                                                         });
 
-                                                    });
+                                                    }); */
                                                     // } );
 
                                                     ///////////

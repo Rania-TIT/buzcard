@@ -1,8 +1,8 @@
 appContext.factory("SynchroServices", [
     '$cordovaSQLite',
     '$http',
-    '$rootScope','$cordovaGeolocation','BuzcardService',
-    function($cordovaSQLite,$http,$rootScope,$cordovaGeolocation,BuzcardService) {
+    '$rootScope','$cordovaGeolocation','BuzcardService', 'LogService',
+    function($cordovaSQLite,$http,$rootScope,$cordovaGeolocation,BuzcardService, LogService) {
 
       /**
        * create request table
@@ -60,6 +60,7 @@ appContext.factory("SynchroServices", [
 
         try {
            console.warn(insertQuery);
+          LogService.saveLog('Request inset dans la pile '+insertQuery, 'QrCodeController')
           $cordovaSQLite.execute(db, insertQuery).then(function(value) {
             $rootScope.emptyQueue = false;
 
@@ -86,25 +87,22 @@ appContext.factory("SynchroServices", [
           var query = 'SELECT * FROM request order by id ASC';
           // console.warn(query);
           $cordovaSQLite.execute(db, query).then(function(result) {
-              if (result.rows.length > 0) {
-                // $rootScope.emptyQueue = false;
                 return callBack(result);
-              }else {
-                // $rootScope.emptyQueue = true;
-                return callBack(result);
-              }
 
             }, function(reason) {
               //TODO FIXME
               // console.log("error " + reason);
               return 1;
-            });
+            }, function(value) {
+            return 1;
+          });
 
         } catch (e) {
           // console.log(e);
           return 1;
         }
       };
+
       var selectBuzcardSend = function(db, callBack){
     	  try {
     	  var query = 'SELECT * FROM request where name="BUZCARDSEND"';

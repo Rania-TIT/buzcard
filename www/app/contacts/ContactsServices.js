@@ -2404,7 +2404,7 @@ var UpdateRepertoire = function(db, i, total, contacts, callBack) {
 		   var libele_nom =  ""; //"Rappel Buzcard: recontacter "+contact.email+", rencontré le "+$filter('toFrFormat')(contact.alerteemailcreationdate) +"  "+ $filter('toTiret')(contact.meeting_point) +". "
 
   		if( contact.first_name != '' || contact.last_name != '' || contact.company !='' || contact.phone_1 !='' || contact.phone_2 !='' || contact.email !=''){
-  			comment = contact.first_name + " " + contact.last_name+" - "+contact.company+" - "+contact.phone_2+" - "+contact.email+" - "+"Rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate)+". "+contact.comment;
+  			comment = contact.first_name + " " + contact.last_name+" - "+contact.company+" - "+contact.phone_2+" - "+contact.email+" - "+"Rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate)+" "+$filter('toPlace')(contact.meeting_point);
        // comment = contact.first_name + " " + contact.last_name+" - "+contact.company+" - "+contact.phone_2+" - "+contact.email+" Rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate) +" "+ $filter('toPlace')(contact.meeting_point) +". ";
 
   			 libele_nom = "Rappel Buzcard: recontacter "+$filter('capitalize')(contact.first_name) + " " + $filter('capitalize')(contact.last_name)+", rencontré(e) le "+$filter('toFrFormat1')(contact.alerteemailcreationdate) +".";

@@ -221,7 +221,7 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
           }  else {
             path = cordova.file.dataDirectory;
           }
-          $cordovaFile.readAsText(path, "log4.txt")
+          $cordovaFile.readAsText(path, "log6.txt")
             .then(function (success) {
              console.log(success)
               location.href = "mailto:alibenali.ing@gmail.com?subject=Log&body="+success
@@ -239,6 +239,7 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
              $rootScope.backgroundModeTimer =undefined;
              $rootScope.forgroundMode =undefined;
              $rootScope.timer = undefined
+
 
            SynchroServices.emptyRequestTable(db, function(result) {
                LoginService.deleteCredentials(db, function(result) {

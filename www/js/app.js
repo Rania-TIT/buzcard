@@ -520,7 +520,7 @@ var appContext = angular.module('appContext', ['ionic', 'ngCordova', 'ngIOS9UIWe
                     }
                     //alert(ville[0]+' '+ville[ville.length-1]);
                     //	console.log(adress[adress.length-2]+'-----'+adress);
-                    return " à " + input;
+                    return " @ " + input;
                 } catch (e) {
                     return result;
                 }
