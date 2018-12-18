@@ -54,11 +54,6 @@ appContext.controller('QrCodeController', [
       console.log(localStorage.getItem('isSecouriste'))
       if (localStorage.getItem('isSecouriste') == '"1"') {
         if (!angular.isDefined($rootScope.forgroundMode)) {
-          if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-            cordova.plugins.backgroundMode.setDefaults({silent: true});
-          } else {
-            cordova.plugins.backgroundMode.setDefaults({text: ''});
-          }
           $rootScope.forgroundMode = $interval(function () {
             console.log('check for location ')
             SynchroServices.getLocationMobile(cordova.plugins.backgroundMode.isActive(), function () {
@@ -108,12 +103,6 @@ appContext.controller('QrCodeController', [
 
         console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', 'Activated')
         LogService.saveLog("Background Mode Activated", 'QrCodeController')
-
-        if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-          cordova.plugins.backgroundMode.setDefaults({text: ''});
-        } else {
-          cordova.plugins.backgroundMode.setDefaults({text: ''});
-        }
 
         if (!isEditionAndSend() && localStorage.getItem('isCameraOpened') != 'true') $state.go('app.qrcode');
 
@@ -179,24 +168,27 @@ appContext.controller('QrCodeController', [
         //LogService.saveLog("End Depilement " , 'QrCodeController')
         $interval.cancel($rootScope.backgroundModeTimer);
         $rootScope.backgroundModeTimer = undefined;
+        $interval.cancel($rootScope.timer);
+        $rootScope.timer = undefined
+        if (!angular.isDefined($rootScope.timerBG)) {
+          $rootScope.timerBG = $interval(function () {
+            sychroWithoutDelta();
+
+          }, 3600000);
+        }
       }
 
 
       /** First run */
-     // if (!cordova.plugins.backgroundMode.isActive()) {
+      if (!cordova.plugins.backgroundMode.isActive()) {
 
         if (!angular.isDefined($rootScope.timer)) {
           LogService.saveLog("FIRST RUN LUNCHED", 'QrCodeController')
           console.log('iss actifififif')
           $interval.cancel($rootScope.backgroundModeTimer);
           $rootScope.backgroundModeTimer = undefined
-
-          if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-            cordova.plugins.backgroundMode.setDefaults({silent: true});
-          } else {
-            cordova.plugins.backgroundMode.setDefaults({text: ''});
-          }
-
+          $interval.cancel($rootScope.timerBG);
+          $rootScope.timerBG = undefined
           $rootScope.timer = $interval(function () {
             LogService.saveLog("FIRST RUN :: Interval ::  is running", 'QrCodeController')
             console.log("%cFirst run ", 'background: #222; color: #bada55', "Sync Auto: start...");
@@ -228,24 +220,21 @@ appContext.controller('QrCodeController', [
 
         }
 
-      /*} else {
+      } else {
         console.log($rootScope.backgroundModeTimer)
         console.log($rootScope.timer)
         LogService.saveLog("FIRST RUN :: BG ACTIVE", 'QrCodeController')
-      }*/
+      }
 
 
       /**  putting back app in foreground */
       cordova.plugins.backgroundMode.on('deactivate', function () {
         LogService.saveLog(" PB :: FOREGROUND : putting back app in foreground", 'QrCodeController')
         console.log("%c putting back app in foreground", 'background: #00FF00; color: #000')
-        if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-          cordova.plugins.backgroundMode.setDefaults({silent: true});
-        } else {
-          cordova.plugins.backgroundMode.setDefaults({text: ''});
-        }
         $interval.cancel($rootScope.backgroundModeTimer);
         $rootScope.backgroundModeTimer = undefined;
+        $interval.cancel($rootScope.timerBG);
+        $rootScope.timerBG = undefined
         if ($state.current.name != 'app.login' && $state.current.name != 'app.synchro' && $state.current.name != 'app.loading') {
           ConnectionService.testConnected(db, function () {
             LogService.saveLog("PB:: FOREGROUND :: ONLY DELTA" , 'QrCodeController')
