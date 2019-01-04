@@ -53,8 +53,8 @@ appContext.controller('QrCodeController', [
        */
       console.log(localStorage.getItem('isSecouriste'))
       if (localStorage.getItem('isSecouriste') == '"1"') {
-        if (!angular.isDefined($rootScope.forgroundMode)) {
-          $rootScope.forgroundMode = $interval(function () {
+        if (typeof ($rootScope.forgroundMode) === "undefined") {
+          $rootScope.forgroundMode = setTimeout(function request() {
             console.log('check for location ')
             SynchroServices.getLocationMobile(cordova.plugins.backgroundMode.isActive(), function () {
               /** check for notification */
@@ -90,7 +90,7 @@ appContext.controller('QrCodeController', [
               })
               /** End check for notification*/
             });
-
+            setTimeout(request, 1800000);
           }, 1800000);
         }
       } else {
@@ -100,32 +100,31 @@ appContext.controller('QrCodeController', [
 
       /** BG mode is activated */
       cordova.plugins.backgroundMode.on('activate', function () {
-
+        cordova.plugins.backgroundMode.disableWebViewOptimizations();
         console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', 'Activated')
-        LogService.saveLog("Background Mode Activated", 'QrCodeController')
+        LogService.saveLog(" 105 Background Mode Activated", 'QrCodeController')
 
         if (!isEditionAndSend() && localStorage.getItem('isCameraOpened') != 'true') $state.go('app.qrcode');
 
         $rootScope.focused = false;
         console.log(localStorage.getItem('isCameraOpened'))
         if (localStorage.getItem('isCameraOpened') != 'true') {
-          if (!angular.isDefined($rootScope.backgroundModeTimer)) {
+          LogService.saveLog(" 112 : BackgroundTimer :: "+ ($rootScope.backgroundModeTimer === null )+ ' rootScoope : : '+ $rootScope, 'QrCodeController')
+          if (typeof ($rootScope.backgroundModeTimer) === "undefined") {
 
-            $interval.cancel($rootScope.timer);
+            clearTimeout($rootScope.timer)
             $rootScope.timer = undefined
-            $rootScope.backgroundModeTimer = $interval(function () {
-              LogService.saveLog("Background Mode:: sync", 'QrCodeController')
+            LogService.saveLog("117 : Background Mode:: lunch timer", 'QrCodeController')
+            $rootScope.backgroundModeTimer = setTimeout(function request() {
+              //LogService.saveLog("Background Mode:: sync", 'QrCodeController')
 
               SynchroServices.selectAllRequest(db, function (res) {
-                LogService.saveLog(res.rows.length, 'QrCodeController')
+                LogService.saveLog("122 : "+ res.rows.length, 'QrCodeController')
 
                 if (res.rows.length > 0) {
-
                   console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', "Sync Auto: Queue Full");
                   //   LogService.saveLog("isBackgroundRuning "+$rootScope.isBackgroudRuning , 'QrCodeController')
                   //  LogService.saveLog("isNotContactPage "+isNotContactPage() , 'QrCodeController')
-                  LogService.saveLog('$rootScope.isBackgroudRuning '+$rootScope.isBackgroudRuning, 'QrCodeController')
-                  LogService.saveLog('isNotContactPage() '+isNotContactPage(), 'QrCodeController')
                   console.log($rootScope.isBackgroudRuning)
                   console.log(isNotContactPage())
                   if ($rootScope.isBackgroudRuning == false && isNotContactPage()) {
@@ -141,23 +140,24 @@ appContext.controller('QrCodeController', [
                       $rootScope.isBackgroudRuning = false;
                     });
                   } else {
-                    LogService.saveLog('BackgroundMod:: Full Queue :: sync skipped', 'QrCodeController')
+                  //  LogService.saveLog('BackgroundMod:: Full Queue :: sync skipped', 'QrCodeController')
                     console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', "Sync Auto: Skipped");
 
                   }
                 } else {
-                  LogService.saveLog("Background Mode:: empty queue", 'QrCodeController')
+                //  LogService.saveLog("Background Mode:: empty queue", 'QrCodeController')
                   endcheck();
                 }
               });
+              setTimeout(request, 8000);
             }, 8000);
           } else {
-            LogService.saveLog("Background Mode:: backgroundModeTimer DEF", 'QrCodeController')
+            LogService.saveLog("155 : Background Mode:: backgroundModeTimer DEF", 'QrCodeController')
           }
 
 
         } else {
-          LogService.saveLog("Background Mode:: camera opened", 'QrCodeController')
+         // LogService.saveLog("Background Mode:: camera opened", 'QrCodeController')
           console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', 'Camera is opened')
         }
       });
@@ -166,36 +166,30 @@ appContext.controller('QrCodeController', [
       function endcheck() {
         console.log('end depilement');
         //LogService.saveLog("End Depilement " , 'QrCodeController')
-        $interval.cancel($rootScope.backgroundModeTimer);
+        clearTimeout($rootScope.backgroundModeTimer);
         $rootScope.backgroundModeTimer = undefined;
-        $interval.cancel($rootScope.timer);
+        clearTimeout($rootScope.timer)
         $rootScope.timer = undefined
-        if (!angular.isDefined($rootScope.timerBG)) {
-          $rootScope.timerBG = $interval(function () {
-            sychroWithoutDelta();
-
-          }, 3600000);
-        }
       }
 
 
       /** First run */
       if (!cordova.plugins.backgroundMode.isActive()) {
 
-        if (!angular.isDefined($rootScope.timer)) {
-          LogService.saveLog("FIRST RUN LUNCHED", 'QrCodeController')
+        LogService.saveLog("185 : First Run :: "+ ($rootScope.timer  === null )+ ' rootScoope : : '+ $rootScope, 'QrCodeController')
+
+        if (typeof ($rootScope.timer) === "undefined") {
+          LogService.saveLog("188 : FIRST RUN LUNCHED", 'QrCodeController')
           console.log('iss actifififif')
-          $interval.cancel($rootScope.backgroundModeTimer);
+          clearTimeout($rootScope.backgroundModeTimer);
           $rootScope.backgroundModeTimer = undefined
-          $interval.cancel($rootScope.timerBG);
-          $rootScope.timerBG = undefined
-          $rootScope.timer = $interval(function () {
-            LogService.saveLog("FIRST RUN :: Interval ::  is running", 'QrCodeController')
+          $rootScope.timer = setTimeout(function request() {
+           // LogService.saveLog("FIRST RUN :: Interval ::  is running", 'QrCodeController')
             console.log("%cFirst run ", 'background: #222; color: #bada55', "Sync Auto: start...");
             //   LogService.saveLog("First run Sync Auto: start..." , 'QrCodeController')
             SynchroServices.selectAllRequest(db, function (rs) {
               console.log(rs.rows.length, $rootScope.isBackgroudRuning)
-              LogService.saveLog("First Run Pile length " + rs.rows.length, 'QrCodeController')
+            //  LogService.saveLog("First Run Pile length " + rs.rows.length, 'QrCodeController')
               //  LogService.saveLog("isBackgroundRuning "+ $rootScope.isBackgroudRuning, 'QrCodeController')
               if (rs.rows.length > 0 && ($rootScope.isBackgroudRuning == false && isNotContactPage())) {
                 $rootScope.isBackgroudRuning = true;
@@ -209,46 +203,53 @@ appContext.controller('QrCodeController', [
                   $rootScope.isBackgroudRuning = false;
                 });
               } else {
-                LogService.saveLog("FIRST RUN :: Sync Auto: Skipped or empty queue", 'QrCodeController')
+             //   LogService.saveLog("FIRST RUN :: Sync Auto: Skipped or empty queue", 'QrCodeController')
                 console.log("%cFirst run", 'background: #222; color: #bada55', "Sync Auto: Skipped or empty queue");
               }
             });
+            setTimeout(request, 8000);
           }, 8000);
         } else {
-          console.log('first run timer defined')
-          LogService.saveLog("FIRST RUN :: timer DEF", 'QrCodeController')
+        //  console.log('first run timer defined')
+          LogService.saveLog("221 FIRST RUN :: timer DEF", 'QrCodeController')
 
         }
 
       } else {
         console.log($rootScope.backgroundModeTimer)
         console.log($rootScope.timer)
-        LogService.saveLog("FIRST RUN :: BG ACTIVE", 'QrCodeController')
+        LogService.saveLog("228 FIRST RUN :: BG ACTIVE", 'QrCodeController')
       }
 
 
       /**  putting back app in foreground */
       cordova.plugins.backgroundMode.on('deactivate', function () {
-        LogService.saveLog(" PB :: FOREGROUND : putting back app in foreground", 'QrCodeController')
+        LogService.saveLog("234 : PB :: FOREGROUND : putting back app in foreground", 'QrCodeController')
         console.log("%c putting back app in foreground", 'background: #00FF00; color: #000')
-        $interval.cancel($rootScope.backgroundModeTimer);
+        clearTimeout($rootScope.backgroundModeTimer);
         $rootScope.backgroundModeTimer = undefined;
-        $interval.cancel($rootScope.timerBG);
-        $rootScope.timerBG = undefined
         if ($state.current.name != 'app.login' && $state.current.name != 'app.synchro' && $state.current.name != 'app.loading') {
           ConnectionService.testConnected(db, function () {
-            LogService.saveLog("PB:: FOREGROUND :: ONLY DELTA" , 'QrCodeController')
+            LogService.saveLog(" 242 : PB:: FOREGROUND :: ONLY DELTA" , 'QrCodeController')
             onlyDelta()
           }, function () {
           });
         }
-        if (!angular.isDefined($rootScope.timer)) {
-          $rootScope.timer = $interval(function () {
+        LogService.saveLog("247 : Timer FG:: "+ ($rootScope.timer  === null )+ ' rootScoope : : '+ $rootScope, 'QrCodeController')
+
+        if (typeof ($rootScope.timer) === "undefined") {
+
+          $rootScope.timer = setTimeout(function request() {
+            sychroWithoutDelta();
+             setTimeout(request, 8000);
+          }, 8000);
+
+         /* $rootScope.timer = $interval(function () {
             sychroWithoutDelta();
 
-          }, 8000);
+          }, 8000); */
         } else {
-          LogService.saveLog("FOREGROUND : Timer is DEFINED", 'QrCodeController')
+          LogService.saveLog("255 : FOREGROUND : Timer is DEFINED", 'QrCodeController')
         }
       });
 
@@ -320,10 +321,10 @@ appContext.controller('QrCodeController', [
 
       function sychroWithoutDelta() {
         console.log("%cSync without Delta", 'background: #fff; color: #222FFF', "Sync Auto: start...");
-          LogService.saveLog("Sync without Delta" , 'QrCodeController')
+         // LogService.saveLog("Sync without Delta" , 'QrCodeController')
         SynchroServices.selectAllRequest(db, function (rs) {
-          LogService.saveLog("Sync without Delta:: PILE : Result "+rs , 'QrCodeController')
-          LogService.saveLog("Sync without Delta:: PILE : "+rs.rows.length , 'QrCodeController')
+         // LogService.saveLog("Sync without Delta:: PILE : Result "+rs , 'QrCodeController')
+       //   LogService.saveLog("Sync without Delta:: PILE : "+rs.rows.length , 'QrCodeController')
           if (rs.rows.length > 0 && ($rootScope.isBackgroudRuning == false && isNotContactPage())) {
             console.log("%cSync without Delta", 'background: #fff; color: #222FFF', " Sync Auto: Queue Full");
             $rootScope.isBackgroudRuning = true;
@@ -338,7 +339,7 @@ appContext.controller('QrCodeController', [
 
             });
           } else {
-            LogService.saveLog("Sync without Delta:: PILE : Sync Auto: Skipped" , 'QrCodeController')
+          //  LogService.saveLog("Sync without Delta:: PILE : Sync Auto: Skipped" , 'QrCodeController')
             console.log("%cSync without Delta", 'background: #fff; color: #222FFF', "Sync Auto: Skipped");
           }
         });

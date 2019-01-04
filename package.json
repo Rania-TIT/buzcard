@@ -30,7 +30,7 @@
     "cordova-plugin-file-transfer": "1.5.1",
     "cordova-plugin-geolocation": "4.0.1",
     "cordova-plugin-inappbrowser": "3.0.0",
-    "cordova-plugin-mauron85-background-geolocation": "2.3.2",
+    "cordova-plugin-mauron85-background-geolocation": "2.3.6",
     "cordova-plugin-nativeaudio": "3.0.9",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
@@ -80,12 +80,6 @@
       "cordova-sqlite-storage": {},
       "cordova-sms-plugin": {},
       "cordova-plugin-mauron85-background-geolocation": {
-        "ICON": "@mipmap/icon",
-        "SMALL_ICON": "@mipmap/icon",
-        "ACCOUNT_NAME": "@string/app_name",
-        "ACCOUNT_LABEL": "@string/app_name",
-        "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
-        "CONTENT_AUTHORITY": "$PACKAGE_NAME",
         "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking"
       }
     },

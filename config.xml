@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="fr.buzcard.buzcard" version="3.8.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="fr.buzcard.buzcard" version="3.8.4" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Buzcard</name>
     <description>
     Buzcard mobile application
@@ -121,7 +121,6 @@
     <plugin name="cordova-plugin-file-transfer" spec="~1.5.1" />
     <plugin name="cordova-plugin-buildinfo" spec="~2.0.2" />
     <plugin name="cordova-custom-config" spec="~5.0.2" />
-    <plugin name="cordova.plugins.diagnostic" spec="~3.1.1" />
     <plugin name="cordova-plugin-camera" spec="~2.4.1" />
     <plugin name="cordova-plugin-contacts" spec="~2.1.0" />
     <plugin name="cordova-plugin-calendar" spec="~4.5.1" />
@@ -129,13 +128,8 @@
     <plugin name="phonegap-plugin-barcodescanner" spec="~6.0.8" />
     <plugin name="cordova-sqlite-storage" spec="^0.7.11" />
     <plugin name="cordova-sms-plugin" spec="https://github.com/cordova-sms/cordova-sms-plugin.git" />
-    <plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.3.2">
-        <variable name="ICON" value="@mipmap/icon" />
-        <variable name="SMALL_ICON" value="@mipmap/icon" />
-        <variable name="ACCOUNT_NAME" value="@string/app_name" />
-        <variable name="ACCOUNT_LABEL" value="@string/app_name" />
-        <variable name="ACCOUNT_TYPE" value="$PACKAGE_NAME.account" />
-        <variable name="CONTENT_AUTHORITY" value="$PACKAGE_NAME" />
+    <plugin name="cordova.plugins.diagnostic" spec="3.7.3" />
+    <plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.3.6">
         <variable name="ALWAYS_USAGE_DESCRIPTION" value="This app always requires location tracking" />
     </plugin>
     <engine name="ios" spec="^4.5.5" />

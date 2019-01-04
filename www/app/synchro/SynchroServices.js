@@ -60,7 +60,7 @@ appContext.factory("SynchroServices", [
 
         try {
            console.warn(insertQuery);
-          LogService.saveLog('Request inset dans la pile '+insertQuery, 'QrCodeController')
+          //LogService.saveLog('Request inset dans la pile '+insertQuery, 'QrCodeController')
           $cordovaSQLite.execute(db, insertQuery).then(function(value) {
             $rootScope.emptyQueue = false;
 

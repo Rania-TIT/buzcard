@@ -224,7 +224,15 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
           $cordovaFile.readAsText(path, "log7.txt")
             .then(function (success) {
              console.log(success)
-              location.href = "mailto:alibenali.ing@gmail.com?subject=Log&body="+success
+
+              $cordovaFile.removeFile(path, "log7.txt")
+                .then(function (resp) {
+                  location.href = "mailto:alibenali.ing@gmail.com?subject=Log&body="+success
+                  // success
+                }, function (errorRemove) {
+                  // error
+                });
+
 
             }, function (error) {
               console.log(error)
@@ -233,9 +241,9 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
         }
 
          $scope.yesDec = function() {
-             $interval.cancel($rootScope.backgroundModeTimer);
-             $interval.cancel($rootScope.timer);
-             $interval.cancel($rootScope.forgroundMode);
+           clearTimeout($rootScope.backgroundModeTimer);
+           clearTimeout($rootScope.timer);
+           clearTimeout($rootScope.forgroundMode);
              $rootScope.backgroundModeTimer =undefined;
              $rootScope.forgroundMode =undefined;
              $rootScope.timer = undefined
@@ -259,9 +267,9 @@ appContext.controller("MenuController", ['$timeout', '$ionicViewSwitcher','$cord
                                $rootScope.isDelta = false;
                                $rootScope.countSynchroDelta = 0;
                                $rootScope.emptyQueue = true;
-                               $interval.cancel($rootScope.backgroundModeTimer);
-                               $interval.cancel($rootScope.timer);
-                               $interval.cancel($rootScope.forgroundMode);
+                         clearTimeout($rootScope.backgroundModeTimer);
+                         clearTimeout($rootScope.timer);
+                         clearTimeout($rootScope.forgroundMode);
                                $rootScope.backgroundModeTimer =undefined;
                                $rootScope.forgroundMode =undefined;
                                $rootScope.timer = undefined;
