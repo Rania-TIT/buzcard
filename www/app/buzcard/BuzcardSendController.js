@@ -497,14 +497,20 @@ appContext.controller('BuzcardSendController', [
 
           LoadingService.loading($translate.instant("Loading4"));
           BuzcardService.selectProfile(db, function (rs) {
-
+            var options = {
+              replaceLineBreaks: false, // true to replace \n by a new line, false by default
+              android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+              }
+            };
             var phoneNumber = email;
             var buzcardOnline = localStorage.getItem("act");
             var link = $translate.instant("SMS.Msg", {
               buzcardOnline: buzcardOnline,
               first_name: rs.rows.item(0).first_name
             });
-            $cordovaSms.send(email, link, {})
+
+            $cordovaSms.send(email, link, options)
               .then(function () {
                 /***********************\
                  SMS envoyé
@@ -559,8 +565,8 @@ appContext.controller('BuzcardSendController', [
                   }
                 })
 
-              }).catch(function (err) {
-              console.log(err)
+              }, function (err) {
+              console.log("----569---"+ err)
               LoadingService.dismiss();
               $rootScope.focusName = true;
               LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "BuzcardSendController");

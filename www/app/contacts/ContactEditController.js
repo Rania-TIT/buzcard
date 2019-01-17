@@ -54,7 +54,7 @@ appContext.controller("ContactEditController", [
         db = window.openDatabase("buzcard.db", '1', 'my', 1024 * 1024 * 10); // browser
       }
 
-	  $cordovaNativeAudio.preloadSimple('snare', 'img/Mail_Sent.m4a'); 
+	  $cordovaNativeAudio.preloadSimple('snare', 'img/Mail_Sent.m4a');
     });
 
     $scope.$on('$ionicView.beforeEnter', function(scopes, states) {
@@ -492,7 +492,7 @@ appContext.controller("ContactEditController", [
      */
     $scope.ok = function(id) {
         LoadingService.dismiss();
-     
+
     };
 
     function ShowPopUpSychroAuto(msg, param) {
@@ -505,7 +505,7 @@ appContext.controller("ContactEditController", [
 
           $rootScope.useCamera = false;
           $rootScope.photographier = false;
-        
+
           $state.go('app.qrcode');
     }
 
@@ -651,7 +651,7 @@ appContext.controller("ContactEditController", [
     	          }, function(error){
                       console.error("The following error occurred: "+error);
                   });
-                    
+
       } else {
 
 
@@ -771,12 +771,12 @@ appContext.controller("ContactEditController", [
               //alert(JSON.stringify(err));
             });
           }
-          
+
 
           }, function(error){
               console.error("The following error occurred: "+error);
           }, cordova.plugins.diagnostic.permission.READ_EXTERNAL_STORAGE);
-            
+
 
       } else {
 
@@ -1156,7 +1156,7 @@ appContext.controller("ContactEditController", [
         	    console.error(error);
         	});
 
- 
+
         }
       }
 
@@ -1535,7 +1535,12 @@ appContext.controller("ContactEditController", [
           $rootScope.fromState = "app.buzcardSend";
           LoadingService.loading($translate.instant("Loading4"));
           BuzcardService.selectProfile(db, function(rs) {
-
+            var options = {
+              replaceLineBreaks: false, // true to replace \n by a new line, false by default
+              android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+              }
+            };
             var phoneNumber = phone_2;
             var buzcardOnline = localStorage.getItem("act");
             var link = $translate.instant("SMS.Msg", {
@@ -1544,7 +1549,7 @@ appContext.controller("ContactEditController", [
             });
             console.log(phoneNumber)
             console.log(link)
-            $cordovaSms.send(phoneNumber, link, {})
+            $cordovaSms.send(phoneNumber, link, options)
               .then(function() {
                 if($rootScope.contact.firstsendemail != '')
 
@@ -1618,14 +1623,19 @@ appContext.controller("ContactEditController", [
           $rootScope.fromState = "app.buzcardSend";
           LoadingService.loading($translate.instant("Loading4"));
           BuzcardService.selectProfile(db, function(rs) {
-
+            var options = {
+              replaceLineBreaks: false, // true to replace \n by a new line, false by default
+              android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+              }
+            };
             var phoneNumber = phone_1;
             var buzcardOnline = localStorage.getItem("act");
             var link = $translate.instant("SMS.Msg", {
               buzcardOnline: buzcardOnline,
               first_name: rs.rows.item(0).first_name
             });
-            $cordovaSms.send(phoneNumber, link, {})
+            $cordovaSms.send(phoneNumber, link, options)
               .then(function() {
                 LoadingService.dismiss();
                 ContactsService.geolocalicationAdress(db, $rootScope.contact, function(adress) {

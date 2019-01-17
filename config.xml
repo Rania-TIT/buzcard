@@ -24,6 +24,7 @@
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    <preference name="cordova.plugins.diagnostic.modules" value="LOCATION BLUETOOTH WIFI CAMERA NOTIFICATIONS MICROPHONE CONTACTS CALENDAR REMINDERS MOTION NFC EXTERNAL_STORAGE" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -128,10 +129,11 @@
     <plugin name="phonegap-plugin-barcodescanner" spec="~6.0.8" />
     <plugin name="cordova-sqlite-storage" spec="^0.7.11" />
     <plugin name="cordova-sms-plugin" spec="https://github.com/cordova-sms/cordova-sms-plugin.git" />
-    <plugin name="cordova.plugins.diagnostic" spec="3.7.3" />
     <plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.3.6">
         <variable name="ALWAYS_USAGE_DESCRIPTION" value="This app always requires location tracking" />
     </plugin>
-    <engine name="ios" spec="^4.5.5" />
+    <plugin name="cordova.plugins.diagnostic" spec="3.9.2" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
+    <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="6.2.3" />
 </widget>

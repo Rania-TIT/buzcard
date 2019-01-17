@@ -123,17 +123,17 @@ appContext.controller("ContactShowController", [
           /*******  end show cut link  ******/
         });
       };
-      
+
       function compareDate(d1,d2){
-      	
+
   	    var dd1 = new Date(d1);
   	    console.log(dd1);
   	    var dd2 = new Date(d2);
   	    console.log((dd1.getDate() == dd2.getDate() && dd1.getFullYear() == dd2.getFullYear() && dd1.getMonth() == dd2.getMonth() && dd1.getHours() == dd2.getHours() && dd1.getMinutes() == dd2.getMinutes())) ;
-  	 
+
   	  if(dd1.getDate() == dd2.getDate() && dd1.getFullYear() == dd2.getFullYear() && dd1.getMonth() == dd2.getMonth() && dd1.getHours() == dd2.getHours() && dd1.getMinutes() == dd2.getMinutes()) return true;
 	     else return false;
-  	    
+
       }
 
       $scope.nextSlide = function() {
@@ -302,14 +302,19 @@ appContext.controller("ContactShowController", [
             $rootScope.fromState = "app.buzcardSend";
             LoadingService.loading($translate.instant("Loading4"));
             BuzcardService.selectProfile(db, function(rs) {
-
+              var options = {
+                replaceLineBreaks: false, // true to replace \n by a new line, false by default
+                android: {
+                  intent: 'INTENT'  // send SMS with the native android SMS messaging
+                }
+              };
               var phoneNumber =phone_2;
               var buzcardOnline = localStorage.getItem("act");
               var link = $translate.instant("SMS.Msg", {
                 buzcardOnline: buzcardOnline,
                 first_name: rs.rows.item(0).first_name
               });
-              $cordovaSms.send(phoneNumber, link, {})
+              $cordovaSms.send(phoneNumber, link, options)
                 .then(function() {
                   if($scope.contact.firstsendemail !='')
                     ContactsService.geolocalicationAdress(db, $scope.contact, function(adress) {
@@ -368,14 +373,19 @@ appContext.controller("ContactShowController", [
             $rootScope.fromState = "app.buzcardSend";
             LoadingService.loading($translate.instant("Loading4"));
             BuzcardService.selectProfile(db, function(rs) {
-
+              var options = {
+                replaceLineBreaks: false, // true to replace \n by a new line, false by default
+                android: {
+                  intent: 'INTENT'  // send SMS with the native android SMS messaging
+                }
+              };
               var phoneNumber = phone_1;
               var buzcardOnline = localStorage.getItem("act");
               var link = $translate.instant("SMS.Msg", {
                 buzcardOnline: buzcardOnline,
                 first_name: rs.rows.item(0).first_name
               });
-              $cordovaSms.send(phoneNumber, link, {})
+              $cordovaSms.send(phoneNumber, link, options)
                 .then(function() {
                   LoadingService.dismiss();
                   ContactsService.geolocalicationAdress(db, $scope.contact, function(adress) {

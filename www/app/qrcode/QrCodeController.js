@@ -100,7 +100,6 @@ appContext.controller('QrCodeController', [
 
       /** BG mode is activated */
       cordova.plugins.backgroundMode.on('activate', function () {
-        cordova.plugins.backgroundMode.disableWebViewOptimizations();
         console.log("%cBackground Mode", 'background: #45FF55; color: #FC5044', 'Activated')
         LogService.saveLog(" 105 Background Mode Activated", 'QrCodeController')
 
