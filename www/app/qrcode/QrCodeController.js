@@ -24,7 +24,6 @@ appContext.controller('QrCodeController', [
     $rootScope.showWrongPassword = false;
     $rootScope.emailSend = null;
     $scope.infoSend = false;
-    //$rootScope.isBackgroudRuning = false;
 
     $ionicPlatform.ready(function () {
 

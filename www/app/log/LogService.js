@@ -2,6 +2,7 @@ appContext.factory("LogService", ['$cordovaFile',
   function ($cordovaFile) {
 
     var saveLog = function (msg, controller) {
+      /*
       var path = "";
       if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
         path = cordova.file.applicationStorageDirectory;
@@ -26,8 +27,7 @@ appContext.factory("LogService", ['$cordovaFile',
             console.log(error)
           })
       })
-
-
+*/
     }
 
     return {

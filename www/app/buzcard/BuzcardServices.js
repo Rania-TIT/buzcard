@@ -336,7 +336,7 @@ var db=null;
     var data = "TextBox_Mail=" + email + "&EmailLanguageDropDownList=" + selectLang + "&CheckBox1=" + checkFollower + "&DateRDV=" + dateRDV + "&VcardProfil=" + sendMobile+"&RID="+Rid;
     console.log(data);
     selectProfile(db, function(resultProfile){
-    	
+
     selectEmailTradBylangue(db, selectLang, function(result){
     	//console.log(result.rows.item(0).textemail);
     	var textinit="";
@@ -345,7 +345,7 @@ var db=null;
     		  console.log("sansFichier");
     		 getACT(function(act) {
     			   var url = "https://www.buzcard.com/Vcard_Send_mobile.aspx?act=" + act + "&Click=OK&" + data;
-                   
+
     			 var request = {
     			          url :url,
     			          method : "POST",
@@ -364,8 +364,8 @@ var db=null;
     			            return json;
     			          },
     			        };
-              
-              
+
+
                  $http(request).success(function(response) {
                 	 console.log(response);
                 	 if(response.answer.contact_id !=null){
@@ -373,19 +373,19 @@ var db=null;
                 	 }else{
                 		  errorCallBack(status);
                 	 }
-                	
-                    
-                 
+
+
+
                  }).error(function(data, status, headers, config) {
                      errorCallBack(status);
                  });
 
 
              });
-    		 
+
     	}else{
-    		
-    
+
+
             getACT(function(act) {
                 var url = "https://www.buzcard.com/Vcard_Send_mobile.aspx?act=" + act + "&Click=OK&" + data;
                 var formData = new FormData();
@@ -831,7 +831,8 @@ var selectEmailTradBylangueName = function(db,lang, callBack){
     emptyEmailTradTable : emptyEmailTradTable,
     selectEmailTradBylangue:selectEmailTradBylangue,
     DropTableTradEmail:DropTableTradEmail,
-    selectEmailTradBylangueName:selectEmailTradBylangueName
+    selectEmailTradBylangueName:selectEmailTradBylangueName,
+    selectUser : selectUser
 
   };
 }]);
