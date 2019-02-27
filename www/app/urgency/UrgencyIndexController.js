@@ -41,7 +41,7 @@ appContext.controller('UrgencyIndexController', ['$scope', '$rootScope', 'Loadin
                 });
                 LoadingService.dismiss();
               } else {
-                window.open(barcodeData.text, '_system');
+                window.open(buildedUrl, '_system');
                 LoadingService.dismiss();
               }
             })
@@ -76,15 +76,15 @@ appContext.controller('UrgencyIndexController', ['$scope', '$rootScope', 'Loadin
 
 
                 BuzcardService.selectUser(db, function (resultSet) {
-                  if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
+                  var buildedUrl = barcodeData.text + '&UserID=' + resultSet.rows.item(0).userId
 
-                    var buildedUrl = barcodeData.text + '&UserID=' + resultSet.rows.item(0).userId
+                  if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
                     navigator.app.loadUrl(buildedUrl, {
                       openExternal: true
                     });
                     LoadingService.dismiss();
                   } else {
-                    window.open(barcodeData.text, '_system');
+                    window.open(buildedUrl, '_system');
                     LoadingService.dismiss();
                   }
                 })
@@ -120,7 +120,7 @@ appContext.controller('UrgencyIndexController', ['$scope', '$rootScope', 'Loadin
                     });
                     LoadingService.dismiss();
                   } else {
-                    window.open(barcodeData.text, '_system');
+                    window.open(buildedUrl, '_system');
                     LoadingService.dismiss();
                   }
                 })
