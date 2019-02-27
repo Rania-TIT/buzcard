@@ -75,8 +75,8 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 //	          }
 //	        });
 	  };
-	  
-	
+
+
 
 	var createContactFromQrCode = function(data){
 
@@ -596,7 +596,7 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
           		  }
 		ContactsService.searchContactInDevice(emailToSearchFor, phone_1ToSearchFor, function(resu) {
 			  if (resu == "") {
-				  if(contact.email=="" &&  contact.phone_1==""){
+				  if(contact.phone_2 =="" &&  contact.phone_1==""){
 					  return callBack();
 				  }else{
                   ContactsService.saveContactInTel(contact, function() {
@@ -615,20 +615,20 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
        });
         });
 	};
-	
+
 	  var  getMeetingPoint = function(db,contact, callBack){
 	    	cordova.plugins.diagnostic.getLocationAuthorizationStatus(function(status) {
 	            //	alert('Location premission '+status);
 
 	            ContactsService.geolocalicationAdress(db, contact, function(adress) {
-	            
+
 	              if (contact.meeting_point != $translate.instant('No-place') && contact.meeting_point != $translate.instant('No-place-GPS')) {
-	               
+
 	            	   ContactsService.updateContactByField(db, "meeting_point", addSlashes(adress), contact.id, function() {
 	            		   return callBack();
 	                  });
 
-	               
+
 	              }else{
 	            	  return callBack();
 	              }
@@ -636,7 +636,7 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 	            });
 	          }, function(error) {
 	        	  return callBack();
-	        
+
 	          });
 	    };
 	    var CreateRequestContact = function(db, callBack){
@@ -679,9 +679,9 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 		          console.log("------"+langue+"-----");
 	    		if(res.rows.length > 0){
 	    			console.warn(contactid);
-	    			
+
 	    		      ContactsService.getContactbyId(db, contactid, function(result) {
-	    		        
+
 	    		          BuzcardService.selectEmailTradBylangue(db, langue, function(resultSet){
 
 	    		          	   if (resultSet.rows.length > 0) {
@@ -716,11 +716,11 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 	    		        	  return callBack();
 	    		        	   });
 	    		            }, function() {
-	    		           
+
 	    		              MenuService.setLocalStorage('ReloadContactList', 1);
-	    		            
+
 		    		        	  return callBack();
-		    		        	
+
 	    		            });
 
 	    		          });
@@ -731,10 +731,10 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 	    		}else{
 	    			return callBack();
 	    		}
-	    		
-	    	}); 
+
+	    	});
 	    };
-	    
+
 	    var checkSendAFterBuz = function(db, act,callBack){
 	    	SynchroServices.selectBuzcardSendById(db, act,function(res){
 	    		 console.log(res.rows.length);

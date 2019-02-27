@@ -57,11 +57,11 @@ appContext.factory('cameraService', ['$q','$cordovaFile','$timeout','$cordovaFil
                 var options = {};
 				var headers = {'Connection':'close'};
 				options.headers = headers;
-				
+
 				if( /Android|BlackBerry Mini/i.test(navigator.userAgent) ) {
 					url = url.replace("https",'http');
-			    } 
-							
+			    }
+
            $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
            .then(function (result) {
                       //successs
@@ -105,6 +105,18 @@ appContext.factory('cameraService', ['$q','$cordovaFile','$timeout','$cordovaFil
        				callBack();
        			});
     };
+  var deleteFileUploaded = function(path, callBack){
+    var fileName = path.substr(path.lastIndexOf('/') + 1);
+    var pathFile = path.substr(0, path.lastIndexOf('/') + 1);
+    $cordovaFile.removeFile(pathFile, fileName)
+      .then(function (success) {
+        callBack();
+      }, function (error) {
+        // error
+        // console.log('erreur remove'+error.message);
+        callBack();
+      });
+  };
         /**
          * create path en params
          */
@@ -198,5 +210,6 @@ appContext.factory('cameraService', ['$q','$cordovaFile','$timeout','$cordovaFil
 	   checkExistFile:checkExistFile,
 	   deleteFile:deleteFile,
 	   checkExistFileCusto:checkExistFileCusto,
+     deleteFileUploaded:deleteFileUploaded
 	  };
 }]);

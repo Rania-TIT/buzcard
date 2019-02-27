@@ -391,8 +391,9 @@ appContext.controller('BuzcardSendController', [
       $rootScope.focusName = false;
       LoadingService.dismiss();
       $state.go("app.contactEdit", {
-        'id': id
+        'id': parseInt(id)
       });
+
 
 
     };
@@ -472,7 +473,6 @@ appContext.controller('BuzcardSendController', [
 
     $scope.sendBuzcard = function (email, selectLang, checkFollower, sendMobile, dateRDV) {
       $rootScope.displaydrowdown1 = {"z-index": "-1"};
-
       LoadingService.loading($translate.instant('BuzcardSend.LoadingSend'));
       if (email != undefined && email != null) {
         var string = email.substring(1, 2);
@@ -497,80 +497,84 @@ appContext.controller('BuzcardSendController', [
 
           LoadingService.loading($translate.instant("Loading4"));
           BuzcardService.selectProfile(db, function (rs) {
-            var options = {
-              replaceLineBreaks: false, // true to replace \n by a new line, false by default
-              android: {
-                intent: 'INTENT'  // send SMS with the native android SMS messaging
-              }
-            };
+
             var phoneNumber = email;
             var buzcardOnline = localStorage.getItem("act");
             var link = $translate.instant("SMS.Msg", {
               buzcardOnline: buzcardOnline,
               first_name: rs.rows.item(0).first_name
             });
+            var options = {
+              replaceLineBreaks: false, // true to replace \n by a new line, false by default
+              android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+              }
+            };
+                $cordovaSms.send(email, link, options)
+                  .then(function(){
+                    /***********************\
+                     SMS envoyé
+                     \***********************/
+                    ContactsService.selectContactByPhone(db, phoneNumber, function (res) {
+                      console.log('/***********************\\\n' +
+                        '                 SMS envoyé\n' +
+                        '                 \\***********************/')
 
-            $cordovaSms.send(email, link, options)
-              .then(function () {
-                /***********************\
-                 SMS envoyé
-                 \***********************/
-                ContactsService.selectContactByPhone(db, phoneNumber, function (res) {
-                  console.log('/***********************\\\n' +
-                    '                 SMS envoyé\n' +
-                    '                 \\***********************/')
-
-                  if (res.rows.length > 0) {
-                    if(res.rows.item(0).firstsendemail !='')
-                    ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt(res.rows.item(0).id), function () {
-                      ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt(res.rows.item(0).id), function () {
-
-                        $rootScope.focusName = true;
-                        LoadingService.confirm($translate.instant('BuzcardSend.successSendSMS', {phone: phoneNumber}), parseInt(res.rows.item(0).id), "BuzcardSendController");
-                      })
-                    })
-                    else
-                      ContactsService.updateContactByField(db, "firstsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt(res.rows.item(0).id), function () {
-                        ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt(res.rows.item(0).id), function () {
-                          ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt(res.rows.item(0).id), function () {
-
-                            $rootScope.focusName = true;
-                            LoadingService.confirm($translate.instant('BuzcardSend.successSendSMS', {phone: phoneNumber}), parseInt(res.rows.item(0).id), "BuzcardSendController");
+                      if (res.rows.length > 0) {
+                        if(res.rows.item(0).firstsendemail !='')
+                          ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt(res.rows.item(0).id), function () {
+                            ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt(res.rows.item(0).id), function () {
+                              $rootScope.focusName = true;
+                              $state.go("app.contactEdit", {'id': parseInt(res.rows.item(0).id)});
+                            //  LoadingService.confirm($translate.instant('BuzcardSend.successSendSMS', {phone: phoneNumber}), parseInt(res.rows.item(0).id), "BuzcardSendController");
+                            })
                           })
-                        })
-                      })
-                      } else {
-                    var idTmp = new Date().getTime();
-                    ContactsService.createContactDB(db, idTmp, function (res) {
-                      SynchroServices.insertRequest(db, "CONTACTCREATE", {idTmp: idTmp, SMS: 'OUI'}, function () {
-                        ContactsService.updateContactByField(db, "phone_2", phoneNumber, idTmp, function () {
-                          ContactsService.updateContactByField(db, "firstsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), idTmp, function () {
-                            ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), idTmp, function () {
-                            ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime()/1000, idTmp, function () {
-                              ContactsService.updateContactByField(db, "alerteemailcreationdate", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm:ss'), idTmp, function () {
-                                ContactsService.updateContactByField(db, "status", "cant_be_selected", idTmp, function () {
-                                  ContactsService.updateContactByField(db, "photofilelocation", "img/photo_top_title.jpg", idTmp, function () {
-                                    $rootScope.focusName = true;
-                                    LoadingService.confirm($translate.instant('BuzcardSend.successSendSMS', {phone: phoneNumber}), idTmp, "BuzcardSendController");
+                        else
+                          ContactsService.updateContactByField(db, "firstsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt(res.rows.item(0).id), function () {
+                            ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt(res.rows.item(0).id), function () {
+                              ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime() / 1000, parseInt(res.rows.item(0).id), function () {
 
+                                $rootScope.focusName = true;
+                                $state.go("app.contactEdit", {'id': parseInt(res.rows.item(0).id)});
+                              //  LoadingService.confirm($translate.instant('BuzcardSend.successSendSMS', {phone: phoneNumber}), parseInt(res.rows.item(0).id), "BuzcardSendController");
+                              })
+                            })
+                          })
+                      } else {
+                        var idTmp = new Date().getTime();
+                        ContactsService.createContactDB(db, idTmp, function (res) {
+                          SynchroServices.insertRequest(db, "CONTACTCREATE", {idTmp: idTmp, SMS: 'OUI'}, function () {
+                            ContactsService.updateContactByField(db, "phone_2", phoneNumber, idTmp, function () {
+                              ContactsService.updateContactByField(db, "firstsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), idTmp, function () {
+                                ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), idTmp, function () {
+                                  ContactsService.updateContactByField(db, "lastsendemailtimeStmp", new Date().getTime()/1000, idTmp, function () {
+                                    ContactsService.updateContactByField(db, "alerteemailcreationdate", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm:ss'), idTmp, function () {
+                                      ContactsService.updateContactByField(db, "status", "cant_be_selected", idTmp, function () {
+                                        ContactsService.updateContactByField(db, "photofilelocation", "img/photo_top_title.jpg", idTmp, function () {
+                                          $rootScope.focusName = true;
+                                          $state.go("app.contactEdit", {'id': idTmp});
+                                        //  LoadingService.confirm($translate.instant('BuzcardSend.successSendSMS', {phone: phoneNumber}), parseInt(idTmp), "BuzcardSendController");
+
+                                        });
+                                      });
+                                    });
                                   });
                                 });
                               });
                             });
                           });
-                        });
-                      });
-                      });
+                        })
+                      }
                     })
-                  }
-                })
 
-              }, function (err) {
-              console.log("----569---"+ err)
-              LoadingService.dismiss();
-              $rootScope.focusName = true;
-              LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "BuzcardSendController");
-            });
+                  }, function (err) {
+                    console.log("----569---"+ err)
+                    LoadingService.dismiss();
+                    $rootScope.focusName = true;
+
+                    LoadingService.success($translate.instant('BuzcardSend.errorSendSMS'), "BuzcardSendController");
+                  });
+
           }, function (error) {
             LoadingService.dismiss();
             $rootScope.focusName = true;

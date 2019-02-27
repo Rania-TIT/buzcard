@@ -58,13 +58,13 @@
                        {{ 'ContactList.AllFollowers' | translate }} ({{tousContact[0].count}})
                      <i class="icon-right-contact" ng-class="isGroupShownX('followers') ? 'ion-ios-arrow-down' : 'ion-ios-arrow-left'"   data-pack="default" data-tags=""></i>
                   </ion-item>
-                     <div ng-if="isGroupShownX('followers') && !tousContact[0].empty && tousContact[0].totalPages >1" class="button-bar pagination-listcontact">
+                     <div ng-if="isGroupShownX('followers') &&  tousContact[0].totalPages >1" class="button-bar pagination-listcontact">
                         <a class="button ion-chevron-left" ng-click="rewind(0)"></a>
                         <a class="button buttonpagination">{{tousContact[0].page}}/{{tousContact[0].totalPages}}</a>
                         <a class="button ion-chevron-right" ng-click="forward(0)"></a>
                     </div>
                    <ion-item  animation="no-animation" class="item-accordion" ng-repeat="item in tousContact[0].items track by $index" ng-if="isGroupShownX('followers')">
-                            <a class="item item-avatar" href="#/app/contactShow/{{tousContact[0].items[$index].id}}"  ng-if="!tousContact[1].empty">
+                            <a class="item item-avatar" href="#/app/contactShow/{{tousContact[0].items[$index].id}}"  ng-if="!tousContact[0].empty">
                             <img ng-class=" ( (item.first_name.length > 0 && item.email.length >0) ||  (item.last_name.length > 0 && item.email.length >0) || (item.first_name.length > 0 && item.phone_1.length >0) ||  (item.last_name.length > 0 && item.phone_1.length >0) || (item.first_name.length > 0 && item.phone_2.length >0) ||  (item.last_name.length > 0 && item.phone_2.length >0)) ? 'itemLarge' : ''"  ng-src="{{item.photofilelocation}}" src="img/photo_top_title.jpg"  >
                               <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail !=''">{{item.lastsendemail | toFrFormat}} {{item.meeting_point | toTiret  }}</p>
                                   <p  class="paragraphe_Item" ng-class="(item.email.length ==0 && item.phone_1.length==0 && item.phone_2.length==0 && item.last_name.length ==0 && item.first_name.length ==0) ? 'itemShort': ''" ng-if="item.lastsendemail ==''" >{{item.alerteemailcreationdate | toFrFormat}} {{item.meeting_point | toTiret   }}</p>
@@ -105,7 +105,7 @@
                          </a>
                         <!-- fin-->
                     </ion-item>
-                    <div ng-if="isGroupShownX('nofollowers') && !tousContact[1].empty && tousContact[1].totalPages >1" class="button-bar pagination-listcontact">
+                    <div ng-if="isGroupShownX('nofollowers') && tousContact[1].totalPages >1" class="button-bar pagination-listcontact">
                         <a class="button ion-chevron-left" ng-click="rewind(1)"></a>
                         <a class="button buttonpagination">{{tousContact[1].page}}/{{tousContact[1].totalPages}}</a>
                         <a class="button ion-chevron-right" ng-click="forward(1)"></a>
@@ -379,6 +379,7 @@
              <div class="info-text my-show-hide-animation" style="width:98%;margin-top: 0px;" ng-if="infoContact" ng-click="ShowinfoContact()"  translate="{{ 'contactList.ContactInfo' }}"></div>
 
           </div>
+            <br><br><br><br>
           </div>
         </div>
 
@@ -386,7 +387,8 @@
           </div>
 
         </div>
-         <br><br>
+
+      <br><br><br><br>
            <br><br>
     </ion-content>
 </ion-view>

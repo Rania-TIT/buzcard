@@ -24,7 +24,7 @@ appContext.controller('QrCodeController', [
     $rootScope.showWrongPassword = false;
     $rootScope.emailSend = null;
     $scope.infoSend = false;
-    $rootScope.isBackgroudRuning = false;
+    //$rootScope.isBackgroudRuning = false;
 
     $ionicPlatform.ready(function () {
 
@@ -190,7 +190,7 @@ appContext.controller('QrCodeController', [
               console.log(rs.rows.length, $rootScope.isBackgroudRuning)
             //  LogService.saveLog("First Run Pile length " + rs.rows.length, 'QrCodeController')
               //  LogService.saveLog("isBackgroundRuning "+ $rootScope.isBackgroudRuning, 'QrCodeController')
-              if (rs.rows.length > 0 && ($rootScope.isBackgroudRuning == false && isNotContactPage())) {
+              if (rs.rows.length > 0 && $rootScope.isBackgroudRuning == false && isNotContactPage()) {
                 $rootScope.isBackgroudRuning = true;
                 $rootScope.emptyQueue = false;
                 ConnectionService.isConnected(db, function () {
@@ -438,12 +438,13 @@ appContext.controller('QrCodeController', [
 
 
                 } else if (barcodeData.cancelled == false) {
-
+                  LoadingService.dismiss();
                   if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
                     navigator.app.loadUrl(barcodeData.text, {
                       openExternal: true
                     });
                   } else {
+                    LoadingService.dismiss();
                     window.open(barcodeData.text, '_system');
                     LoadingService.dismiss();
 
@@ -511,13 +512,15 @@ appContext.controller('QrCodeController', [
                   /************ fin cas de buzcard        *********/
 
                 } else if (barcodeData.cancelled == false) {
-
+                  LoadingService.dismiss();
                   if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
+
                     navigator.app.loadUrl(barcodeData.text, {
                       openExternal: true
                     });
                     LoadingService.dismiss();
                   } else {
+                    LoadingService.dismiss();
                     window.open(barcodeData.text, '_system');
                     LoadingService.dismiss();
                   }
@@ -593,11 +596,11 @@ appContext.controller('QrCodeController', [
            \********************/
           // for android devices
           if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-            cordova.plugins.diagnostic.requestRuntimePermission(function (status) {
+            cordova.plugins.diagnostic.requestCameraAuthorization(function (status) {
               if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
 
                 var options = {
-                  quality: 60,
+                  quality: 100,
                   destinationType: Camera.DestinationType.FILE_URI,
                   sourceType: Camera.PictureSourceType.CAMERA,
                   encodingType: Camera.EncodingType.JPEG,
@@ -660,7 +663,9 @@ appContext.controller('QrCodeController', [
             }, function (error) {
               console.error("The following error occurred: " + error);
               $rootScope.isBackgroudRuning = false;
-            }, cordova.plugins.diagnostic.permission.CAMERA);
+            }, {
+              externalStorage: false
+            });
 
 
           }
@@ -670,7 +675,7 @@ appContext.controller('QrCodeController', [
               if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
 
                 var options = {
-                  quality: 60,
+                  quality: 100,
                   destinationType: Camera.DestinationType.FILE_URI,
                   sourceType: Camera.PictureSourceType.CAMERA,
                   encodingType: Camera.EncodingType.JPEG,
@@ -765,7 +770,7 @@ appContext.controller('QrCodeController', [
     }
 
     function isNotContactPage() {
-      return $state.current.name != 'app.contactEdit' && $state.current.name != 'app.contactList' && $state.current.name != 'app.contactShow'
+      return $state.current.name != 'app.contactEdit' && $state.current.name != 'app.contactList' && $state.current.name != 'app.contactShow' && $state.current.name != 'app.buzcardSend'
     }
 
     function isNotEditionPage() {

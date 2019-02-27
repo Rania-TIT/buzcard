@@ -27,7 +27,7 @@ appContext.controller('UrgencyController', [
 	        //---------------
 
 	         //---------------
-	      
+
 		     $scope.$on('$ionicView.beforeEnter', function() {
 					 getInfos();
 				 });
@@ -133,10 +133,10 @@ appContext.controller('UrgencyController', [
 
 				if ($rootScope.needPassword == true) {
 					$rootScope.tabOrUpdate = "update";
-					
+
 					LoadingService.passwordPopup("UrgencyController");
-					
-					
+
+
 				}else {
 						$state.go('app.urgencyEdit');
 				}
@@ -195,12 +195,12 @@ appContext.controller('UrgencyController', [
         $scope.modalV.hide();
       };
       $scope.gotoVital = function(){
-    	  
+
     	  BuzcardService.getACT(function(act){
     		  window.open(" https://www.buzcard.com/buzcardvital.aspx?act="+act, '_system');
-    	    	  
+
     	  })
-    	  
+
 		}
       //Cleanup the modal when we're done with it!
       $scope.$on('$destroy', function() {
@@ -244,7 +244,14 @@ appContext.controller('UrgencyController', [
 
       }
 		};
-
+      $scope.recreemonmotdepasse = function() {
+        email =$rootScope.email
+        if( /Android|BlackBerry Mini/i.test(navigator.userAgent) ) {
+          navigator.app.loadUrl("https://www.buzcard.com/recovery.aspx?email="+email, {openExternal:true});
+        } else {
+          window.open("https://www.buzcard.com/recovery.aspx?email="+email, '_system');
+        }
+      };
 		$scope.hideLoading= function(){
 				LoadingService.dismiss();
 		}

@@ -8000,10 +8000,11 @@ color:#79A436;
 /*   	    margin-left: 27%!important; */
 }#profil{
  float:right;
-   width: 98%;
+   width: 98%
   display: block;
 /*     padding: 2px; */
   border: none;
+  max-width: 200px;
 }.edit-vcard input[type="text"],.edit-vcard input[type="tel"], .edit-vcard input[type="email"]{
 	/*background-color: #EEEEEE !important;
   	border: 2px solid rgb(202, 202, 202);

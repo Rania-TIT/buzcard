@@ -154,7 +154,7 @@ appContext.controller("ContactListController", [
                         	$scope.tousContact[0].items.push(result.rows.item(int));
                         }
                     } else {
-                        $scope.tousContact[0].items.push({});
+                        //$scope.tousContact[0].items.push({});
                         $scope.tousContact[0].empty = true;
                     }
                     ContactsService.getCountOfFollowers(db, function(result) {
@@ -186,7 +186,7 @@ appContext.controller("ContactListController", [
                                 	$scope.tousContact[1].items.push(result.rows.item(int));
                                 }
                             } else {
-                                $scope.tousContact[1].items.push({});
+                               // $scope.tousContact[1].items.push({});
                                 $scope.tousContact[1].empty = true;
                             }
 
@@ -605,11 +605,13 @@ appContext.controller("ContactListController", [
                  case 1:
                      if ($scope.tousContact[1].page < $scope.tousContact[1].totalPages) {
                          ContactsService.selectNonFollowers(db, ($scope.tousContact[1].page + 1), function(result) {
-
+                      console.log(result.rows.item)
+                           console.log(result.rows.length)
                              $scope.tousContact[1].items = [];
-                             if (result.rows.length > 0) {
+                             if (result.rows.length >= 0) {
                                  $scope.tousContact[1].empty = false;
                                  for (var int = 0; int < result.rows.length; int++) {
+
                                 	 if(result.rows.item(int).photofilelocation  !="img/photo_top_title.jpg" ){
                                          var fileName = result.rows.item(int).photofilelocation.substr(result.rows.item(int).photofilelocation.lastIndexOf('/')+1);
                                          result.rows.item(int).photofilelocation = $rootScope.path+fileName;
@@ -1028,7 +1030,8 @@ appContext.controller("ContactListController", [
                     ContactsService.updateContactByField(db,"date",moment().unix(), id,function(){
                       ContactsService.updateContactByField(db,"alerteemailcreationdate", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm:ss'), id,function(){
                             LoadingService.dismiss();
-                     	      $state.go('app.contactEdit', {id: id});
+                        MenuService.setLocalStorage('ReloadContactList', 1);
+                        $state.go('app.contactEdit', {id: id});
 
                         });
                   });
@@ -1045,7 +1048,7 @@ appContext.controller("ContactListController", [
          	LoadingService.dismiss();
          	$state.go('app.contactList');
          }
-         
+
          $scope.ok = function(){
          	LoadingService.dismiss();
          }

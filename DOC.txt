@@ -28,11 +28,11 @@ pour ajouter le plugins StatusBar par EXEMPLE :
 ionic plugin add org.apache.cordova.statusbar
 
 Ajouter dans platforms/ios/cordova/default.xml ces deux lignes
-	
+
 	<preference name="AutoHideSplashScreen" value="false" />
 	<preference name="ShowSplashScreenSpinner" value="false" />
 
-renommer index.html -> indexDEV.html	
+renommer index.html -> indexDEV.html
 renommer indexPROD.html (qui fait appel aux fichiers .min.css & .min.js) -> index.html
 
 minify des JS et CSS :
@@ -65,7 +65,7 @@ ionic emulate ios --target="iPhone-5"
 	Resizable-iPhone, 8.0
 	Resizable-iPad, 8.0
 
-------------------------generer un Apk android signé------------------------------- 
+------------------------generer un Apk android signé-------------------------------
 
 To proceed, either fix the issues identified by lint, or modify your build script as follows: (build.gradle)
 android {
@@ -84,7 +84,7 @@ password: buzbuzbuz2015
 optimizer l'apk :  /Users/macbook/android-sdks/build-tools/25.0.2/zipalign -v 4 android-armv7-release-unsigned.apk Buzcard2.4.3.apk
 /Users/os-x/Library/Android/sdk/build-tools/27.0.3/zipalign -v 4 android-armv7-release-unsigned.apk Buzcard2.4.3.apk
 
-http://ionicframework.com/docs/guide/publishing.html	
+http://ionicframework.com/docs/guide/publishing.html
 
 
 keytool -genkey -v -keystore villasthalassa.key -alias www.villasthalassa.com -keyalg RSA -keysize 2048 -validity 10000

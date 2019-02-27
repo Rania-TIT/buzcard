@@ -61,7 +61,7 @@ appContext.factory("LoadingService", ['$ionicLoading','$translate','$rootScope',
 	  });
 
   };
-  
+
   var infoFirstopen = function(msg,controller) {
 
 	  $ionicLoading.show({
@@ -179,7 +179,7 @@ appContext.factory("LoadingService", ['$ionicLoading','$translate','$rootScope',
 	  };
 
   var questionSynchroDelta = function(msg, controller) {
-	  
+
 	    $ionicLoading.show({
 	      template: '<div class="window" ng-controller="'+controller+'"><p class="activated_KDO_text">'+msg+'</p><div class="container-button"><button class="no_text" ng-click="no()">'+$translate.instant('Loading.NO')+'</button><button class="yes_text" ng-click="yes()">'+$translate.instant('Loading.YES')+'</button></div></div>',
 	      animation: 'fade-in',
@@ -248,14 +248,15 @@ appContext.factory("LoadingService", ['$ionicLoading','$translate','$rootScope',
               '<button class="btn-popup-password"  ng-click="checkPassword(passForVerification)">'+$translate.instant('Urgency.ok')+'</button>'+
             '</div>'+
             '<div style="height: 42px;margin-top: 10px;line-height: 24px;">'+
-            '<a class="link-popup-password"  ng-click="hideLoading()">'+$translate.instant('Urgency.cancel')+'</a>'+
+            '<a class="link-popup-password"  ng-click="hideLoading()">'+$translate.instant('Urgency.cancel')+'</a><br>'+
+            '<a class="link-popup-password" style="margin-top: 15px; margin-bottom: 15px" ng-click="recreemonmotdepasse()">'+$translate.instant('Urgency.forgetpassword')+'</a>'+
             '<br><a class="blink_me" style="text-decoration:none" href="#" ng-if="showWrongPassword">'+$translate.instant('Urgency.wrongPassword')+'</a>'+
           '</div>'+
         '</div>',
 	      animation: 'fade-in',
 	      showBackdrop: true,
 	    });
-	   
+
 
 	  };
   var confirmOnglet2 = function(msg, controller){

@@ -362,7 +362,7 @@ appContext.controller('UrgencyEditController', [
                   console.error("The following error occurred: "+error);
                   $rootScope.isBackgroudRuning = false;
               },cordova.plugins.diagnostic.permission.CAMERA);
-                
+
        	 }else{
 
 
@@ -374,7 +374,7 @@ appContext.controller('UrgencyEditController', [
             	  if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED){
 
        	    	var options = {
-       	              quality: 90,
+       	              quality: 100,
        	              destinationType: Camera.DestinationType.FILE_URI,
        	              sourceType: Camera.PictureSourceType.CAMERA,
        	              encodingType: Camera.EncodingType.JPEG,
@@ -437,7 +437,7 @@ appContext.controller('UrgencyEditController', [
        */
       $scope.choseFile = function() {
     	  if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-     		
+
 
               cordova.plugins.diagnostic.requestRuntimePermission(function(status){
 
@@ -501,7 +501,7 @@ appContext.controller('UrgencyEditController', [
                  console.error("The following error occurred: "+error);
                  $rootScope.isBackgroudRuning = false;
              },cordova.plugins.diagnostic.permission.READ_EXTERNAL_STORAGE);
-               
+
       	 }else{
 
 

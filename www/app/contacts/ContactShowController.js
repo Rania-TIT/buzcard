@@ -235,16 +235,9 @@ appContext.controller("ContactShowController", [
       	               }
       	         };
       	         console.log(phoneNumber);
-      	           $cordovaSms.send(phoneNumber, link, options)
-      	                .then(function() {
-      	                  LoadingService.dismiss();
-      	                  /***********************\
-      	                         SMS envoyé
-      	                  \***********************/
+               window.open("sms:"+phoneNumber+";?&body="+link, '_system');
+               LoadingService.dismiss()
 
-      	                }, function(error) {
-      	                   LoadingService.dismiss();
-      	                });
       	         }
         }
 
@@ -314,8 +307,9 @@ appContext.controller("ContactShowController", [
                 buzcardOnline: buzcardOnline,
                 first_name: rs.rows.item(0).first_name
               });
-              $cordovaSms.send(phoneNumber, link, options)
-                .then(function() {
+              window.open("sms:"+phoneNumber+";?&body="+link, '_system');
+            //  $cordovaSms.send(phoneNumber, link, options)
+              //  .then(function() {
                   if($scope.contact.firstsendemail !='')
                     ContactsService.geolocalicationAdress(db, $scope.contact, function(adress) {
                       ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
@@ -366,7 +360,7 @@ appContext.controller("ContactShowController", [
                 });
 
 
-            });
+           // });
           }
         }else if (phone_1 != "") {
           if (validatePhone(phone_1) && phone_1.length > 5) {
@@ -385,8 +379,9 @@ appContext.controller("ContactShowController", [
                 buzcardOnline: buzcardOnline,
                 first_name: rs.rows.item(0).first_name
               });
-              $cordovaSms.send(phoneNumber, link, options)
-                .then(function() {
+              window.open("sms:"+phoneNumber+";?&body="+link, '_system');
+             // $cordovaSms.send(phoneNumber, link, options)
+              //  .then(function() {
                   LoadingService.dismiss();
                   ContactsService.geolocalicationAdress(db, $scope.contact, function(adress) {
                   ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($scope.contact.id), function () {
@@ -413,7 +408,7 @@ appContext.controller("ContactShowController", [
                 });
 
 
-            });
+           // });
           }
         } else {
           LoadingService.error("Veuillez introduire Numéro de mobile ", "ContactEditController");

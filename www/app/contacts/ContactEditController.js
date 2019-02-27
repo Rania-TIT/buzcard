@@ -42,6 +42,7 @@ appContext.controller("ContactEditController", [
     $ionicPlatform.ready(function() {
 
     	$rootScope.focusName = false;
+     document.getElementById("empty_zone").click()
       /**
        * create/open DB
        */
@@ -210,26 +211,20 @@ appContext.controller("ContactEditController", [
 
             if ($rootScope.fromState == "app.buzcardSend") {
               MenuService.setLocalStorage('ReloadContactList', 1);
-              var phone = contact.phone_1 || contact.phone_2;
-              if ($rootScope.fromsmssend) {
-                ShowPopUpSychroAuto($translate.instant('ContactEdit.Msg6'), contactId);
-                return callBack()
-              } else {
-                if ($rootScope.autoriseContact == false) {
-                  ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdateNOAUTO'), contactId);
+                if ( $scope.contactSaved == false) {
+                  ShowPopUpSychroAuto($translate.instant('ContactEdit.SansNumero'), contactId);
                   return callBack()
                 } else {
 
-                  ShowPopUpSychroAuto($translate.instant('ContactEdit.Msg6'), contactId);
+                  ShowPopUpSychroAuto($translate.instant('ContactEdit.AvecNumero'), contactId);
                   return callBack()
                 }
-              }
             } else if ($rootScope.fromState == "app.contactShow") {
-              if ($rootScope.autoriseContact == false) {
-                ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdateNOAUTO'), contactId);
+              if ($scope.contactSaved == false) {
+                ShowPopUpSychroAuto($translate.instant('ContactEdit.ModifSansNumero'), contactId);
                 return callBack()
               } else {
-                ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdate'), contactId);
+                ShowPopUpSychroAuto($translate.instant('ContactEdit.ModifAvecNumero'), contactId);
                 return callBack()
               }
             } else if ($rootScope.fromState == "app.qrcode") {
@@ -238,19 +233,19 @@ appContext.controller("ContactEditController", [
               return callBack()
             } else if ($rootScope.fromState == "app.contactList") {
               MenuService.setLocalStorage('ReloadContactList', 1);
-              if ($rootScope.autoriseContact == false) {
-                ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdateNOAUTO'), contactId);
+              if ($scope.contactSaved == false) {
+                ShowPopUpSychroAuto($translate.instant('ContactEdit.SansNumero'), contactId);
                 return callBack()
               } else {
-                ShowPopUpSychroAuto($translate.instant('ContactEdit.Msg6'), contactId);
+                ShowPopUpSychroAuto($translate.instant('ContactEdit.AvecNumero'), contactId);
                 return callBack()
               }
             }else{
-              if ($rootScope.autoriseContact == false) {
-                ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdateNOAUTO'), contactId);
+              if ($scope.contactSaved == false) {
+                ShowPopUpSychroAuto($translate.instant('ContactEdit.ModifSansNumero'), contactId);
                 return callBack()
               } else {
-                ShowPopUpSychroAuto($translate.instant('ContactEdit.Msg6'), contactId);
+                ShowPopUpSychroAuto($translate.instant('ContactEdit.ModifAvecNumero'), contactId);
                 return callBack()
               }
             }
@@ -260,30 +255,25 @@ appContext.controller("ContactEditController", [
         ContactsService.updateContactByField(db, "status", "selected", contact.id, function() {
             updateContactFct(contact, function () {
               if (!areTheSame($rootScope.tmpContact, $scope.contact))
-              LoadingService.dismiss();
+                LoadingService.dismiss();
 
               if ($rootScope.fromState == "app.buzcardSend") {
                 MenuService.setLocalStorage('ReloadContactList', 1);
-                var phone = contact.phone_1 || contact.phone_2;
-                if ($rootScope.fromsmssend) {
-                  ShowPopUpSychroAuto($translate.instant('ContactEdit.Msg6'), contactId);
-                  return callBack()
-                } else {
-                  if ($rootScope.autoriseContact == false) {
-                    ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdateNOAUTO'), contactId);
+
+                  if ($scope.contactSaved == false) {
+                    ShowPopUpSychroAuto($translate.instant('ContactEdit.SansNumero'), contactId);
                     return callBack()
                   } else {
 
-                    ShowPopUpSychroAuto($translate.instant('ContactEdit.Msg6'), contactId);
+                    ShowPopUpSychroAuto($translate.instant('ContactEdit.AvecNumero'), contactId);
                     return callBack()
                   }
-                }
               } else if ($rootScope.fromState == "app.contactShow") {
-                if ($rootScope.autoriseContact == false) {
-                  ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdateNOAUTO'), contactId);
+                if ($scope.contactSaved == false) {
+                  ShowPopUpSychroAuto($translate.instant('ContactEdit.ModifSansNumero'), contactId);
                   return callBack()
                 } else {
-                  ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdate'), contactId);
+                  ShowPopUpSychroAuto($translate.instant('ContactEdit.ModifAvecNumero'), contactId);
                   return callBack()
                 }
               } else if ($rootScope.fromState == "app.qrcode") {
@@ -292,19 +282,19 @@ appContext.controller("ContactEditController", [
                 return callBack()
               } else if ($rootScope.fromState == "app.contactList") {
                 MenuService.setLocalStorage('ReloadContactList', 1);
-                if ($rootScope.autoriseContact == false) {
-                  ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdateNOAUTO'), contactId);
+                if ($scope.contactSaved == false) {
+                  ShowPopUpSychroAuto($translate.instant('ContactEdit.SansNumero'), contactId);
                   return callBack()
                 } else {
-                  ShowPopUpSychroAuto($translate.instant('ContactEdit.Msg6'), contactId);
+                  ShowPopUpSychroAuto($translate.instant('ContactEdit.AvecNumero'), contactId);
                   return callBack()
                 }
               }else{
-                if ($rootScope.autoriseContact == false) {
-                  ShowPopUpSychroAuto($translate.instant('ContactEdit.MsgConfimUpdateNOAUTO'), contactId);
+                if ($scope.contactSaved == false) {
+                  ShowPopUpSychroAuto($translate.instant('ContactEdit.ModifSansNumero'), contactId);
                   return callBack()
                 } else {
-                  ShowPopUpSychroAuto($translate.instant('ContactEdit.Msg6'), contactId);
+                  ShowPopUpSychroAuto($translate.instant('ContactEdit.ModifAvecNumero'), contactId);
                   return callBack()
                 }
               }
@@ -723,7 +713,7 @@ appContext.controller("ContactEditController", [
           //
           if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
             var options = {
-              quality: 80,
+              quality: 100,
               destinationType: Camera.DestinationType.FILE_URI,
               sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
               encodingType: Camera.EncodingType.JPEG,
@@ -785,7 +775,7 @@ appContext.controller("ContactEditController", [
           if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
 
             var options = {
-              quality: 80,
+              quality: 100,
               destinationType: Camera.DestinationType.FILE_URI,
               sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
               encodingType: Camera.EncodingType.JPEG,
@@ -1001,13 +991,27 @@ appContext.controller("ContactEditController", [
         contactObj[field] = value
         console.log(contactObj)
         ContactsService.updateContactByField(db, field, value, parseInt($stateParams.id), function () {
+          if (field != 'email'){
+            ContactsService.updateContactByField(db, "status", "cant_be_selected", parseInt($stateParams.id), function () {
+              SynchroServices.insertRequest(db, "CONTACTEDIT", {
+                id: $stateParams.id,
+                contact: contactObj
+              }, function (result) {
+                MenuService.setLocalStorage('ReloadContactList', 1);
+                console.log('request inserted ' + JSON.stringify(contactObj));
+              });
+            })
+          }else {
+
+
           SynchroServices.insertRequest(db, "CONTACTEDIT", {
             id: $stateParams.id,
             contact: contactObj
           }, function (result) {
-          //  MenuService.setLocalStorage('ReloadContactList', 1);
+            MenuService.setLocalStorage('ReloadContactList', 1);
             console.log('request inserted ' + JSON.stringify(contactObj));
           });
+          }
         })
       }
     $('#dateX').on('change', function (e) {
@@ -1022,7 +1026,7 @@ appContext.controller("ContactEditController", [
             id: $stateParams.id,
             contact: {rendez_vous: value}
           }, function (result) {
-           // MenuService.setLocalStorage('ReloadContactList', 1);
+
             console.log('request inserted ' + JSON.stringify({rendez_vous: value}));
           });
         })
@@ -1058,12 +1062,6 @@ appContext.controller("ContactEditController", [
       //    contact.email = contact.email.toLowerCase();
           $rootScope.contact = contact;
 
-          //                checkExistEmail(contact.email, contact.id, function(exist){
-          //                  console.log(exist);
-          //                  if(exist){
-          //                    LoadingService.errorEmail($translate.instant('ContactEdit.ExistEmail'), "ContactEditController");
-          //                  }else{
-
           LoadingService.loading($translate.instant('Loading4'));
 
           if (contact.list == $translate.instant('ContactEdit.noGroup')) {
@@ -1084,45 +1082,24 @@ appContext.controller("ContactEditController", [
 
 
         	          ContactsService.searchContactInDevice(emailToSearchFor, phone_1ToSearchFor, function(resu) {
-        	            $rootScope.autoriseContact = true;
+
         	            if (resu == "") {
-        	              if (emailToSearchFor == "" && phone_1ToSearchFor == "") {
+        	              if (contact.phone_1 == "" && contact.phone_2 == "") {
+                          $rootScope.autoriseContact = false;
+                          $scope.contactSaved = false
         	                updateContactFn(contact, function () {
                           });
         	              } else {
-
-
         	                ContactsService.saveContactInTel(contact, function() {
-
-
-        	                  if ($rootScope.fromState == "app.contactShow") {
-        	                    updateContactFn(contact, function () {
-                                console.log("contactUpdated")
-                              });
-        	                  } else if ($rootScope.fromState == "app.buzcardSend" || $rootScope.fromState == "app.qrcode") {
-        	                    if (contact.meeting_point == $translate.instant('No-place') || contact.meeting_point == "") {
-        	                   //   ContactsService.geolocalicationAdress(db, contact, function(adress) {
-        	                        LoadingService.dismiss();
-        	                        updateContactFn(contact, function () {
-                                    console.log("contactUpdated")
-                                  });
-        	                    //  });
-        	                    } else {
-        	                      updateContactFn(contact, function () {
-                                  console.log("contactUpdated")
-                                });
-        	                    }
-
-
-        	                  } else {
-        	                    updateContactFn(contact, function () {
-                                console.log("contactUpdated")
-                              });
-        	                  }
+                            $rootScope.autoriseContact = true;
+                            $scope.contactSaved = true
+                            updateContactFn(contact, function () {
+                            });
         	                });
         	              }
         	            } else {
-
+                /// contact existe phonebook
+                        $scope.contactSaved = true
         	              $rootScope.allContacts = resu;
         	              $rootScope.contactBuz = contact;
 
@@ -1132,23 +1109,30 @@ appContext.controller("ContactEditController", [
         	            }
         	          }, function() {
         	           // $rootScope.autoriseContact = false;
+                      $rootScope.autoriseContact = false;
+                      $scope.contactSaved = false
         	            updateContactFn(contact, function () {
                         console.log("contactUpdated")
                       });
         	          });
         		}else{
         		/// groupe contact = import
+                      $scope.contactSaved = false
+                      $rootScope.autoriseContact = false;
         			  updateContactFn(contact, function () {
                   console.log("contactUpdated")
                 });
         		}
         	    }else{
+                $scope.contactSaved = false
+
         	    	$rootScope.autoriseContact = false;
     	            updateContactFn(contact, function () {
                     console.log("contactUpdated")
                   });
         	    }
         	}, function(error){
+            $scope.contactSaved = false
         		$rootScope.autoriseContact = false;
 	            updateContactFn(contact, function () {
                 console.log("contactUpdated")
@@ -1164,6 +1148,7 @@ appContext.controller("ContactEditController", [
     };
     $scope.yesAutorisationContact = function() {
       LoadingService.dismiss();
+      $rootScope.autoriseContact = true;
       cordova.plugins.diagnostic.switchToSettings(function() {
         console.log("Successfully switched to Settings app");
 
@@ -1219,80 +1204,14 @@ appContext.controller("ContactEditController", [
 
     }
 
-    $scope.dismissEmailExiste = function() {
-      LoadingService.loading($translate.instant('Loading4'));
 
-      if ($rootScope.contact.list == $translate.instant('ContactEdit.noGroup')) {
-        $scope.noGroup = true;
-        $scope.noG = $translate.instant('ContactEdit.noGroup');
-        $rootScope.contact.list = "";
-        $scope.contact.list = "";
-        document.querySelector('#newGroupeName').value = "";
-      }
-      emailToSearchFor = $rootScope.contact.email;
-      phone_1ToSearchFor =$rootScope.contact.phone_1;
-    	  if(phone_1ToSearchFor ==''){
-    	  phone_1ToSearchFor = $rootScope.contact.phone_2;
-    		  }
-
-      ContactsService.searchContactInDevice(emailToSearchFor, phone_1ToSearchFor, function(resu) {
-        if (resu == "") {
-          if ($rootScope.contact.email == "" && $rootScope.contact.phone_1 == "") {
-            updateContactFn($rootScope.contact, function () {
-              console.log("contactUpdated")
-            });
-          } else {
-            ContactsService.saveContactInTel($rootScope.contact, function() {
-
-
-              if ($rootScope.fromState == "app.contactShow") {
-                updateContactFn($rootScope.contact, function () {
-                  console.log("contactUpdated")
-                });
-              } else if ($rootScope.fromState == "app.buzcardSend" || $rootScope.fromState == "app.qrcode") {
-                if ($rootScope.contact.meeting_point == $translate.instant('No-place') || $rootScope.contact.meeting_point == "") {
-                 // ContactsService.geolocalicationAdress(db, $rootScope.contact, function(adress) {
-                    LoadingService.dismiss();
-                    updateContactFn($rootScope.contact, function () {
-                      console.log("contactUpdated")
-                    });
-                //  });
-                } else {
-                  updateContactFn($rootScope.contact, function () {
-                    console.log("contactUpdated")
-                  });
-                }
-
-
-              } else {
-                updateContactFn($rootScope.contact, function () {
-                  console.log("contactUpdated")
-                });
-              }
-            });
-          }
-        } else {
-
-
-          $rootScope.allContacts = resu;
-          $rootScope.contactBuz = $rootScope.contact;
-
-          synchroContactDevice();
-        }
-      }, function() {
-        $rootScope.autoriseContact = false;
-        updateContactFn($rootScope.contact, function () {
-          console.log("contactUpdated")
-        });
-      });
-    };
 
     function synchroContactDevice() {
 
       LoadingService.loading($translate.instant('Loading4'));
       var allContact = $rootScope.allContacts;
       var contact = $rootScope.contactBuz;
-
+      $rootScope.autoriseContact = true;
       if (contact.list == $translate.instant('ContactEdit.noGroup')) {
         $scope.noGroup = true;
         $scope.noG = $translate.instant('ContactEdit.noGroup');
@@ -1307,30 +1226,10 @@ appContext.controller("ContactEditController", [
       }, function() {
 
         LoadingService.dismiss();
-        if ($rootScope.fromState == "app.contactShow") {
           updateContactFn(contact, function () {
             console.log("contactUpdated")
           });
-        } else if ($rootScope.fromState == "app.buzcardSend" ) {
-          if (contact.meeting_point == $translate.instant('No-place') || contact.meeting_point == "") {
-          //  ContactsService.geolocalicationAdress(db, contact, function(adress) {
-              LoadingService.dismiss();
-              updateContactFn(contact, function () {
-                console.log("contactUpdated")
-              });
-          //  });
-          } else {
-            updateContactFn(contact, function () {
-              console.log("contactUpdated")
-            });
-          }
 
-
-        } else {
-          updateContactFn(contact, function () {
-            console.log("contactUpdated")
-          });
-        }
       });
     };
 
@@ -1403,7 +1302,7 @@ appContext.controller("ContactEditController", [
             updateContactFct($scope.contact, function(){
               console.log('$$$$$$$$$$$$$$$$$$$')
               ContactsService.geolocalicationAdress(db, $scope.contact, function(adress) {
-                //console.log(adress)
+                console.log(adress)
                 LoadingService.success($translate.instant('ContactEdit.sendvcardWithPhotoNew'), "ContactEditController");
                 $rootScope.useCamera = false;
                 $rootScope.photographier = false;
@@ -1549,8 +1448,9 @@ appContext.controller("ContactEditController", [
             });
             console.log(phoneNumber)
             console.log(link)
-            $cordovaSms.send(phoneNumber, link, options)
-              .then(function() {
+           // $cordovaSms.send(phoneNumber, link, options)
+             // .then(function() {
+            window.open("sms:"+phoneNumber+";?&body="+link, '_system');
                 if($rootScope.contact.firstsendemail != '')
 
                     ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($rootScope.contact.id), function () {
@@ -1614,7 +1514,7 @@ appContext.controller("ContactEditController", [
               });
 
 
-          });
+         // });
         }
       }else if (phone_1 != "") {
         if(phone_1.indexOf('"') != -1)
@@ -1635,8 +1535,9 @@ appContext.controller("ContactEditController", [
               buzcardOnline: buzcardOnline,
               first_name: rs.rows.item(0).first_name
             });
-            $cordovaSms.send(phoneNumber, link, options)
-              .then(function() {
+           // $cordovaSms.send(phoneNumber, link, options)
+            //  .then(function() {
+            window.open("sms:"+phoneNumber+";?&body="+link, '_system');
                 LoadingService.dismiss();
                 ContactsService.geolocalicationAdress(db, $rootScope.contact, function(adress) {
                   ContactsService.updateContactByField(db, "lastsendemail", $filter('date')(new Date(), 'MM/dd/yyyy HH:mm'), parseInt($rootScope.contact.id), function () {
@@ -1664,7 +1565,7 @@ appContext.controller("ContactEditController", [
               });
 
 
-          });
+       //   });
         }
       } else {
         LoadingService.error("Veuillez introduire Numéro de mobile ", "ContactEditController");
