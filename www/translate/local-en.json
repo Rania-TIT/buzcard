@@ -501,7 +501,7 @@
   "ContactEdit.Address": "Address",
   "ContactEdit.Actus": "News",
   "ContactEdit.linkBuzcard": "Buzcard <br> on-line",
-  "SMS.Msg": "Hello,\r\n\r\nhere is the link to save my \"updatable contact info\".\r\nCheers.\r\n\r\n(Security first : if this link doesn't work, please text back to activate it.)\r\n\r\nhttps://www.buzcard.com/VcardInformations.aspx?act={{buzcardOnline}}",
+  "SMS.Msg": "Hello,\r\n\r\nhere is the link to save my \"updatable contact info\".\r\nCheers.\r\n\r\n(Security first : if this link doesn't work, please text back to activate it.)\r\n\r\nhttps://www.buzcard.com/VcardInformations.aspx?act={{buzcardOnline}}&SMS=OUI",
   "SMS.emailNonValid": "Invalid e-mail address",
   "SMS.phoneNonValid": "Invalid mobile number",
   "ContactEdit.SendSMS": "The link to your buzcard online has been sent to <a>{{phone}}</a>. <br> (at the current rate of your mobile operator)",

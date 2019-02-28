@@ -503,7 +503,7 @@
    "ContactEdit.Address":"Adresse",
    "ContactEdit.Actus":"Actus",
    "ContactEdit.linkBuzcard":"Buzcard <br> on-line",
-   "SMS.Msg":"Bonjour,\r\n\r\nvoici le lien pour enregistrer ma \"fiche vivante\" dans vos contacts\r\nÀ bientôt.\r\n\r\n(La sécurité avant tout : si ce lien n'est pas cliquable, répondez à ce SMS pour l'activer.)\r\n\r\nhttps://www.buzcard.com/VcardInformations.aspx?act={{buzcardOnline}}",
+   "SMS.Msg":"Bonjour,\r\n\r\nvoici le lien pour enregistrer ma \"fiche vivante\" dans vos contacts\r\nÀ bientôt.\r\n\r\n(La sécurité avant tout : si ce lien n'est pas cliquable, répondez à ce SMS pour l'activer.)\r\n\r\nhttps://www.buzcard.com/VcardInformations.aspx?act={{buzcardOnline}}&SMS=OUI",
    "SMS.emailNonValid":"Adresse email non valide",
    "SMS.phoneNonValid":"Numéro de mobile non valide",
    "ContactEdit.SendSMS":"Le lien vers votre fiche a bien été envoyé au <a> {{phone}}</a>. <br> (au tarif en vigueur de votre opérateur mobile)",
