@@ -599,7 +599,7 @@ appContext.controller('QrCodeController', [
               if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
 
                 var options = {
-                  quality: 100,
+                  quality: 70,
                   destinationType: Camera.DestinationType.FILE_URI,
                   sourceType: Camera.PictureSourceType.CAMERA,
                   encodingType: Camera.EncodingType.JPEG,
@@ -674,7 +674,7 @@ appContext.controller('QrCodeController', [
               if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
 
                 var options = {
-                  quality: 100,
+                  quality: 70,
                   destinationType: Camera.DestinationType.FILE_URI,
                   sourceType: Camera.PictureSourceType.CAMERA,
                   encodingType: Camera.EncodingType.JPEG,

@@ -98,7 +98,7 @@ appContext.controller('BuzcardEditController', [
                 // activer l'onglet coordonnées par defaut
                 var fileName = profil.photolocation.substr(profil.photolocation.lastIndexOf('/') + 1);
                 console.log(result.rows.item(0).photolocation);
-                
+
                 if(result.rows.item(0).photolocation !='' ){
              		 $scope.photoProfil = $rootScope.path+fileName;
              		 }else{
@@ -115,13 +115,13 @@ appContext.controller('BuzcardEditController', [
          */
         $scope.getPhoto = function() {
         	if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-       		
+
                 cordova.plugins.diagnostic.requestRuntimePermission(function(status){
 
                 if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED){
 
             var options = {
-                quality: 50,
+                quality: 70,
                 destinationType: Camera.DestinationType.FILE_URI,
                 sourceType: Camera.PictureSourceType.CAMERA,
                 encodingType: Camera.EncodingType.JPEG,
@@ -179,7 +179,7 @@ appContext.controller('BuzcardEditController', [
                     console.error("The following error occurred: "+error);
                     $rootScope.isBackgroudRuning = false;
                 },cordova.plugins.diagnostic.permission.CAMERA);
-                  
+
     	 }else{
 
 
@@ -190,7 +190,7 @@ appContext.controller('BuzcardEditController', [
 
 
                 var options = {
-                    quality: 50,
+                    quality: 70,
                     destinationType: Camera.DestinationType.FILE_URI,
                     sourceType: Camera.PictureSourceType.CAMERA,
                     encodingType: Camera.EncodingType.JPEG,
@@ -261,7 +261,7 @@ appContext.controller('BuzcardEditController', [
                 if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED){
 
         	  var options = {
-                      quality: 100,
+                      quality: 70,
                       destinationType: Camera.DestinationType.FILE_URI,
                       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                       encodingType: Camera.EncodingType.JPEG,
@@ -316,7 +316,7 @@ appContext.controller('BuzcardEditController', [
 
 
    	     var options = {
-                 quality: 100,
+                 quality: 70,
                  destinationType: Camera.DestinationType.FILE_URI,
                  sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                  encodingType: Camera.EncodingType.JPEG,
