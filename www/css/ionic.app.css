@@ -37,7 +37,7 @@ $dark:                            #444 !default;
 
 @font-face {
     font-family: 'lubalin';
-    font-weight: bolder;
+    font-weight: 'bolder';
     src: url('../lib/ionic/fonts/lubalin.eot');
     src: url('../lib/ionic/fonts/lubalin.eot?#iefix') format('embedded-opentype'), url('../lib/ionic/fonts/lubalin.woff') format('woff'), url('../lib/ionic/fonts/lubalin.ttf') format('truetype'), url('../lib/ionic/fonts/lubalin.svg#lubalin') format('svg');
 }
@@ -8000,7 +8000,7 @@ color:#79A436;
 /*   	    margin-left: 27%!important; */
 }#profil{
  float:right;
-   width: 98%
+   width: 98%;
   display: block;
 /*     padding: 2px; */
   border: none;

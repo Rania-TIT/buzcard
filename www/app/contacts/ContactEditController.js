@@ -36,13 +36,19 @@ appContext.controller("ContactEditController", [
     var networkAttempt = 0;
     $rootScope.focusName = false;
     var gpsAttempt = 0;
+    var newGroupeNameElement = {}
     $rootScope.language = $translate.instant('ContactEdit.noGroup');
 
 
     $ionicPlatform.ready(function() {
 
     	$rootScope.focusName = false;
-     document.getElementById("empty_zone").click()
+    	if (document.getElementById("empty_zone"))
+        document.getElementById("empty_zone").click()
+
+      newGroupeNameElement =  document.querySelector('#newGroupeName') ? document.querySelector('#newGroupeName') : {}
+
+
       /**
        * create/open DB
        */
@@ -100,11 +106,11 @@ appContext.controller("ContactEditController", [
           if (result.rows.item(0).list == "")
             $scope.contact.list = $scope.groups[0];
           else {
-            document.querySelector('#newGroupeName').disabled = false;
-            document.querySelector('#newGroupeName').value = "";
+            newGroupeNameElement.disabled = false;
+            newGroupeNameElement.value = "";
           }
 
-          document.querySelector('#newGroupeName').value = removeSlashes(result.rows.item(0).list);
+          newGroupeNameElement.value = removeSlashes(result.rows.item(0).list);
           $rootScope.oldGroupName = removeSlashes(result.rows.item(0).list);
 
           if ($rootScope.fromState == "app.buzcardSend" || $rootScope.fromState == "app.contactList") {
@@ -305,7 +311,7 @@ appContext.controller("ContactEditController", [
 
     function updateContactFct(contact, callback) {
       var dateRDV = $('#dateX').val();
-      var newNameTmp = document.querySelector('#newGroupeName').value;
+      var newNameTmp = newGroupeNameElement.value;
 
       // LoadingService.loading($translate.instant('Buzcard.Msg'));
       if ($('#dateX').val() == '')
@@ -315,11 +321,11 @@ appContext.controller("ContactEditController", [
       $scope.contact = contact;
         console.error($scope.contact)
       //cas de nouveau groupe & le champ est vide
-      if (document.querySelector('#newGroupeName').value == "" && $scope.contact.list == $translate.instant('ContactEdit.NewGrp')) {
+      if (newGroupeNameElement.value == "" && $scope.contact.list == $translate.instant('ContactEdit.NewGrp')) {
         LoadingService.error($translate.instant('ContactEdit.Msg1'), "ContactEditController");
 
         //cas d'un groupe existant & le champ est vide
-      } else if (document.querySelector('#newGroupeName').value == "" && $scope.contact.list != $translate.instant('ContactEdit.NewGrp') && $scope.contact.list != "" && $scope.contact.list != null) {
+      } else if (newGroupeNameElement.value == "" && $scope.contact.list != $translate.instant('ContactEdit.NewGrp') && $scope.contact.list != "" && $scope.contact.list != null) {
         LoadingService.error($translate.instant('ContactEdit.Msg2'), "ContactEditController");
 
         //tous les champs sont bien remplis
@@ -334,7 +340,7 @@ appContext.controller("ContactEditController", [
           contactObj[key] = removeSlashes(contact[key]);
 
         var oldName = contactObj.list;
-        var newName = document.querySelector('#newGroupeName').value;
+        var newName = newGroupeNameElement.value;
         contactObj.list = newName;
 
         /******* end *******/
@@ -855,9 +861,9 @@ appContext.controller("ContactEditController", [
 
       if ($scope.contact.list != $translate.instant('ContactEdit.NewGrp') && $scope.contact.list != $translate.instant('ContactEdit.noGroup')) {
         $scope.isFocusable = true;
-        document.querySelector('#newGroupeName').value = $scope.contact.list;
-        document.querySelector('#newGroupeName').disabled = false;
-        $scope.tmpContact.list = document.querySelector('#newGroupeName').value
+        newGroupeNameElement.value = $scope.contact.list;
+        newGroupeNameElement.disabled = false;
+        $scope.tmpContact.list = newGroupeNameElement.value
         ContactsService.updateContactByField(db, 'list', $scope.contact.list, parseInt($stateParams.id), function () {
           SynchroServices.insertRequest(db, "CONTACTEDIT", {
             id: $stateParams.id,
@@ -869,8 +875,8 @@ appContext.controller("ContactEditController", [
       } else {
         $scope.isFocusable = true;
         //document.querySelector('#groupe-combo-editcontact').style.height = '80px';
-        document.querySelector('#newGroupeName').value = "";
-        document.querySelector('#newGroupeName').disabled = false;
+        newGroupeNameElement.value = "";
+        newGroupeNameElement.disabled = false;
 
         $timeout(function() {
           document.getElementById("newGroupeName").focus();
@@ -1069,7 +1075,7 @@ appContext.controller("ContactEditController", [
             $scope.noG = $translate.instant('ContactEdit.noGroup');
             contact.list = "";
             $scope.contact.list = "";
-            document.querySelector('#newGroupeName').value = "";
+            newGroupeNameElement.value = "";
           }
           cordova.plugins.diagnostic.requestContactsAuthorization(function(status){
         	    if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED){
@@ -1217,7 +1223,7 @@ appContext.controller("ContactEditController", [
         $scope.noG = $translate.instant('ContactEdit.noGroup');
         contact.list = "";
         $scope.contact.list = "";
-        document.querySelector('#newGroupeName').value = "";
+        newGroupeNameElement.value = "";
       }
       ContactsService.updateContactDevice(ContactsService.sortContactDevice(allContact), contact, {
         email: $rootScope.tmpContact.email,
@@ -1244,7 +1250,7 @@ appContext.controller("ContactEditController", [
         $scope.noG = $translate.instant('ContactEdit.noGroup');
         contact.list = "";
         $scope.contact.list = "";
-        document.querySelector('#newGroupeName').value = "";
+        newGroupeNameElement.value = "";
       }
 
       if ($rootScope.fromState == "app.contactShow") {
@@ -1281,7 +1287,7 @@ appContext.controller("ContactEditController", [
         $scope.noGroup = true;
         $scope.noG = $translate.instant('ContactEdit.noGroup');
         $scope.contact.list = "";
-        document.querySelector('#newGroupeName').value = "";
+        newGroupeNameElement.value = "";
       }
       if (!validateEmail(email) ||email == "") {
         console.log("--------*********---------")
@@ -1647,7 +1653,7 @@ appContext.controller("ContactEditController", [
         $scope.noG = $translate.instant('ContactEdit.noGroup');
         contact.list = "";
         $scope.contact.list = "";
-        document.querySelector('#newGroupeName').value = "";
+        newGroupeNameElement.value = "";
       }
       LoadingService.dismiss();
       updateContactFn(contact, function () {

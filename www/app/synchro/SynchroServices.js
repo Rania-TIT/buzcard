@@ -271,20 +271,24 @@ appContext.factory("SynchroServices", [
     }
 
     var getLocationMobile = function (type, callBack) {
+      console.log('++++++++++++++++++++++++++++++++++')
+      console.log('++++++++++++++++++++++++++++++++++')
+      console.log('entrance getgeolocation')
       if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
         cordova.plugins.diagnostic.requestLocationAuthorization(function (status) {
+          console.log('has a permision')
           var date = new Date().toISOString();
           var lat = 0;
           var lng = 0;
           var posOptions = {
             enableHighAccuracy: true,
-            timeout: 2000
+            timeout: 5000
           };
 
           $cordovaGeolocation
             .getCurrentPosition(posOptions)
             .then(function (position) {
-
+              console.log('has position')
               lat = position.coords.latitude;
               lng = position.coords.longitude;
 
@@ -320,52 +324,108 @@ appContext.factory("SynchroServices", [
         });
       } else {
         ////ios
-        cordova.plugins.diagnostic.requestLocationAuthorization(function (status) {
-          var date = new Date().toISOString();
-          var lat = 0;
-          var lng = 0;
-          var posOptions = {
-            enableHighAccuracy: true,
-            timeout: 2000
-          };
+        console.log('ios ios ios ')
 
-          $cordovaGeolocation
-            .getCurrentPosition(posOptions)
-            .then(function (position) {
 
-              lat = position.coords.latitude;
-              lng = position.coords.longitude;
+        cordova.plugins.diagnostic.isLocationAuthorized(function (authorized) {
+          if (authorized) {
+            var date = new Date().toISOString();
+            var lat = 0;
+            var lng = 0;
+            var posOptions = {
+              enableHighAccuracy: true,
+              timeout: 5000
+            };
 
-              var latlng = {
-                lat: parseFloat(lat),
-                lng: parseFloat(lng)
+            $cordovaGeolocation
+              .getCurrentPosition(posOptions)
+              .then(function (position) {
+                console.log('ios : has position')
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+
+                var latlng = {
+                  lat: parseFloat(lat),
+                  lng: parseFloat(lng)
+                };
+                console.log('Coordonnées GPS du position actuelle: ' + lat + " : " + lng + " date: " + date + " type: " + type);
+
+                if (latlng.lat != 0 && latlng.lng != 0) {
+
+                  SendLocation(latlng.lat, latlng.lng, type, date, function () {
+                    callBack("ok");
+                  })
+                } else {
+                  callBack("No place");
+
+                }
+
+
+              }, function (err) {
+
+                console.warn("erreur get position");
+                console.warn(err);
+
+
+                callBack("error location");
+
+
+              });
+          } else {
+            cordova.plugins.diagnostic.requestLocationAuthorization(function (status) {
+              console.log('ios has permission')
+              var date = new Date().toISOString();
+              var lat = 0;
+              var lng = 0;
+              var posOptions = {
+                enableHighAccuracy: true,
+                timeout: 5000
               };
-              console.log('Coordonnées GPS du position actuelle: ' + lat + " : " + lng + " date: " + date + " type: " + type);
 
-              if (latlng.lat != 0 && latlng.lng != 0) {
+              $cordovaGeolocation
+                .getCurrentPosition(posOptions)
+                .then(function (position) {
+                  console.log('ios : has position')
+                  lat = position.coords.latitude;
+                  lng = position.coords.longitude;
 
-                SendLocation(latlng.lat, latlng.lng, type, date, function () {
-                  callBack("ok");
-                })
-              } else {
-                callBack("No place");
+                  var latlng = {
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng)
+                  };
+                  console.log('Coordonnées GPS du position actuelle: ' + lat + " : " + lng + " date: " + date + " type: " + type);
 
-              }
+                  if (latlng.lat != 0 && latlng.lng != 0) {
+
+                    SendLocation(latlng.lat, latlng.lng, type, date, function () {
+                      callBack("ok");
+                    })
+                  } else {
+                    callBack("No place");
+
+                  }
 
 
-            }, function (err) {
+                }, function (err) {
 
-              console.warn("erreur get position");
-              console.warn(err);
-
-
-              callBack("error location");
+                  console.warn("erreur get position");
+                  console.warn(err);
 
 
-            });
+                  callBack("error location");
+
+
+                });
+            }, function (error) {
+              console.error(error);
+              console.log("ios : has error")
+            }, cordova.plugins.diagnostic.locationAuthorizationMode.WHEN_IN_USE);
+          }
         }, function (error) {
-          console.error(error);
-        }, cordova.plugins.diagnostic.locationAuthorizationMode.WHEN_IN_USE);
+          console.error("The following error occurred: " + error);
+        });
+
+
       }
 
     };
