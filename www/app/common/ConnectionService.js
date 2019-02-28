@@ -602,56 +602,60 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
                                             $rootScope.qrCode = 0;
 
                                             if (response.data.answer.contact_id != "") {
+
                                                 var contact = QrCodeServices.createContactFromQrCode(response.data.answer.contact_id.contact);
-                                                ContactsService.selectContactbyEmail(db, contact.email, function (resultset) {
+                                                ContactsService.geolocalicationAdress(db,contact,function () {
+                                                  ContactsService.selectContactbyEmail(db, contact.email, function (resultset) {
 
                                                     //contact exxistant
                                                     if (resultset.rows.length > 0) {
 
-                                                        QrCodeServices.UPDATECONTACT(db, contact, function () {
-                                                            console.log(contact.id);
-                                                            ContactsService.downloadPhotoContact(contact.id, function (url) {
-                                                                ContactsService.updateContactPhoto(db, contact.id, url, function () {
-                                                                    QrCodeServices.saveContactDeviceFlash(contact.id, function () {
+                                                      QrCodeServices.UPDATECONTACT(db, contact, function () {
+                                                        console.log(contact.id);
+                                                        ContactsService.downloadPhotoContact(contact.id, function (url) {
+                                                          ContactsService.updateContactPhoto(db, contact.id, url, function () {
+                                                            QrCodeServices.saveContactDeviceFlash(contact.id, function () {
 
 
-                                                                        //LoadingService.dismiss();
-                                                                        QrCodeServices.checkBuzcardSendAFterBuz(db, contact.id, JSON.parse(result.rows.item(0).object).act, function () {
+                                                              //LoadingService.dismiss();
+                                                              QrCodeServices.checkBuzcardSendAFterBuz(db, contact.id, JSON.parse(result.rows.item(0).object).act, function () {
 
-                                                                            $rootScope.fromState = "app.qrcode";
-                                                                            MenuService.setLocalStorage('ReloadContactList', 1);
-                                                                            SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                                execReq(db, callBack);
-                                                                            });
-                                                                        })
-                                                                    });
+                                                                $rootScope.fromState = "app.qrcode";
+                                                                MenuService.setLocalStorage('ReloadContactList', 1);
+                                                                SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                                                  execReq(db, callBack);
                                                                 });
+                                                              })
                                                             });
+                                                          });
                                                         });
+                                                      });
 
-                                                        //new contact
+                                                      //new contact
                                                     } else {
-                                                        QrCodeServices.CREATECONTAT(db, contact, function () {
-                                                            //	LoadingService.dismiss();
-                                                            ContactsService.downloadPhotoContact(contact.id, function (url) {
-                                                                ContactsService.updateContactPhoto(db, contact.id, url, function () {
-                                                                    QrCodeServices.saveContactDeviceFlash(contact.id, function () {
+                                                      QrCodeServices.CREATECONTAT(db, contact, function () {
+                                                        //	LoadingService.dismiss();
+                                                        ContactsService.downloadPhotoContact(contact.id, function (url) {
+                                                          ContactsService.updateContactPhoto(db, contact.id, url, function () {
+                                                            QrCodeServices.saveContactDeviceFlash(contact.id, function () {
 
-                                                                        QrCodeServices.checkBuzcardSendAFterBuz(db, contact.id, JSON.parse(result.rows.item(0).object).act, function () {
+                                                              QrCodeServices.checkBuzcardSendAFterBuz(db, contact.id, JSON.parse(result.rows.item(0).object).act, function () {
 
-                                                                            $rootScope.fromState = "app.qrcode";
-                                                                            MenuService.setLocalStorage('ReloadContactList', 1);
-                                                                            SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
-                                                                                execReq(db, callBack);
-                                                                            });
-                                                                        });
-                                                                    });
+                                                                $rootScope.fromState = "app.qrcode";
+                                                                MenuService.setLocalStorage('ReloadContactList', 1);
+                                                                SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
+                                                                  execReq(db, callBack);
                                                                 });
+                                                              });
                                                             });
+                                                          });
                                                         });
+                                                      });
                                                     }
 
-                                                });
+                                                  });
+                                                })
+
                                             } else {
                                                 //	 QrCodeServices.checkSendAFterBuz(db,JSON.parse(result.rows.item(0).object).act, function(){
                                                 SynchroServices.deleteRequest(db, result.rows.item(0).id, function () {
