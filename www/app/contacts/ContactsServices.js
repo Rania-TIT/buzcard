@@ -2901,15 +2901,6 @@ appContext.factory("ContactsService", ['$http', '$cordovaSQLite', 'LoadingServic
         }, function(error){
           console.error("The following error occurred: "+error);
         });
-
-
-
-
-
-
-
-
-
       }
 
     };
@@ -2995,7 +2986,7 @@ appContext.factory("ContactsService", ['$http', '$cordovaSQLite', 'LoadingServic
         if(contact.email == $translate.instant('loading.data') && contact.photofilelocation !== "img/photo_top_title.jpg" )
            note =  contact.comment;
         else
-          note = "Contact rencontré le " + $filter('toFrFormat')(contact.alerteemailcreationdate) + " " + $filter('grpFormat')(contact.list) + " \n" + $filter('MeetingFilter')(contact.meeting_point.capitalize()) + "\n " + removeSlashes(contact.actu) + " \n" + contact.comment;
+          note =  removeSlashes(contact.actu) + " \n" + contact.comment;
 
 
 
@@ -3198,12 +3189,12 @@ appContext.factory("ContactsService", ['$http', '$cordovaSQLite', 'LoadingServic
             if(contact.email == $translate.instant('loading.data') && contact.photofilelocation !== "img/photo_top_title.jpg" )
                 contactDevice.note =  contact.comment;
             else
-                contactDevice.note = "Contact rencontré le " + $filter('toFrFormat')(contact.alerteemailcreationdate) + "" + $filter('MeetingFilter')(contact.meeting_point.capitalize()) + " \n" + removeSlashes(contact.actu) + "\n" + contact.comment;
+                contactDevice.note = removeSlashes(contact.actu) + "\n" + contact.comment ;
           } else if (contactDevice.note.indexOf("Contact rencontré le ") != -1) {
-            contactDevice.note = "Contact rencontré le " + $filter('toFrFormat')(contact.alerteemailcreationdate) + "" + $filter('MeetingFilter')(contact.meeting_point.capitalize()) + " \n" + removeSlashes(contact.actu) + " \n" + contact.comment;
+            contactDevice.note = removeSlashes(contact.actu) + " \n" + contact.comment ;
 
           } else {
-            contactDevice.note = "Contact rencontré le " + $filter('toFrFormat')(contact.alerteemailcreationdate) + "" + $filter('MeetingFilter')(contact.meeting_point.capitalize()) + " \n" + removeSlashes(contact.actu) + "\n" + contact.comment;
+            contactDevice.note = removeSlashes(contact.actu) + "\n" + contact.comment ;
 
           }
 
@@ -3874,9 +3865,180 @@ appContext.factory("ContactsService", ['$http', '$cordovaSQLite', 'LoadingServic
     }
 
     /**
-     * save rendez_vous en local && set request
+     * get address with gps position
      */
+    var getPositionAndAdressePosition = function (db, contact, callBack) {
+      cordova.plugins.diagnostic.isLocationAuthorized(function (authorized) {
+        console.log("Location is " + (authorized ? "authorized" : "unauthorized"));
+        if (authorized) {
+          var lat = 0;
+          var lng = 0;
+          var posOptions = {
+            enableHighAccuracy: true, timeout: 5000
+          };
+          $cordovaGeolocation
+            .getCurrentPosition(posOptions)
+            .then(function (position) {
 
+              lat = position.coords.latitude;
+              lng = position.coords.longitude;
+
+              var latlng = {
+                lat: parseFloat(lat),
+                lng: parseFloat(lng)
+              };
+              console.log('Coordonnées GPS du position actuelle: ' + lat + " : " + lng);
+
+              if (latlng.lat != 0 && latlng.lng != 0) {
+
+                SynchroServices.getAddressFromCoordonates(lat, lng, contact.id, function (address) {
+                  callBack(address);
+                });
+              } else {
+                callBack('');
+              }
+
+            }, function (err) {
+              callBack('');
+            });
+        } else {
+
+          cordova.plugins.diagnostic.requestLocationAuthorization(function (status) {
+
+            var lat = 0;
+            var lng = 0;
+            var posOptions = {
+              enableHighAccuracy: true, timeout: 5000
+            };
+            //  time12 = new Date().getTime();
+            $cordovaGeolocation
+              .getCurrentPosition(posOptions)
+              .then(function (position) {
+
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+
+                var latlng = {
+                  lat: parseFloat(lat),
+                  lng: parseFloat(lng)
+                };
+                console.log('Coordonnées GPS du position actuelle: ' + lat + " : " + lng);
+
+                if (latlng.lat != 0 && latlng.lng != 0) {
+
+                  SynchroServices.getAddressFromCoordonates(lat, lng, contact.id, function (address) {
+                    callBack(address);
+                  });
+                } else {
+                  callBack('');
+                }
+
+              }, function (err) {
+                callBack('');
+              });
+
+          }, function (error) {
+            callBack('');
+          }, cordova.plugins.diagnostic.locationAuthorizationMode.WHEN_IN_USE);
+
+
+        }
+      }, function (error) {
+        console.error(error);
+        callBack('');
+      });
+    };
+
+    /**
+     * get address with gps position
+     */
+    var getCurrentCoords = function (callBack) {
+        var latlng = {
+          lat: 0,
+          lng: 0
+        };
+      cordova.plugins.diagnostic.isLocationAuthorized(function (authorized) {
+        console.log("Location is " + (authorized ? "authorized" : "unauthorized"));
+        if (authorized) {
+          var posOptions = {
+            enableHighAccuracy: true, timeout: 5000
+          };
+          $cordovaGeolocation
+            .getCurrentPosition(posOptions)
+            .then(function (position) {
+
+              latlng.lat = position.coords.latitude;
+              latlng.lng = position.coords.longitude;
+
+              console.log('Coordonnées GPS du position actuelle: ' + latlng.lat + " : " + latlng.lng);
+
+              callBack(latlng)
+            }, function () {
+              callBack(latlng)
+            });
+        } else {
+
+          cordova.plugins.diagnostic.requestLocationAuthorization(function (status) {
+
+            var latlng = {
+              lat: 0,
+              lng: 0
+            };
+            var posOptions = {
+              enableHighAccuracy: true, timeout: 5000
+            };
+            //  time12 = new Date().getTime();
+            $cordovaGeolocation
+              .getCurrentPosition(posOptions)
+              .then(function (position) {
+
+                latlng.lat = position.coords.latitude;
+                latlng.lng = position.coords.longitude;
+
+                console.log('Coordonnées GPS du position actuelle: ' + latlng.lat + " : " + latlng.lng);
+
+                  callBack(latlng)
+
+              }, function (err) {
+                callBack(latlng)
+              });
+
+          }, function (error) {
+            callBack(latlng)
+          }, cordova.plugins.diagnostic.locationAuthorizationMode.WHEN_IN_USE);
+
+
+        }
+      }, function (error) {
+        console.error(error);
+        callBack(latlng)
+      });
+    };
+
+    /**
+     * getAdress from coordinates
+     */
+    var coordinatesToAddress = function (lat, long, callBack) {
+
+      var getAddressRequest = {
+        method: 'GET',
+        url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyCHFkX3l7S5HH_GhSte_fHN6t_HQJVUqME"
+      };
+      $http(getAddressRequest).success(function (response, status, headers, config) {
+        if ("OK" == response.status)
+          return callBack(response.results[0].formatted_address);
+         else if ("OVER_QUERY_LIMIT" == response.status)
+          return callBack("");
+         else if ("ZERO_RESULTS" == response.status)
+          return callBack("");
+        else
+          return callBack("");
+
+
+      }).error(function (data, status, headers, config) {
+        return callBack("");
+      });
+    };
 
     /**
      * the factory returns
@@ -3981,7 +4143,9 @@ appContext.factory("ContactsService", ['$http', '$cordovaSQLite', 'LoadingServic
       UpdateRepertoire: UpdateRepertoire,
       createAgendaRDV: createAgendaRDV,
       getContactUpdate: getContactUpdate,
-      checkinfoserver: checkinfoserver
+      checkinfoserver: checkinfoserver,
+      coordinatesToAddress : coordinatesToAddress,
+      getCurrentCoords : getCurrentCoords
 
 
     };

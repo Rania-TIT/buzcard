@@ -519,106 +519,96 @@ appContext.factory("QrCodeServices", ['$http','$cordovaSQLite','$filter','LoginS
 		      return 1;
 		    }
 	}
-	var saveContactDeviceFlash= function(id, callBack){
-		  var db = null;
-    	  if (window.cordova) {
-          	db = window.sqlitePlugin.openDatabase({name : "buzcard.db" , androidDatabaseImplementation: 2}); // device
-          } else {
-              db = window.openDatabase("buzcard.db", '1', 'my', 1024 * 1024 * 10); // browser
-          }
-          if (/Android|BlackBerry Mini/i.test(navigator.userAgent)) {
-              if (ionic.Platform.version() >= 6) {
-           		  var permissions = window.plugins.permissions;
-           		  //do we already have permissions
-           		  permissions.hasPermission(function(status){
-           		    if(!status.hasPermission) {
-           		      //if not, warn in console
-           		      var errorCallback = function() {
-           		      console.log('READ_CONTACTS permission is not turned on');
-           		      }
-           		      //make request for permissions
-           		      permissions.requestPermission(function(status) {
-           		        //do we still not have permissions? user denied. Do something here
-           		        if( !status.hasPermission ) errorCallback();
-           		      }, function(){}, permissions.READ_CONTACTS);
-           		    }else{
-           		    	$rootScope.autoriseContact = true;
-           		    }
-           		  }, function(){}, permissions.READ_CONTACTS);
-           		}
-             	if (ionic.Platform.version() >= 6) {
-             		  var permissions = window.plugins.permissions;
-             		  //do we already have permissions
-             		  permissions.hasPermission(function(status){
-             		    if(!status.hasPermission) {
-             		      //if not, warn in console
-             		      var errorCallback = function() {
-             		      console.log('READ_CONTACTS permission is not turned on');
-             		      }
-             		      //make request for permissions
-             		      permissions.requestPermission(function(status) {
-             		        //do we still not have permissions? user denied. Do something here
-             		        if( !status.hasPermission ) errorCallback();
-             		      }, function(){}, permissions.WRITE_CONTACTS);
-             		    }else{
-           		    	$rootScope.autoriseContact = true;
-           		    }
-             		  }, function(){}, permissions.WRITE_CONTACTS);
-             		}
-             	if (ionic.Platform.version() >= 6) {
-           		  var permissions = window.plugins.permissions;
-           		  //do we already have permissions
-           		  permissions.hasPermission(function(status){
-           		    if(!status.hasPermission) {
-           		      //if not, warn in console
-           		      var errorCallback = function() {
-           		      console.log('READ_CONTACTS permission is not turned on');
-           		      }
-           		      //make request for permissions
-           		      permissions.requestPermission(function(status) {
-           		        //do we still not have permissions? user denied. Do something here
-           		        if( !status.hasPermission ) errorCallback();
-           		      }, function(){}, permissions.GET_ACCOUNTS);
-           		    }else{
-           		    	$rootScope.autoriseContact = true;
-           		    }
-           		  }, function(){}, permissions.GET_ACCOUNTS);
-           		}
-     }
 
+  var saveContactDeviceFlash = function(id, callBack) {
+    var db = null;
+    if (window.cordova) {
+      db = window.sqlitePlugin.openDatabase({
+        name: "buzcard.db",
+        androidDatabaseImplementation: 2
+      }); // device
+    } else {
+      db = window.openDatabase("buzcard.db", '1', 'my', 1024 * 1024 * 10); // browser
+    }
+
+
+    cordova.plugins.diagnostic.isContactsAuthorized(function(authorized) {
+      if (authorized) {
         ContactsService.getContactbyId(db, id, function(result) {
-           contact = result.rows.item(0);
-           console.log(JSON.stringify(contact));
-           emailToSearchFor = contact.email;
-  		 phone_1ToSearchFor = contact.phone_1;
-  			 if(phone_1ToSearchFor ==''){
-          	  phone_1ToSearchFor = contact.phone_2;
-          		  }
-		ContactsService.searchContactInDevice(emailToSearchFor, phone_1ToSearchFor, function(resu) {
-			  if (resu == "") {
-				  if(contact.phone_2 =="" &&  contact.phone_1==""){
-					  return callBack();
-				  }else{
+          contact = result.rows.item(0);
+          console.log(JSON.stringify(contact));
+          emailToSearchFor = contact.email;
+          phone_1ToSearchFor = contact.phone_1;
+          if (phone_1ToSearchFor == '') {
+            phone_1ToSearchFor = contact.phone_2;
+          }
+          ContactsService.searchContactInDevice(emailToSearchFor, phone_1ToSearchFor, function(resu) {
+            if (resu == "") {
+              if (contact.phone_2 == "" && contact.phone_1 == "") {
+                return callBack();
+              } else {
+                ContactsService.saveContactInTel(contact, function() {
+                  return callBack();
+
+                });
+              }
+            } else {
+              ContactsService.updateContactDevice(ContactsService.sortContactDevice(resu), contact, {
+                email: contact.email,
+                phone_1: contact.phone_1,
+                phone_2: contact.phone_2
+              }, function() {
+                return callBack();
+              });
+
+            }
+          }, function() {
+            return callBack();
+          });
+        });
+      } else {
+        cordova.plugins.diagnostic.requestContactsAuthorization(function(status){
+          if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED){
+            console.log("Contacts use is authorized");
+            ContactsService.searchContactInDevice(emailToSearchFor, phone_1ToSearchFor, function(resu) {
+              if (resu == "") {
+                if (contact.phone_2 == "" && contact.phone_1 == "") {
+                  return callBack();
+                } else {
                   ContactsService.saveContactInTel(contact, function() {
-                	 return callBack();
+                    return callBack();
 
                   });
-				  }
+                }
               } else {
-            	   ContactsService.updateContactDevice(ContactsService.sortContactDevice(resu), contact,{email: contact.email,phone_1: contact.phone_1, phone_2:contact.phone_2}, function() {
-            		   return callBack();
-            	   });
+                ContactsService.updateContactDevice(ContactsService.sortContactDevice(resu), contact, {
+                  email: contact.email,
+                  phone_1: contact.phone_1,
+                  phone_2: contact.phone_2
+                }, function() {
+                  return callBack();
+                });
 
-		}
-		},function(){
-			 return callBack();
-       });
+              }
+            }, function() {
+              return callBack();
+            });
+          }
+        }, function(error){
+          return callBack();
+          console.error(error);
         });
-	};
+      }
+      console.log("App is " + (authorized ? "authorized" : "denied") + " access to contacts");
+    }, function(error) {
+      return callBack()
+      console.error("The following error occurred: " + error);
+    });
+
+  };
 
 	  var  getMeetingPoint = function(db,contact, callBack){
 	    	cordova.plugins.diagnostic.getLocationAuthorizationStatus(function(status) {
-	            //	alert('Location premission '+status);
 
 	            ContactsService.geolocalicationAdress(db, contact, function(adress) {
 

@@ -585,12 +585,17 @@ var appContext = angular.module('appContext', ['ionic', 'ngCordova', 'ngIOS9UIWe
 
                 } else {
                     var adress = input.split(',');
-                    var add1 = adress[0];
-                    var ville = "";
-                    for (var i = 1; i < adress.length; i++) {
+                    if(adress.length > 0){
+                      var add1 = adress[0];
+                      var ville = "";
+                      for (var i = 1; i < adress.length; i++) {
                         ville += ' ' + adress[i];
+                      }
+                      return '\n@ ' + add1 + '\n' + ville;
+                    }else{
+                      return ""
                     }
-                    return '\n@ ' + add1 + '\n' + ville;
+
                 }
 
 

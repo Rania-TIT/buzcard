@@ -603,12 +603,18 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
                                             if (response.data.answer.contact_id != "") {
 
-                                                var contact = QrCodeServices.createContactFromQrCode(response.data.answer.contact_id.contact);
-                                                ContactsService.geolocalicationAdress(db,contact,function () {
+                                              var contact = QrCodeServices.createContactFromQrCode(response.data.answer.contact_id.contact);
+
+                                              ContactsService.getCurrentCoords(function (coords) {
+                                              ContactsService.coordinatesToAddress(coords.lat, coords.lng, function (address) {
                                                   ContactsService.selectContactbyEmail(db, contact.email, function (resultset) {
 
                                                     //contact exxistant
                                                     if (resultset.rows.length > 0) {
+                                                      contact.longitude_meeting = coords.lng
+                                                      contact.latitude_meeting = coords.lat
+                                                      contact.meeting_point = address
+                                                      contact.comment = ( contact.comment && contact.comment.indexOf('Contact') !== -1 ) ? contact.comment + ' @ '+ address : contact.comment
 
                                                       QrCodeServices.UPDATECONTACT(db, contact, function () {
                                                         console.log(contact.id);
@@ -633,6 +639,10 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
                                                       //new contact
                                                     } else {
+                                                      contact.longitude_meeting = coords.lng
+                                                      contact.latitude_meeting = coords.lat
+                                                      contact.meeting_point = address
+                                                      contact.comment = ( contact.comment && contact.comment.indexOf('Contact') !== -1 ) ? contact.comment + ' @ '+ address : contact.comment
                                                       QrCodeServices.CREATECONTAT(db, contact, function () {
                                                         //	LoadingService.dismiss();
                                                         ContactsService.downloadPhotoContact(contact.id, function (url) {
@@ -655,6 +665,7 @@ appContext.factory("ConnectionService", ['LoginService', '$http', 'SynchroServic
 
                                                   });
                                                 })
+                                            })
 
                                             } else {
                                                 //	 QrCodeServices.checkSendAFterBuz(db,JSON.parse(result.rows.item(0).object).act, function(){
